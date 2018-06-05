@@ -1,4 +1,4 @@
-package com.codecool.queststore;
+package com.codecool.queststore.controller;
 
 
 import com.codecool.queststore.details.Privilege;
