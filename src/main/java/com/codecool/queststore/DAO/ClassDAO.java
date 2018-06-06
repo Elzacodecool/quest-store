@@ -1,16 +1,17 @@
 package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.model.classRoom.ClassRoom;
+import com.codecool.queststore.model.user.Mentor;
 
 import java.util.List;
 
 public interface ClassDAO {
 
-    add(ClassRoom classRoom);
-    remove(ClassRoom classRoom);
-    update(ClassRoom classRoom);
+    void add(ClassRoom classRoom);
+    void remove(ClassRoom classRoom);
+    void update(ClassRoom classRoom);
     List<ClassRoom> getAll();
     ClassRoom getClass(int id);
-    addMentor(Mentor mentor, ClassRoom classRoom);
-    removeMentor(Mentor mentor, ClassRoom classRoom);
+    void addMentor(Mentor mentor, ClassRoom classRoom);
+    void removeMentor(Mentor mentor, ClassRoom classRoom);
 }
