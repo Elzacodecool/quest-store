@@ -12,5 +12,5 @@ public interface UserDAO {
     void update(User user);
     User getUser(int id);
     List<User> getAllStudents(Mentor mentor);
-    List<User> getAll(User user);
+    List<User> getAll();
 }
