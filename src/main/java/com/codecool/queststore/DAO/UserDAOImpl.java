@@ -6,11 +6,12 @@ import com.codecool.queststore.model.user.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
-    DAOFactory factory;
+    private DAOFactory factory;
 
     public UserDAOImpl(DAOFactory factory) {
         this.factory = factory;
@@ -62,6 +63,7 @@ public class UserDAOImpl implements UserDAO {
         User result = null;
         String query = "SELECT * FROM codecooler WHERE id = " + id;
         ResultSet resultSet = factory.execQuery(query);
+        //TODO: Extract to a method (lines 68-75 & 97-104)
         try {
             result = new User(
                     resultSet.getInt("id"),
@@ -80,12 +82,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAllStudents(Mentor mentor) {
+        //TODO: Implement!
         return null;
     }
 
     @Override
     public List<User> getAll() {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         String query = "SELECT * FROM codecooler";
         ResultSet resultSet = factory.execQuery(query);
 
