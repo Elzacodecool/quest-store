@@ -8,6 +8,21 @@ public class Item {
     private int price;
     private Category category;
 
+    public Item(int id, String name, String description, int price, Category category) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.category = category;
+    }
+
+    public Item(String name, String description, int price, Category category) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.category = category;
+    }
+
     public int getId() {
         return id;
     }
