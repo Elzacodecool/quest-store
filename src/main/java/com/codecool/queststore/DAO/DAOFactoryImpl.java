@@ -21,9 +21,8 @@ public class DAOFactoryImpl extends DAOFactory {
     private Connection createConnection() {
         Connection c = null;
         try {
-            Class.forName(DRIVER);
             c = DriverManager.getConnection(DB_URL + DB_NAME, userName, password);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
