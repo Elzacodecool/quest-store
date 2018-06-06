@@ -16,12 +16,24 @@ CREATE TABLE admin (
 );
 
 CREATE TABLE mentor (
-	id serial primary key,
+	id serial PRIMARY KEY,
     user_id integer
 );
 
 CREATE TABLE student (
-	id serial primary key,
-    user_id integer
+	id serial PRIMARY KEY,
+    user_id integer,
     class_id integer
+);
+
+CREATE TABLE class (
+	id serial PRIMARY KEY,
+    name text
+);
+
+CREATE TABLE mentor_class (
+    mentor_id integer REFERENCES mentor(id)
+             ON UPDATE CASCADE ON DELETE CASCADE,
+    class_id integer REFERENCES class(id)
+             ON UPDATE CASCADE ON DELETE CASCADE
 );
