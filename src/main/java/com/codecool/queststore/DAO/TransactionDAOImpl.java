@@ -1,7 +1,12 @@
 package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.model.Transaction;
+import com.codecool.queststore.model.inventory.Item;
+import com.codecool.queststore.model.user.Student;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionDAOImpl implements  TransactionDAO {
@@ -13,6 +18,38 @@ public class TransactionDAOImpl implements  TransactionDAO {
 
     @Override
     public List<Transaction> getAll() {
+        ResultSet resultSet = daoFactory.execQuery("SELECT * FROM transaction;");
+        return getTransactionsByResultSet(resultSet);
+    }
+
+    private List<Transaction> getTransactionsByResultSet(ResultSet resultSet) {
+        List<Transaction> transactions = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                transactions.add(getTransactionByResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transactions;
+    }
+
+    private Transaction getTransactionByResultSet(ResultSet resultSet) {
+        final int ID_INDEX = 1;
+        final int STUDENT_ID = 2;
+        final int ITEM_ID = 3;
+        final int AMOUNT_ID = 4;
+
+        try {
+            int id = resultSet.getInt(ID_INDEX);
+            Student student = daoFactory.getUserDAO().getUser(resultSet.getInt(STUDENT_ID));
+            Item item = daoFactory.getItemDAO().get(resultSet.getInt(ITEM_ID));
+            int amount = resultSet.getInt(AMOUNT_ID);
+
+            return new Transaction(id, student, item, amount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
