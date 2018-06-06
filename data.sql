@@ -35,5 +35,30 @@ CREATE TABLE mentor_class (
     mentor_id integer REFERENCES mentor(id)
              ON UPDATE CASCADE ON DELETE CASCADE,
     class_id integer REFERENCES class(id)
-             ON UPDATE CASCADE ON DELETE CASCADE
+             ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (mentor_id, class_id)
 );
+
+CREATE TABLE item (
+    id serial PRIMARY KEY,
+    name text,
+    decription text,
+    price integer,
+    category text
+);
+
+CREATE TABLE transaction (
+    student_id integer REFERENCES student(id)
+             ON UPDATE CASCADE ON DELETE CASCADE,
+    item_id integer REFERENCES item(id)
+             ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (student_id, item_id)
+);
+
+CREATE TABLE inventory (
+    student_id integer REFERENCES student(id)
+             ON UPDATE CASCADE ON DELETE CASCADE,
+    item_id integer REFERENCES item(id)
+             ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (student_id, item_id)
+)
