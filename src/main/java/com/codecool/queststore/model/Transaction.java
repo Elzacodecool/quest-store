@@ -11,11 +11,13 @@ public class Transaction {
 
     public Transaction(int id, Student student, Item item, int amount) {
         this.id = id;
+        this.student = student;
         this.item = item;
         this.amount = amount;
     }
 
     public Transaction(Student student, Item item, int amount) {
+        this.student = student;
         this.item = item;
         this.amount = amount;
     }
