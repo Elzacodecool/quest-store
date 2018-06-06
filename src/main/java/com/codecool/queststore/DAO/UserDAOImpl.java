@@ -27,48 +27,34 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public void add(User user) {
-        StringBuilder query = new StringBuilder();
-        query.append("INSER INTO codecooler VALUES (")
-                .append("'")
-                .append(user.getFirstName())
-                .append("',")
-                .append(user.getLastName())
-                .append("',")
-                .append(user.getEmail())
-                .append("',")
-                .append(user.getPassword())
-                .append("',")
-                .append(user.getAccountType())
-                .append("')");
-        factory.execQuery(query.toString());
+        String query = "INSER INTO codecooler VALUES (?,?,?,?,?)";
+        factory.execQuery(query,
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getAccountType().toString()
+        );
     }
 
     @Override
     public void remove(int id) {
-        String query = "DELETE FROM codecooler WHERE id=" + id;
-        factory.execQuery(query);
+        String query = "DELETE FROM codecooler WHERE id = ?";
+        factory.execQuery(query, String.valueOf(id));
     }
 
     @Override
     public void update(User user) {
-        StringBuilder query = new StringBuilder();
-        query.append("UPDATE codecooler SET")
-                .append("first_name = '")
-                .append(user.getFirstName())
-                .append("', last_name = '")
-                .append(user.getLastName())
-                .append("', email = '")
-                .append(user.getEmail())
-                .append("', login = '")
-                .append(user.getLogin())
-                .append("', password = '")
-                .append(user.getPassword())
-                .append("', account_type = '")
-
-                .append("' WHERE id =")
-                .append(user.getId());
-
-        factory.execQuery(query.toString());
+        String query = "UPDATE codecooler SET first_name = ?, last_name = ?, email = ?, login = ?, password = ?, account_type = ? WHERE id = ?";
+        factory.execQuery(query,
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getLogin(),
+                user.getPassword(),
+                String.valueOf(user.getAccountType()),
+                String.valueOf(user.getId())
+        );
     }
 
     @Override
