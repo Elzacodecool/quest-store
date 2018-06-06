@@ -4,7 +4,13 @@ import com.codecool.queststore.model.Transaction;
 
 import java.util.List;
 
-public class TransactionDAOImpl implements  TransactionDAO{
+public class TransactionDAOImpl implements  TransactionDAO {
+    private DAOFactory daoFactory;
+
+    TransactionDAOImpl(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+
     @Override
     public List<Transaction> getAll() {
         return null;
