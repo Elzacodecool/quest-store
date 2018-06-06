@@ -60,8 +60,9 @@ public class TransactionDAOImpl implements  TransactionDAO {
     }
 
     @Override
-    public Transaction getTransaction(int id) {
-        return null;
+    public Transaction getTransaction(int transactionId) {
+        ResultSet resultSet = daoFactory.execQuery("SELECT * FROM transaction WHERE id = ?", transactionId);
+        return getTransactionByResultSet(resultSet);
     }
 
     @Override
