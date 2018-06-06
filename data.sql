@@ -48,11 +48,12 @@ CREATE TABLE item (
 );
 
 CREATE TABLE transaction (
+    id serial PRIMARY KEY,
     student_id integer REFERENCES student(id)
              ON UPDATE CASCADE ON DELETE CASCADE,
     item_id integer REFERENCES item(id)
              ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (student_id, item_id)
+    amount integer
 );
 
 CREATE TABLE inventory (
