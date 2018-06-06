@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS user, admin, mentor, student, mentor_class, class, transaction, item;
+DROP TABLE IF EXISTS codecooler, admin, mentor, student, mentor_class, class, transaction, item;
 
-CREATE TABLE user (
+CREATE TABLE codecooler (
 	id serial PRIMARY KEY,
     first_name text,
     last_name text,
