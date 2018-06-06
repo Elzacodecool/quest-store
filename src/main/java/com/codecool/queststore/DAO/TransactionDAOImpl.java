@@ -55,7 +55,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
 
     @Override
     public List<Transaction> getTransactionByUser(int userId) {
-        ResultSet resultSet = daoFactory.execQuery("SELECT * FROM transation WHERE user_id = ?;", userId);
+        ResultSet resultSet = daoFactory.execQuery("SELECT * FROM transaction WHERE user_id = ?;", userId);
         return getTransactionsByResultSet(resultSet);
     }
 
@@ -84,9 +84,9 @@ public class TransactionDAOImpl implements  TransactionDAO {
 
     @Override
     public void update(Transaction transaction) {
-        String query = "UPDATE transaction" +
-                "SET student_id = ?, item_id = ?, amount = ? " +
-                "WHERE id = ?";
+        String query = "UPDATE transaction " +
+                "SET student_id=?, item_id=?, amount=? " +
+                "WHERE id = ? ;";
         int id = transaction.getId();
         int studentId = transaction.getStudent().getId();
         int itemId = transaction.getItem().getId();
