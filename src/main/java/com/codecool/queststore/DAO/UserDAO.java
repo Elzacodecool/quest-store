@@ -1,5 +1,10 @@
 package com.codecool.queststore.DAO;
 
+import com.codecool.queststore.model.user.Mentor;
+import com.codecool.queststore.model.user.User;
+
+import java.util.List;
+
 public interface UserDAO {
 
     void add(User user);

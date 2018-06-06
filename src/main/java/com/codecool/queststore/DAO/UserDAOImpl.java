@@ -1,5 +1,8 @@
 package com.codecool.queststore.DAO;
 
+import com.codecool.queststore.model.user.Mentor;
+import com.codecool.queststore.model.user.User;
+
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {

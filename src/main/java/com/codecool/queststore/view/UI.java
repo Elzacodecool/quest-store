@@ -1,11 +1,7 @@
 package com.codecool.queststore.view;
 
-import com.codecool.queststore.model.Mentor;
-import com.codecool.queststore.model.Student;
-
 import java.io.Console;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class UI {
@@ -54,23 +50,4 @@ public class UI {
         displayLine("\033[H\033[2J");
     }
 
-    public void displayStudents(List<Student> studentList) {
-        displayLine("/----------------------------------------------------\\");
-        displayLine(String.format("|%-25s| %-25s|", "NAME", "SURNAME"));
-        displayLine("|----------------------------------------------------|");
-        for (Student s : studentList) {
-            this.displayLine(String.format("|%-25s| %-25s|", s.getName(), s.getSurName()));
-        }
-        this.displayLine("\\----------------------------------------------------/");
-    }
-
-    public void displayMentors(List<Mentor> mentorList) {
-        displayLine("/----------------------------------------------------\\");
-        displayLine(String.format("|%-25s| %-25s|", "NAME", "SURNAME"));
-        displayLine("|----------------------------------------------------|");
-        for (Mentor m : mentorList) {
-            this.displayLine(String.format("|%-25s| %-25s|", m.getName(), m.getSurName()));
-        }
-        this.displayLine("\\----------------------------------------------------/");
-    }
 }
