@@ -1,13 +1,11 @@
 package com.codecool.queststore.model;
 
-import com.codecool.queststore.details.Access;
 
 public class Codecooler {
     private String name;
     private String surName;
     private String login;
     private String password;
-    private Access accessLevel;
 
     public Codecooler(String name, String surName, String login, String password) {
         this.name = name;
@@ -33,9 +31,6 @@ public class Codecooler {
         return password;
     }
 
-    public Access getAccess() {
-        return accessLevel;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -53,9 +48,6 @@ public class Codecooler {
         this.password = password;
     }
 
-    void setAccessLevel(Access accessLevel) {
-        this.accessLevel = accessLevel;
-    }
 
     @Override
     public String toString() {
