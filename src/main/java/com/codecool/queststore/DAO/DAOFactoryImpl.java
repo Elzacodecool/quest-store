@@ -31,6 +31,18 @@ public class DAOFactoryImpl extends DAOFactory {
         return c;
     }
 
+    public ResultSet execQuery(String query) {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
     public ResultSet execQuery(String query, String ... parameters) {
         PreparedStatement preparedStatement;
         ResultSet resultSet = null;
@@ -46,6 +58,20 @@ public class DAOFactoryImpl extends DAOFactory {
         return resultSet;
     }
 
+    public ResultSet execQuery(String query, int ... parameters) {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            for (int i = 0; i < parameters.length; i++) {
+                preparedStatement.setInt(i + 1, parameters[i]);
+            }
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
     public void closeConnection() {
         if (connection != null) {
             try {
