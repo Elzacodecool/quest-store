@@ -1,7 +1,6 @@
 package com.codecool.queststore.controller;
 
 
-import com.codecool.queststore.details.Privilege;
 import com.codecool.queststore.model.Codecooler;
 import com.codecool.queststore.model.Mentor;
 import com.codecool.queststore.model.Student;
@@ -33,70 +32,9 @@ public class Controller {
     }
 
     public void run() {
-        Privilege privilege;
-        do {
-            displayMenu();
-            privilege = choosePrivilege();
-            handleMenu(privilege);
-        } while (isRun(privilege));
+
     }
 
-    private Privilege choosePrivilege() {
-        List<Privilege> priviledgeList = user.getAccess().getPrivileges();
-        Integer answer = UI.getInputInt("Which option would you like to choose(number)");
-        for (int i = 0; i < priviledgeList.size(); i++) {
-            if (answer.equals(i)) {
-                return priviledgeList.get(i);
-            }
-        }
-        UI.displayLine("There's no such option!");
-        return choosePrivilege();
-    }
-
-    private boolean isRun(Privilege privilege) {
-        return privilege != Privilege.EXIT;
-    }
-
-    private void displayMenu() {
-        UI.displayMenu(user.getAccess().getPrivileges());
-    }
-
-    private void handleMenu(Privilege privilege) {
-        switch (privilege) {
-            case ADD_MENTOR:
-                addMentor();
-                break;
-            case REMOVE_MENTOR:
-                removeMentor();
-                break;
-            case EDIT_MENTOR:
-                editMentor();
-                break;
-            case GET_ALL_MENTORS:
-                displayMentors();
-                break;
-            case GET_ALL_STUDENTS:
-                displayStudents();
-                break;
-            case ADD_STUDENT:
-                addStudent();
-                break;
-            case REMOVE_STUDENT:
-                removeStudent();
-                break;
-            case EDIT_STUDENT:
-                editStudent();
-                break;
-            case LOG_OUT:
-                logOut();
-                break;
-            case EXIT:
-                exit();
-                break;
-            default:
-                errorMessage();
-        }
-    }
 
     private void logOut() {
         exit();

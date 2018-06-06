@@ -1,6 +1,5 @@
 package com.codecool.queststore.view;
 
-import com.codecool.queststore.details.*;
 import com.codecool.queststore.model.Mentor;
 import com.codecool.queststore.model.Student;
 
@@ -12,14 +11,6 @@ import java.util.Scanner;
 public class UI {
     private Scanner scanner = new Scanner(System.in);
     private Console cnsl;
-
-    public void displayMenu(List<Privilege> privileges) {
-        clearScreen();
-        displayLine("What would you like to do:");
-        for (int i = 0; i < privileges.size(); i++) {
-            System.out.printf("\t(%d) %s\n", i, privileges.get(i).toString());
-        }
-    }
 
     public String getInputString(String message) {
         displayLine(message);
