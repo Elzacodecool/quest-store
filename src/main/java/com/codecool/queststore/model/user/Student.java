@@ -1,6 +1,7 @@
 package com.codecool.queststore.model.user;
 
 import com.codecool.queststore.model.Transaction;
+import com.codecool.queststore.model.classRoom.ClassRoom;
 import com.codecool.queststore.model.inventory.Inventory;
 import com.codecool.queststore.model.inventory.Item;
 
