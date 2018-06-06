@@ -84,6 +84,14 @@ public class TransactionDAOImpl implements  TransactionDAO {
 
     @Override
     public void update(Transaction transaction) {
+        String query = "UPDATE transaction" +
+                "SET student_id = ?, item_id = ?, amount = ? " +
+                "WHERE id = ?";
+        int id = transaction.getId();
+        int studentId = transaction.getStudent().getId();
+        int itemId = transaction.getItem().getId();
+        int amount = transaction.getAmount();
 
+        daoFactory.execQuery(query, studentId, itemId, amount, id);
     }
 }
