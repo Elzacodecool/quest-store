@@ -72,7 +72,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
         int itemId = transaction.getItem().getId();
         int amount = transaction.getAmount();
 
-        daoFactory.execQuery(query, studentId, itemId, amount);
+        daoFactory.execQueryInt(query, studentId, itemId, amount);
     }
 
     @Override
@@ -92,6 +92,6 @@ public class TransactionDAOImpl implements  TransactionDAO {
         int itemId = transaction.getItem().getId();
         int amount = transaction.getAmount();
 
-        daoFactory.execQuery(query, studentId, itemId, amount, id);
+        daoFactory.execQueryInt(query, studentId, itemId, amount, id);
     }
 }
