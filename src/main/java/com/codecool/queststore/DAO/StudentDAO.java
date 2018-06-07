@@ -12,5 +12,4 @@ public interface StudentDAO {
     Student getStudent(int id);
     List<Student> getStudentsByRoom(ClassRoom classRoom);
     List<Student> getAllStudents(Student student);
-
 }
