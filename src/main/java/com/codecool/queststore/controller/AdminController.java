@@ -44,13 +44,18 @@ public class AdminController {
     public void seeMentorData() {
         Mentor mentor = mentorDAO.getMentor(1);
         for (ClassRoom classRoom : classDAO.getClassesByMentor(mentor)) {
-            for (Student student : studentDAO.getStudentsByRoom(classRoom)) { // do napisania
-                System.out.println(student);
-            }
+//            for (Student student : studentDAO.getStudentsByRoom(classRoom)) { // do napisania
+//                System.out.println(student);
+//            }
         }
         System.out.println("mentor data: " + mentor.getUserDetails().toString());
-
     }
+
+    public void addLevelOfExperience() {
+        // TODO
+        // student can achieve them TODO
+    }
+
 
     public static void main(String[] args) {
         AdminController adminController = new AdminController();
