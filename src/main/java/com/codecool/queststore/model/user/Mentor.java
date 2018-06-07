@@ -12,4 +12,8 @@ public class Mentor {
     public Mentor(UserDetails userDetails) {
         this.userDetails = userDetails;
     }
+
+    public UserDetails getUserDetails() {
+        return this.userDetails;
+    }
 }
