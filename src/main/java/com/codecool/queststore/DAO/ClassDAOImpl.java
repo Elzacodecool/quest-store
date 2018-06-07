@@ -72,7 +72,7 @@ public class ClassDAOImpl implements ClassDAO {
 
     @Override
     public void addMentor(Mentor mentor, ClassRoom classRoom) {
-        String query = "INSERT INTO mentor_class VALUES (?, ?)";
+        String query = "INSERT INTO mentor_class (mentor_id, class_id) VALUES (?, ?);";
         factory.execQueryInt(query, mentor.getId(), classRoom.getId());
     }
 

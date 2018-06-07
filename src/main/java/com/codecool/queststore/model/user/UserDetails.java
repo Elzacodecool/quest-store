@@ -17,6 +17,14 @@ public class UserDetails {
         this.password = password;
     }
 
+    public UserDetails(String firstName, String lastName, String email, String login, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.login = login;
+        this.password = password;
+    }
+
     public int getId() {
         return id;
     }
