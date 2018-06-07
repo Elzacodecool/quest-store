@@ -21,13 +21,14 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public int add(UserDetails userDetails) {
         Integer userDetailsId = null;
-        String query = "INSERT INTO codecooler VALUES (?,?,?,?,?) RETURNING codecooler_id";
+        String query = "INSERT INTO codecooler (first_name, last_name, email, password, login) VALUES (?,?,?,?,?) RETURNING codecooler_id";
         try {
             ResultSet rs = factory.execQuery(query,
                     userDetails.getFirstName(),
                     userDetails.getLastName(),
                     userDetails.getEmail(),
-                    userDetails.getPassword()
+                    userDetails.getPassword(),
+                    userDetails.getLogin()
             );
             rs.next();
             userDetailsId = rs.getInt(1);

@@ -22,9 +22,10 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     public Integer add(Student student) {
-        String query = "INSERT INTO student (?, ?, ?)";
-        factory.execQueryInt(query, student.getUserDetails().getId(), student.getClassRoom().getId());
-        return factory.getUserDAO().add(student.getUserDetails());
+        String query = "INSERT INTO student (codecooler_id, class_id) VALUES (?, ?);";
+        int id = factory.getUserDAO().add(student.getUserDetails());
+        factory.execQueryInt(query, id, student.getClassRoom().getId());
+        return id;
     }
     
     public void remove(Student student) {
