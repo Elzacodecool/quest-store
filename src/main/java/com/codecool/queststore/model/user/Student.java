@@ -15,8 +15,7 @@ public class Student {
     private Inventory inventory;
     private List<Transaction> transactionList;
 
-    public Student(int id, UserDetails userDetails, ClassRoom classRoom) {
-        this.id = id;
+    public Student(UserDetails userDetails, ClassRoom classRoom) {
         this.userDetails = userDetails;
         this.classRoom = classRoom;
         inventory = new Inventory();
