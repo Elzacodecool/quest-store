@@ -12,4 +12,12 @@ public class Admin {
     public Admin(UserDetails userDetails) {
         this.userDetails = userDetails;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public UserDetails getUserDetails() {
+        return userDetails;
+    }
 }

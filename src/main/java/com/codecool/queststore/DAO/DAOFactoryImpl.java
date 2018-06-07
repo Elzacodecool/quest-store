@@ -112,11 +112,13 @@ public class DAOFactoryImpl extends DAOFactory {
         return new TransactionDAOImpl(this);
     }
 
-    public ClassDAO getClassDAO() {
-        return new ClassDAOImpl(this);
-    }
-
+    @Override
     public UserDAO getUserDAO() {
         return new UserDAOImpl(this);
+    }
+
+    @Override
+    public ClassDAO getClassDAO() {
+        return new ClassDAOImpl(this);
     }
 }
