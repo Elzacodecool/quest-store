@@ -21,6 +21,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public int add(UserDetails userDetails) {
         Integer userDetailsId = null;
+
         String query = "INSERT INTO codecooler (first_name, last_name, email, login, password) VALUES (?,?,?,?,?) RETURNING codecooler_id;";
         try {
             ResultSet rs = factory.execQuery(query,
