@@ -10,5 +10,6 @@ public interface ItemDAO {
     void update(Item item);
     Item get(int id);
     List<Item> getItems();
+    List<Item> getArtifact();
     List<Item> getQuests();
 }

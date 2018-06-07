@@ -67,6 +67,21 @@ public class ItemDAOImpl implements  ItemDAO {
     }
 
     @Override
+    public List<Item> getArtifact() {
+        List<Item> itemList = new ArrayList<>();
+        String sqlQuery = "SELECT * FROM item WHERE category = \'%Artifact\';";
+        ResultSet resultSet = daoFactory.execQuery(sqlQuery);
+        try {
+            while (resultSet.next()) {
+                itemList.add(getItemByResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return itemList;
+    }
+
+    @Override
     public void add(Item item) {
         String sqlQuery = "INSERT INTO item (name, decription, category, price) VALUES (?, ?, ?, ?)";
         daoFactory.execQuery(sqlQuery, item.getPrice(), item.getName(), item.getDescription(), item.getCategory().getName());
