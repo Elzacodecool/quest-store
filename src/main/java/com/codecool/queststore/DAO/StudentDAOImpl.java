@@ -70,6 +70,6 @@ public class StudentDAOImpl implements StudentDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getErrorCode());
         }
-        return new Inventory(s.getId(), items);
+        return new Inventory(id, items);
     }
 }
