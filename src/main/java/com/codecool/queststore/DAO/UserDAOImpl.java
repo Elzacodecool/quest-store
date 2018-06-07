@@ -47,9 +47,9 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(UserDetails userDetails) {
         String query = "DELETE FROM codecooler WHERE id = ?";
-        factory.execQuery(query, String.valueOf(id));
+        factory.execQuery(query, userDetails.getId());
     }
 
     @Override
