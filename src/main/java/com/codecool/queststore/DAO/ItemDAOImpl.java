@@ -26,6 +26,7 @@ public class ItemDAOImpl implements  ItemDAO {
         String sqlQuery = "SELECT * FROM item WHERE id = ?;";
         ResultSet resultSet = daoFactory.execQuery(sqlQuery, id);
         try {
+            resultSet.next();
             item = getItemByResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,7 +41,9 @@ public class ItemDAOImpl implements  ItemDAO {
         String sqlQuery = "SELECT * FROM item;";
         ResultSet resultSet = daoFactory.execQuery(sqlQuery);
         try {
-            itemList.add(getItemByResultSet(resultSet));
+            while (resultSet.next()) {
+                itemList.add(getItemByResultSet(resultSet));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,7 +57,9 @@ public class ItemDAOImpl implements  ItemDAO {
         String sqlQuery = "SELECT * FROM item WHERE category = \'Quest\';";
         ResultSet resultSet = daoFactory.execQuery(sqlQuery);
         try {
-            itemList.add(getItemByResultSet(resultSet));
+            while (resultSet.next()) {
+                itemList.add(getItemByResultSet(resultSet));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,7 +82,7 @@ public class ItemDAOImpl implements  ItemDAO {
     public void update(Item item) {
         String sqlQuery = "UPDATE item SET price = ? WHERE id = ?";
         daoFactory.execQueryInt(sqlQuery, item.getPrice(), item.getId());
-        sqlQuery = "UPDATE item SET name = ?, decription = ?, category = ?) WHERE id = ?";
+        sqlQuery = "UPDATE item SET name = ?, decription = ?, category = ? WHERE id = ?";
         daoFactory.execQuery(sqlQuery, item.getId(), item.getName(), item.getDescription(), item.getCategory().getName());
     }
 
