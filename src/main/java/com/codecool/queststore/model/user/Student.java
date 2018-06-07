@@ -8,21 +8,24 @@ import com.codecool.queststore.model.inventory.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student extends User {
-
+public class Student {
+    private int id;
+    private UserDetails userDetails;
     private ClassRoom classRoom;
     private Inventory inventory;
     private List<Transaction> transactionList;
 
-    public Student(int id, String firstName, String lastName, String email, String login, String password, AccountType accountType, ClassRoom classRoom) {
-        super(id, firstName, lastName, email, login, password, accountType);
+    public Student(int id, UserDetails userDetails, ClassRoom classRoom) {
+        this.id = id;
+        this.userDetails = userDetails;
         this.classRoom = classRoom;
         inventory = new Inventory();
         transactionList = new ArrayList<>();
     }
 
-    public Student(int id, String firstName, String lastName, String email, String login, String password, AccountType accountType, ClassRoom classRoom, Inventory inventory, List<Transaction> transactionList) {
-        super(id, firstName, lastName, email, login, password, accountType);
+    public Student(int id, UserDetails userDetails, ClassRoom classRoom, Inventory inventory, List<Transaction> transactionList) {
+        this.id = id;
+        this.userDetails = userDetails;
         this.classRoom = classRoom;
         this.inventory = inventory;
         this.transactionList = transactionList;
