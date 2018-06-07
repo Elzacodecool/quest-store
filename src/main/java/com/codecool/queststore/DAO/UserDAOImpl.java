@@ -2,6 +2,7 @@ package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.model.user.AccountType;
 import com.codecool.queststore.model.user.Mentor;
+import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 
 import java.sql.ResultSet;
@@ -28,13 +29,12 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public void add(UserDetails userDetails) {
-        String query = "INSER INTO codecooler VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO codecooler VALUES (?,?,?,?,?)";
         factory.execQuery(query,
                 userDetails.getFirstName(),
                 userDetails.getLastName(),
                 userDetails.getEmail(),
-                userDetails.getPassword(),
-                userDetails.getAccountType().toString()
+                userDetails.getPassword()
         );
     }
 
@@ -53,7 +53,6 @@ public class UserDAOImpl implements UserDAO {
                 userDetails.getEmail(),
                 userDetails.getLogin(),
                 userDetails.getPassword(),
-                String.valueOf(userDetails.getAccountType()),
                 String.valueOf(userDetails.getId())
         );
     }
@@ -71,8 +70,7 @@ public class UserDAOImpl implements UserDAO {
                     resultSet.getString("last_name"),
                     resultSet.getString("email"),
                     resultSet.getString("login"),
-                    resultSet.getString("password"),
-                    getAccTypeValueOf(resultSet.getString("account_type")));
+                    resultSet.getString("password"));
 
         } catch (SQLException e) {
             e.getErrorCode();
@@ -100,8 +98,7 @@ public class UserDAOImpl implements UserDAO {
                         resultSet.getString("last_name"),
                         resultSet.getString("email"),
                         resultSet.getString("login"),
-                        resultSet.getString("password"),
-                        getAccTypeValueOf(resultSet.getString("account_type"))));
+                        resultSet.getString("password")));
             }
         } catch (SQLException e) {
             e.getErrorCode();

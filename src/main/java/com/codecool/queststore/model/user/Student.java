@@ -30,6 +30,14 @@ public class Student {
         this.transactionList = transactionList;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public UserDetails getUserDetails() {
+        return userDetails;
+    }
+
     public ClassRoom getClassRoom() {
         return classRoom;
     }

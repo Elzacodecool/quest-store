@@ -4,7 +4,6 @@ import java.sql.*;
 
 public class DAOFactoryImpl extends DAOFactory {
     private Connection connection;
-    private static final String DRIVER = "org.postgresql.Driver";
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/";
     private static final String DB_NAME = "queststore";
     private static final String userName = "codecooler";
@@ -42,7 +41,7 @@ public class DAOFactoryImpl extends DAOFactory {
         return resultSet;
     }
 
-    public ResultSet execQuery(String query, String ... parameters) {
+    public ResultSet execQuery(String query, String... parameters) {
         PreparedStatement preparedStatement;
         ResultSet resultSet = null;
         try {
@@ -57,7 +56,7 @@ public class DAOFactoryImpl extends DAOFactory {
         return resultSet;
     }
 
-    public ResultSet execQuery(String query, int ... parameters) {
+    public ResultSet execQuery(String query, int... parameters) {
         PreparedStatement preparedStatement;
         ResultSet resultSet = null;
         try {
@@ -71,6 +70,7 @@ public class DAOFactoryImpl extends DAOFactory {
         }
         return resultSet;
     }
+
     public void closeConnection() {
         if (connection != null) {
             try {

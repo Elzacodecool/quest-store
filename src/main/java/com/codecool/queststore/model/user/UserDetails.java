@@ -1,23 +1,20 @@
 package com.codecool.queststore.model.user;
 
 public class UserDetails {
-
     private int id;
     private String firstName;
     private String lastName;
     private String email;
     private String login;
     private String password;
-    private AccountType accountType;
 
-    public UserDetails(int id, String firstName, String lastName, String email, String login, String password, AccountType accountType) {
+    public UserDetails(int id, String firstName, String lastName, String email, String login, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.login = login;
         this.password = password;
-        this.accountType = accountType;
     }
 
     public int getId() {
@@ -44,10 +41,6 @@ public class UserDetails {
         return password;
     }
 
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -68,7 +61,4 @@ public class UserDetails {
         this.password = password;
     }
 
-    public void setAccountType(AccountType accountType) {
-        this.accountType = accountType;
-    }
 }
