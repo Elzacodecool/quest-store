@@ -1,6 +1,6 @@
 package com.codecool.queststore.model.user;
 
-public class User {
+public class UserDetails {
 
     private int id;
     private String firstName;
@@ -10,7 +10,7 @@ public class User {
     private String password;
     private AccountType accountType;
 
-    public User(int id, String firstName, String lastName, String email, String login, String password, AccountType accountType) {
+    public UserDetails(int id, String firstName, String lastName, String email, String login, String password, AccountType accountType) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

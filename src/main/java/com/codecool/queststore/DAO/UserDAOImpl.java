@@ -2,7 +2,7 @@ package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.model.user.AccountType;
 import com.codecool.queststore.model.user.Mentor;
-import com.codecool.queststore.model.user.User;
+import com.codecool.queststore.model.user.UserDetails;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,14 +27,14 @@ public class UserDAOImpl implements UserDAO {
     account_type text
      */
     @Override
-    public void add(User user) {
+    public void add(UserDetails userDetails) {
         String query = "INSER INTO codecooler VALUES (?,?,?,?,?)";
         factory.execQuery(query,
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getAccountType().toString()
+                userDetails.getFirstName(),
+                userDetails.getLastName(),
+                userDetails.getEmail(),
+                userDetails.getPassword(),
+                userDetails.getAccountType().toString()
         );
     }
 
@@ -45,27 +45,27 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void update(User user) {
+    public void update(UserDetails userDetails) {
         String query = "UPDATE codecooler SET first_name = ?, last_name = ?, email = ?, login = ?, password = ?, account_type = ? WHERE id = ?";
         factory.execQuery(query,
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getLogin(),
-                user.getPassword(),
-                String.valueOf(user.getAccountType()),
-                String.valueOf(user.getId())
+                userDetails.getFirstName(),
+                userDetails.getLastName(),
+                userDetails.getEmail(),
+                userDetails.getLogin(),
+                userDetails.getPassword(),
+                String.valueOf(userDetails.getAccountType()),
+                String.valueOf(userDetails.getId())
         );
     }
 
     @Override
-    public User getUser(int id) {
-        User result = null;
+    public UserDetails getUser(int id) {
+        UserDetails result = null;
         String query = "SELECT * FROM codecooler WHERE id = " + id;
         ResultSet resultSet = factory.execQuery(query);
         //TODO: Extract to a method (lines 68-75 & 97-104)
         try {
-            result = new User(
+            result = new UserDetails(
                     resultSet.getInt("id"),
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
@@ -81,20 +81,20 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getAllStudents(Mentor mentor) {
+    public List<UserDetails> getAllStudents(Mentor mentor) {
         //TODO: Implement!
         return null;
     }
 
     @Override
-    public List<User> getAll() {
-        List<User> users = new ArrayList<>();
+    public List<UserDetails> getAll() {
+        List<UserDetails> userDetails = new ArrayList<>();
         String query = "SELECT * FROM codecooler";
         ResultSet resultSet = factory.execQuery(query);
 
         try {
             while (resultSet.next()) {
-                users.add(new User(
+                userDetails.add(new UserDetails(
                         resultSet.getInt("id"),
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name"),
@@ -106,7 +106,7 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.getErrorCode();
         }
-        return users;
+        return userDetails;
     }
 
     private AccountType getAccTypeValueOf(String s) {
