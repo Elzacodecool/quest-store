@@ -3,6 +3,7 @@ package com.codecool.queststore.view;
 import java.io.Console;
 import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class UI {
@@ -60,6 +61,12 @@ public class UI {
 
     public void displayArray(String[] array) {
         for (String line : array) {
+            System.out.println(line);
+        }
+    }
+
+    public void displayList(List<String> textList) {
+        for (String line : textList) {
             System.out.println(line);
         }
     }
