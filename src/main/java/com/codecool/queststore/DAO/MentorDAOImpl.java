@@ -75,8 +75,8 @@ public class MentorDAOImpl implements MentorDAO {
     }
 
     @Override
-    public void remove(Mentor mentor) {
-        userDAO.remove(mentor.getUserDetails());
+    public void remove(int id) {
+        userDAO.remove(id);
     }
 
     @Override

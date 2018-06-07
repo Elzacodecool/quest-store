@@ -5,6 +5,7 @@ import com.codecool.queststore.model.user.Mentor;
 import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,22 +41,26 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void remove(UserDetails userDetails) {
+    public void remove(int id) {
         String query = "DELETE FROM codecooler WHERE codecooler_id = ?;";
-        factory.execQuery(query, userDetails.getId());
+        factory.execQuery(query, id);
     }
 
     @Override
     public void update(UserDetails userDetails) {
-        String query = "UPDATE codecooler SET first_name = ?, last_name = ?, email = ?, login = ?, password = ?, account_type = ? WHERE codecooler_id = ?;";
-        factory.execQuery(query,
-                userDetails.getFirstName(),
-                userDetails.getLastName(),
-                userDetails.getEmail(),
-                userDetails.getLogin(),
-                userDetails.getPassword(),
-                String.valueOf(userDetails.getId())
-        );
+        String query = "UPDATE codecooler SET first_name = ?, last_name = ?, email = ?, login = ?, password = ? WHERE codecooler_id = ?";
+        try {
+            PreparedStatement ps = factory.getConnection().prepareStatement(query);
+            ps.setString(1, userDetails.getFirstName());
+            ps.setString(2, userDetails.getLastName());
+            ps.setString(3, userDetails.getEmail());
+            ps.setString(4, userDetails.getLogin());
+            ps.setString(5, userDetails.getPassword());
+            ps.setInt(6, userDetails.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getSQLState());
+        }
     }
 
     @Override

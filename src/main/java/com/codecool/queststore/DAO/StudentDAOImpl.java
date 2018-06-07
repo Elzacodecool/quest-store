@@ -8,6 +8,7 @@ import com.codecool.queststore.model.inventory.Item;
 import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,24 +28,33 @@ public class StudentDAOImpl implements StudentDAO {
         factory.execQueryInt(query, id, student.getClassRoom().getId());
         return id;
     }
-    
-    public void remove(Student student) {
-        factory.getUserDAO().remove(student.getUserDetails());
+
+    public void remove(int id) {
+        factory.getUserDAO().remove(id);
     }
 
     public void update(Student student) {
+        String query = "UPDATE student SET class_id = ? WHERE student_id = ?";
+        try {
+            PreparedStatement ps = factory.getConnection().prepareStatement(query);
+            ps.setInt(1, student.getClassRoom().getId());
+            ps.setInt(2, student.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getSQLState());
+        }
         factory.getUserDAO().update(student.getUserDetails());
     }
 
     public Student getStudent(int id) {
         Student result = null;
         String query = "SELECT * FROM student INNER JOIN codecooler ON student.student_id = codecooler.codecooler_id WHERE student.student_id = ? LIMIT 1";
+        ResultSet rs = factory.execQuery(query, id);
         try {
-            ResultSet rs = factory.execQuery(query, id);
             rs.next();
             UserDetails ud = factory.getUserDAO().getUser(id);
             ClassRoom cr = factory.getClassDAO().getClass(rs.getInt("class_id"));
-            List<Transaction> transactionDAO = factory.getTransactionDAO().getTransactionByUser(id);
+            List <Transaction> transactionDAO = factory.getTransactionDAO().getTransactionByUser(id);
             result = new Student(rs.getInt("student_id"), ud, cr, getStudentInventory(id), transactionDAO);
         } catch (SQLException e) {
             System.out.println("Error: " + e.getErrorCode());
@@ -53,7 +63,7 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     private Inventory getStudentInventory(int id) {
-        List<Item> items = new ArrayList<>();
+        List <Item> items = new ArrayList <>();
         String query = "SELECT * FROM inventory INNER JOIN item ON inventory.item_id = item.item_id WHERE student_id = ?";
         try {
             ResultSet rs = factory.execQuery(query, id);

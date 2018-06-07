@@ -59,8 +59,8 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public void remove(Admin admin) {
-        userDAO.remove(admin.getUserDetails());
+    public void remove(int id) {
+        userDAO.remove(id);
     }
 
     @Override
