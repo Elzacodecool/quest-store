@@ -90,4 +90,9 @@ public class DAOFactoryImpl extends DAOFactory {
     public TransactionDAO getTransactionDAO() {
         return new TransactionDAOImpl(this);
     }
+
+    @Override
+    public UserDAO getUserDAO() {
+        return new UserDAOImpl(this);
+    }
 }

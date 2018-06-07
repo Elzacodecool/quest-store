@@ -6,7 +6,6 @@ import com.codecool.queststore.model.user.UserDetails;
 import java.util.List;
 
 public interface UserDAO {
-
     void add(UserDetails userDetails);
     void remove(int id);
     void update(UserDetails userDetails);
