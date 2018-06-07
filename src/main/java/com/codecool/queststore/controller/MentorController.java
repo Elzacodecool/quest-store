@@ -148,13 +148,10 @@ public class MentorController {
     }
 
     private void addNewQuest() {
-        Item item = new Item(null, "Demo day", "Presentation on demo day", 50, new Category("Quest"));
+        Item item = new Item(0, "Demo day", "Presentation on demo day", 50, new Category("Quest"));
     }
 
     private void addNewArtefact() {
-        Item item = new Item(null, "Sanctuary", "The student can spend a day off", -50, new Category("Single Artifact"));
+        Item item = new Item(0, "Sanctuary", "The student can spend a day off", -50, new Category("Single Artifact"));
     }
-
-
-
 }
