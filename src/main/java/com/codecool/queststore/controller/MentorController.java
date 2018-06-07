@@ -8,6 +8,7 @@ import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 import com.codecool.queststore.view.UI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MentorController {
@@ -42,19 +43,19 @@ public class MentorController {
                     break;
 
                 case 2:
-                    addItem();
+                    addQuest();
                     break;
 
                 case 3:
-
+                    addArtifact();
                     break;
 
                 case 4:
-                    addNewQuest();
+                    updateQuest();
                     break;
 
                 case 5:
-                    addNewArtefact();
+                    updateArtifact();
                     break;
 
                 case 6:
@@ -75,10 +76,10 @@ public class MentorController {
 
     private String[] getMenu() {
         String[] mentorMenu = {"[1] Create codecooler account",
-                               "[2] Add Item",
-                               "[3] Update Item",
-                               "[4] Add Quest",
-                               "[5] Add Artefact",
+                               "[2] Add Quest",
+                               "[3] Add Artifact",
+                               "[4] Update Quest",
+                               "[5] Update Artifact"
 
                                };
 
@@ -100,18 +101,17 @@ public class MentorController {
 
 
 
-    private void addItem() {
+    private void addItem(Category category) {
         int id = 0;
         String name = ui.getInputString("Type name of Quest: ");
         String description = ui.getInputString("Type description of Quest: ");
         int price = ui.getInputInt("Type price of Quest: ");
-        String category = chooseCategory();
-        Item item = new Item(id, name, description, price, new Category(category));
+        Item item = new Item(id, name, description, price, category);
         itemDAO.add(item);
     }
 
     private String chooseCategory() {
-        String[] menuCategories = {"[1] Quest", "[2] Single Artifact", "[3] Group Artifact"};
+        String[] menuCategories = {"[1] Single Artifact", "[2] Group Artifact"};
         boolean isRunning = true;
         String category = "";
 
@@ -121,16 +121,11 @@ public class MentorController {
             int option = ui.getInputInt("Type your choice: ");
             switch (option) {
                 case 1:
-                    category = "Quest";
-                    isRunning = false;
-                    break;
-
-                case 2:
                     category = "Single Artifact";
                     isRunning = false;
                     break;
 
-                case 3:
+                case 2:
                     category = "Group Artifact";
                     isRunning = false;
                     break;
@@ -141,19 +136,61 @@ public class MentorController {
 
     private ClassRoom chooseClassRoom() {
         List<ClassRoom> classRoomList = classDAO.getAll();
+
+        System.out.println(classRoomList.size());
+
         String[] className = new String[classRoomList.size()];
         for (int i = 0; i < classRoomList.size(); i++) {
-            className[i] = "[" + i + "] " + classRoomList.get(i).getClassName();
+            ui.displayLine(className[i] = "[" + i + "] " + classRoomList.get(i).getClassName());
         }
         int indexClass = ui.getInputInt("Type your choice: ");
         return classRoomList.get(indexClass);
     }
 
-    private void addNewQuest() {
-        Item item = new Item(0, "Demo day", "Presentation on demo day", 50, new Category("Quest"));
+    private void addQuest() {
+        Category category = new Category("Quest");
+        addItem(category);
     }
 
-    private void addNewArtefact() {
-        Item item = new Item(0, "Sanctuary", "The student can spend a day off", -50, new Category("Single Artifact"));
+    private void addArtifact() {
+        String categoryName = chooseCategory();
+        addItem(new Category(categoryName));
+    }
+
+
+
+    private Item getItem(List<Item> itemList) {
+        List<String> textList = new ArrayList<>();
+        String line;
+        for (int i = 0; i < itemList.size(); i++) {
+            line = i + ". " + itemList.get(i).getName();
+            textList.add(line);
+        }
+        ui.displayList(textList);
+        int indexItem = ui.getInputInt("Type your choice: ");
+        return itemList.get(indexItem);
+    }
+
+    private void updateQuest() {
+        List<Item> itemList = itemDAO.getQuests();
+        Item item = getItem(itemList);
+        updateItem(item);
+    }
+
+    private void updateArtifact() {
+        List<Item> itemList = itemDAO.getArtifact();
+        Item item = getItem(itemList);
+        updateItem(item);
+    }
+
+    private void updateItem(Item item) {
+        String name = ui.getInputString("Type name of Quest: ");
+        String description = ui.getInputString("Type description of Quest: ");
+        int price = ui.getInputInt("Type price of Quest: ");
+        item.setName(name);
+        item.setDescription(description);
+        item.setPrice(price);
+        itemDAO.update(item);
+
     }
 }
