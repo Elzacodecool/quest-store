@@ -9,5 +9,5 @@ public interface MentorDAO {
     void remove(Mentor mentor);
     void update(Mentor mentor);
     Mentor getMentor(int id);
-    List<Mentor> getAllMentors(Mentor mentor);
+    List<Mentor> getAllMentors();
 }
