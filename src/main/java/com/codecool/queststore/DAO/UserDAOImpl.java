@@ -28,7 +28,7 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public void add(User user) {
-        String query = "INSER INTO codecooler VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO codecooler VALUES (?,?,?,?,?)";
         factory.execQuery(query,
                 user.getFirstName(),
                 user.getLastName(),
