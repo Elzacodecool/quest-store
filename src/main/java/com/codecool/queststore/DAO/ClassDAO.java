@@ -12,6 +12,7 @@ public interface ClassDAO {
     void update(ClassRoom classRoom);
     List<ClassRoom> getAll();
     ClassRoom getClass(int id);
+    List<ClassRoom> getClassesByMentor(Mentor mentor);
     void addMentor(Mentor mentor, ClassRoom classRoom);
     void removeMentor(Mentor mentor, ClassRoom classRoom);
 }

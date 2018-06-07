@@ -22,13 +22,14 @@ public class MentorDAOImpl implements MentorDAO {
     @Override
     public Mentor getMentor(int id) {
         String query = "SELECT * FROM codecooler JOIN mentor ON codecooler.codecooler_id = mentor.codecooler_id " +
-                "WHERE codecooler.codecooler_id = ?;";
+                "WHERE mentor.mentor_id = ?;";
         ResultSet resultSet = daoFactory.execQuery(query, id);
         return getMentorByUserId(resultSet);
     }
 
     private Mentor getMentorByUserId(ResultSet resultSet) {
         try{
+            resultSet.next();
             int user_id = resultSet.getInt("codecooler_id");
             int mentor_id = resultSet.getInt("mentor_id");
             UserDetails userDetails = userDAO.getUser(user_id);

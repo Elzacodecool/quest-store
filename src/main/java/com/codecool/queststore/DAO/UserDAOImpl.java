@@ -21,14 +21,15 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public int add(UserDetails userDetails) {
         Integer userDetailsId = null;
-        String query = "INSERT INTO codecooler (first_name, last_name, email, password, login) VALUES (?,?,?,?,?) RETURNING codecooler_id";
+
+        String query = "INSERT INTO codecooler (first_name, last_name, email, login, password) VALUES (?,?,?,?,?) RETURNING codecooler_id;";
         try {
             ResultSet rs = factory.execQuery(query,
                     userDetails.getFirstName(),
                     userDetails.getLastName(),
                     userDetails.getEmail(),
-                    userDetails.getPassword(),
-                    userDetails.getLogin()
+                    userDetails.getLogin(),
+                    userDetails.getPassword()
             );
             rs.next();
             userDetailsId = rs.getInt(1);
@@ -40,13 +41,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void remove(UserDetails userDetails) {
-        String query = "DELETE FROM codecooler WHERE codecooler_id = ?";
+        String query = "DELETE FROM codecooler WHERE codecooler_id = ?;";
         factory.execQuery(query, userDetails.getId());
     }
 
     @Override
     public void update(UserDetails userDetails) {
-        String query = "UPDATE codecooler SET first_name = ?, last_name = ?, email = ?, login = ?, password = ?, account_type = ? WHERE codecooler_id = ?";
+        String query = "UPDATE codecooler SET first_name = ?, last_name = ?, email = ?, login = ?, password = ?, account_type = ? WHERE codecooler_id = ?;";
         factory.execQuery(query,
                 userDetails.getFirstName(),
                 userDetails.getLastName(),
@@ -59,13 +60,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public UserDetails getUser(int id) {
-        UserDetails result = null;
+        UserDetails userDetails = null;
         String query = "SELECT * FROM codecooler WHERE codecooler_id = ?;";
-        ResultSet resultSet = factory.execQuery(query, id);
+        ResultSet resultSet = factory.execQueryInt(query, id);
         //TODO: Extract to a method (lines 68-75 & 97-104)
         try {
             resultSet.next();
-            result = new UserDetails(
+            userDetails = new UserDetails(
                     resultSet.getInt("codecooler_id"),
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
@@ -75,7 +76,7 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.getErrorCode();
         }
-        return result;
+        return userDetails;
     }
 
     @Override
@@ -87,7 +88,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<UserDetails> getAll() {
         List<UserDetails> userDetails = new ArrayList<>();
-        String query = "SELECT * FROM codecooler";
+        String query = "SELECT * FROM codecooler;";
         ResultSet resultSet = factory.execQuery(query);
 
         try {

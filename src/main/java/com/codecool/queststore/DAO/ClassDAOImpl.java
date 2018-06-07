@@ -71,14 +71,35 @@ public class ClassDAOImpl implements ClassDAO {
     }
 
     @Override
+    public List<ClassRoom> getClassesByMentor(Mentor mentor) {
+        List<ClassRoom> classes = new ArrayList<>();
+        String query = "SELECT class.* FROM class JOIN mentor_class ON class.class_id = mentor_class.class_id " +
+                "WHERE mentor_class.mentor_id = ?;";
+        ResultSet resultSet = factory.execQuery(query, mentor.getId());
+        try {
+            while (resultSet.next()) {
+                classes.add(
+                        new ClassRoom(
+                                resultSet.getInt("class_id"),
+                                resultSet.getString("name")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " +e.getErrorCode());
+        }
+        return classes;
+    }
+
+    @Override
     public void addMentor(Mentor mentor, ClassRoom classRoom) {
-        String query = "INSERT INTO mentor_class VALUES (?, ?)";
+        String query = "INSERT INTO mentor_class (mentor_id, class_id) VALUES (?, ?);";
         factory.execQueryInt(query, mentor.getId(), classRoom.getId());
     }
 
     @Override
     public void removeMentor(Mentor mentor, ClassRoom classRoom) {
-        String query = "REMOVE FROM mentor_class WHERE mentor_id = ? AND class_id = ?";
+        String query = "DELETE FROM mentor_class WHERE mentor_id = ? AND class_id = ?";
         factory.execQueryInt(query, mentor.getId(), classRoom.getId());
     }
 }
