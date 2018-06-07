@@ -35,16 +35,11 @@ public class TransactionDAOImpl implements  TransactionDAO {
     }
 
     private Transaction getTransactionByResultSet(ResultSet resultSet) {
-        final int ID_INDEX = 1;
-        final int STUDENT_ID = 2;
-        final int ITEM_ID = 3;
-        final int AMOUNT_ID = 4;
-
         try {
-            int id = resultSet.getInt(ID_INDEX);
-            Student student = (Student) daoFactory.getUserDAO().getUser(resultSet.getInt(STUDENT_ID));
-            Item item = daoFactory.getItemDAO().get(resultSet.getInt(ITEM_ID));
-            int amount = resultSet.getInt(AMOUNT_ID);
+            int id = resultSet.getInt("transaction_id");
+            Student student = daoFactory.getStudentDAO().getStudent(resultSet.getInt("student_id"));
+            Item item = daoFactory.getItemDAO().get(resultSet.getInt("item_id"));
+            int amount = resultSet.getInt("amount");
 
             return new Transaction(id, student, item, amount);
         } catch (SQLException e) {
@@ -61,7 +56,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
 
     @Override
     public Transaction getTransaction(int transactionId) {
-        ResultSet resultSet = daoFactory.execQuery("SELECT * FROM transaction WHERE id = ?", transactionId);
+        ResultSet resultSet = daoFactory.execQuery("SELECT * FROM transaction WHERE transaction_id = ?", transactionId);
         return getTransactionByResultSet(resultSet);
     }
 
@@ -77,7 +72,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
 
     @Override
     public void remove(Transaction transaction) {
-        String query = "DELETE FROM transaction WHERE id = ?";
+        String query = "DELETE FROM transaction WHERE transaction_id = ?";
 
         daoFactory.execQuery(query, transaction.getId());
     }
@@ -86,7 +81,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
     public void update(Transaction transaction) {
         String query = "UPDATE transaction " +
                 "SET student_id=?, item_id=?, amount=? " +
-                "WHERE id = ? ;";
+                "WHERE transaction_id = ? ;";
         int id = transaction.getId();
         int studentId = transaction.getStudent().getId();
         int itemId = transaction.getItem().getId();

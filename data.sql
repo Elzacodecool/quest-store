@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS codecooler, admin, mentor, student, mentor_class, class, transaction, inventory, item CASCADE;
 
 CREATE TABLE codecooler (
-	id serial PRIMARY KEY,
+	codecooler_id serial PRIMARY KEY,
     first_name text,
     last_name text,
     email text,
@@ -15,51 +15,61 @@ INSERT INTO codecooler (First_name, last_name, email, login, password, account_t
 VALUES ('Eliza', 'Golec', 'email@gmail.com', 'eliza', 'password', 'student');
 
 CREATE TABLE admin (
-	id serial PRIMARY KEY,
-    user_id integer
+	admin_id serial PRIMARY KEY,
+    codecooler_id integer,
+    FOREIGN KEY (codecooler_id) REFERENCES codecooler (codecooler_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
-INSERT INTO admin (user_id)
+INSERT INTO admin (codecooler_id)
 VALUES (1);
 
 CREATE TABLE mentor (
-	id serial PRIMARY KEY,
-    user_id integer
+	mentor_id serial PRIMARY KEY,
+    codecooler_id integer,
+    FOREIGN KEY (codecooler_id) REFERENCES codecooler (codecooler_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
-INSERT INTO mentor (user_id) 
+INSERT INTO mentor (codecooler_id) 
 VALUES (1);
 
-CREATE TABLE student (
-	id serial PRIMARY KEY,
-    user_id integer,
-    class_id integer
-);
-
-INSERT INTO student (user_id, class_id) 
-VALUES (1, 1);
-
 CREATE TABLE class (
-	id serial PRIMARY KEY,
+	class_id serial PRIMARY KEY,
     name text
 );
 
 INSERT INTO class (name)
 VALUES ('webRoom');
 
+CREATE TABLE student (
+	student_id serial PRIMARY KEY,
+    codecooler_id integer,
+    class_id integer,
+    FOREIGN KEY (codecooler_id) REFERENCES codecooler (codecooler_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION,
+    FOREIGN KEY (class_id) REFERENCES class (class_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION
+);
+
+INSERT INTO student (codecooler_id, class_id) 
+VALUES (1, 1);
+
 CREATE TABLE mentor_class (
-    mentor_id integer REFERENCES mentor(id)
-             ON UPDATE CASCADE ON DELETE CASCADE,
-    class_id integer REFERENCES class(id)
-             ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (mentor_id, class_id)
+    mentor_id integer, 
+    class_id integer ,
+    PRIMARY KEY (mentor_id, class_id),
+    FOREIGN KEY (mentor_id) REFERENCES mentor (mentor_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION,
+    FOREIGN KEY (class_id) REFERENCES class (class_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 INSERT INTO mentor_class (mentor_id, class_id) 
 VALUES (1, 1);
 
 CREATE TABLE item (
-    id serial PRIMARY KEY,
+    item_id serial PRIMARY KEY,
     name text,
     decription text,
     price integer,
@@ -70,20 +80,24 @@ INSERT INTO item (name, decription, price, category)
 VALUES ('name', 'description', 25, 'single');
 
 CREATE TABLE transaction (
-    id serial PRIMARY KEY,
-    student_id integer REFERENCES student(id)
-             ON UPDATE CASCADE ON DELETE CASCADE,
-    item_id integer REFERENCES item(id)
-             ON UPDATE CASCADE ON DELETE CASCADE,
-    amount integer
+    transaction_id serial PRIMARY KEY,
+    student_id integer,
+    item_id integer,
+    amount integer,
+    FOREIGN KEY (student_id) REFERENCES student (student_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION,
+    FOREIGN KEY (item_id) REFERENCES item (item_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 
 CREATE TABLE inventory (
-    student_id integer REFERENCES student(id)
-             ON UPDATE CASCADE ON DELETE CASCADE,
-    item_id integer REFERENCES item(id)
-             ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (student_id, item_id)
+    student_id integer,
+    item_id integer,
+    PRIMARY KEY (student_id, item_id),
+    FOREIGN KEY (student_id) REFERENCES student (student_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION,
+    FOREIGN KEY (item_id) REFERENCES item (item_id)
+		ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
