@@ -34,27 +34,27 @@ public class StudentDAOImpl implements StudentDAO {
         factory.getUserDAO().update(student.getUserDetails());
     }
 
-    public Student getStudent(Student student) {
+    public Student getStudent(int id) {
         Student result = null;
         String query = "SELECT * FROM student INNER JOIN codecooler ON student.user_id = codecooler.id WHERE student.user_id = ?";
         try {
-            ResultSet rs = factory.execQuery(query, student.getId());
+            ResultSet rs = factory.execQuery(query, id);
             rs.next();
-            UserDetails ud = factory.getUserDAO().getUser(student.getId());
+            UserDetails ud = factory.getUserDAO().getUser(id);
             ClassRoom cr = factory.getClassDAO().getClass(rs.getInt("class_id"));
-            List<Transaction> transactionDAO = factory.getTransactionDAO().getTransactionByUser(student.getId());
-            result = new Student(rs.getInt("id"), ud, cr, getStudentInventory(student), transactionDAO);
+            List<Transaction> transactionDAO = factory.getTransactionDAO().getTransactionByUser(id);
+            result = new Student(rs.getInt("id"), ud, cr, getStudentInventory(id), transactionDAO);
         } catch (SQLException e) {
             System.out.println("Error: " + e.getErrorCode());
         }
         return result;
     }
 
-    private Inventory getStudentInventory(Student s) {
+    private Inventory getStudentInventory(int id) {
         List<Item> items = new ArrayList<>();
         String query = "SELECT * FROM inventory INNER JOIN item ON inventory.item_id = id WHERE student_id = ?";
         try {
-            ResultSet rs = factory.execQuery(query, s.getId());
+            ResultSet rs = factory.execQuery(query, id);
             while (rs.next()) {
                 items.add(
                         new Item(
