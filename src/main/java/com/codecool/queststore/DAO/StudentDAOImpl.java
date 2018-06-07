@@ -23,6 +23,8 @@ public class StudentDAOImpl implements StudentDAO {
 
 
     public Integer add(Student student) {
+        String query = "INSERT INTO student (?, ?, ?)";
+        factory.execQueryInt(query, student.getUserDetails().getId(), student.getClassRoom().getId());
         return factory.getUserDAO().add(student.getUserDetails());
     }
     
@@ -70,6 +72,6 @@ public class StudentDAOImpl implements StudentDAO {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getErrorCode());
         }
-        return new Inventory(s.getId(), items);
+        return new Inventory(id, items);
     }
 }
