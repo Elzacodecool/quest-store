@@ -39,7 +39,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
             int id = resultSet.getInt("transaction_id");
             Student student = daoFactory.getStudentDAO().getStudent(resultSet.getInt("student_id"));
             Item item = daoFactory.getItemDAO().get(resultSet.getInt("item_id"));
-            int amount = resultSet.getInt("amount_id");
+            int amount = resultSet.getInt("amount");
 
             return new Transaction(id, student, item, amount);
         } catch (SQLException e) {
