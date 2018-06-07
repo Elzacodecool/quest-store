@@ -28,14 +28,22 @@ public class UserDAOImpl implements UserDAO {
     account_type text
      */
     @Override
-    public void add(UserDetails userDetails) {
-        String query = "INSERT INTO codecooler VALUES (?,?,?,?,?)";
-        factory.execQuery(query,
-                userDetails.getFirstName(),
-                userDetails.getLastName(),
-                userDetails.getEmail(),
-                userDetails.getPassword()
-        );
+    public int add(UserDetails userDetails) {
+        Integer userDetailsId = null;
+        String query = "INSERT INTO codecooler VALUES (?,?,?,?,?) RETURNING id";
+        try {
+            ResultSet rs = factory.execQuery(query,
+                    userDetails.getFirstName(),
+                    userDetails.getLastName(),
+                    userDetails.getEmail(),
+                    userDetails.getPassword()
+            );
+            rs.next();
+            userDetailsId = rs.getInt(1);
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getErrorCode());
+        }
+        return userDetailsId;
     }
 
     @Override
