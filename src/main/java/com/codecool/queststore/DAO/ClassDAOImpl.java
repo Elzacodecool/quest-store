@@ -18,7 +18,7 @@ public class ClassDAOImpl implements ClassDAO {
 
     @Override
     public void add(ClassRoom classRoom) {
-        String query = "INSERT INTO class VALUES (?)";
+        String query = "INSERT INTO class (name) VALUES (?);";
         factory.execQuery(query,
                 classRoom.getClassName()
         );
@@ -26,20 +26,20 @@ public class ClassDAOImpl implements ClassDAO {
 
     @Override
     public void remove(ClassRoom classRoom) {
-        String query = "REMOVE FROM class WHERE id = ?";
+        String query = "REMOVE FROM class WHERE id = ?;";
         factory.execQuery(query, classRoom.getId());
     }
 
     @Override
     public void update(ClassRoom classRoom) {
-        String query = "UPDATE class SET name = ?";
+        String query = "UPDATE class SET name = ?;";
         factory.execQuery(query, classRoom.getClassName());
     }
 
     @Override
     public List<ClassRoom> getAll() {
         List<ClassRoom> classes = new ArrayList<>();
-        String query = "SELECT * FROM class";
+        String query = "SELECT * FROM class;";
         ResultSet resultSet = factory.execQuery(query);
         try {
             while (resultSet.next()) {
@@ -51,7 +51,7 @@ public class ClassDAOImpl implements ClassDAO {
                 );
             }
         } catch (SQLException e) {
-            e.getErrorCode();
+            System.out.println("Error: " +e.getErrorCode());
         }
         return classes;
     }
@@ -59,12 +59,13 @@ public class ClassDAOImpl implements ClassDAO {
     @Override
     public ClassRoom getClass(int id) {
         ClassRoom classRoom = null;
-        String query = "SELECT * FROM class WHERE id = ? LIMIT 1";
-        ResultSet result = factory.execQuery(query, String.valueOf(id));
+        String query = "SELECT * FROM class WHERE id = ?;";
         try {
-            classRoom = new ClassRoom(result.getInt("id"), result.getString("name"));
+            ResultSet rs = factory.execQuery(query, id);
+            rs.next();
+            classRoom = new ClassRoom(rs.getInt("id"), rs.getString("name"));
         } catch (SQLException e) {
-            e.getErrorCode();
+            System.out.println("Error: " + e.getErrorCode());
         }
         return classRoom;
     }
