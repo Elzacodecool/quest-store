@@ -59,10 +59,11 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public UserDetails getUser(int id) {
         UserDetails result = null;
-        String query = "SELECT * FROM codecooler WHERE codecooler_id = ?";
+        String query = "SELECT * FROM codecooler WHERE codecooler_id = ?;";
         ResultSet resultSet = factory.execQuery(query, id);
         //TODO: Extract to a method (lines 68-75 & 97-104)
         try {
+            resultSet.next();
             result = new UserDetails(
                     resultSet.getInt("codecooler_id"),
                     resultSet.getString("first_name"),
@@ -70,7 +71,6 @@ public class UserDAOImpl implements UserDAO {
                     resultSet.getString("email"),
                     resultSet.getString("login"),
                     resultSet.getString("password"));
-
         } catch (SQLException e) {
             e.getErrorCode();
         }
