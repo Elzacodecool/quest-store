@@ -71,11 +71,13 @@ public class ClassDAOImpl implements ClassDAO {
 
     @Override
     public void addMentor(Mentor mentor, ClassRoom classRoom) {
-
+        String query = "INSERT INTO mentor_class VALUES (?, ?)";
+        factory.execQuery(query, mentor.getId(), classRoom.getId());
     }
 
     @Override
     public void removeMentor(Mentor mentor, ClassRoom classRoom) {
-
+        String query = "REMOVE FROM mentor_class WHERE mentor_id = ? AND class_id = ?";
+        factory.execQuery(query, mentor.getId(), classRoom.getId());
     }
 }
