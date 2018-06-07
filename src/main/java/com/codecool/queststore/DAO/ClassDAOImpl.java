@@ -26,7 +26,7 @@ public class ClassDAOImpl implements ClassDAO {
 
     @Override
     public void remove(ClassRoom classRoom) {
-        String query = "REMOVE FROM class WHERE id = ?;";
+        String query = "REMOVE FROM class WHERE class_id = ?;";
         factory.execQuery(query, classRoom.getId());
     }
 
@@ -45,7 +45,7 @@ public class ClassDAOImpl implements ClassDAO {
             while (resultSet.next()) {
                 classes.add(
                         new ClassRoom(
-                                resultSet.getInt("id"),
+                                resultSet.getInt("class_id"),
                                 resultSet.getString("name")
                         )
                 );
@@ -59,11 +59,11 @@ public class ClassDAOImpl implements ClassDAO {
     @Override
     public ClassRoom getClass(int id) {
         ClassRoom classRoom = null;
-        String query = "SELECT * FROM class WHERE id = ?;";
+        String query = "SELECT * FROM class WHERE class_id = ?;";
         try {
             ResultSet rs = factory.execQuery(query, id);
             rs.next();
-            classRoom = new ClassRoom(rs.getInt("id"), rs.getString("name"));
+            classRoom = new ClassRoom(rs.getInt("class_id"), rs.getString("name"));
         } catch (SQLException e) {
             System.out.println("Error: " + e.getErrorCode());
         }

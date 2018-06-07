@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public int add(UserDetails userDetails) {
         Integer userDetailsId = null;
-        String query = "INSERT INTO codecooler VALUES (?,?,?,?,?) RETURNING id";
+        String query = "INSERT INTO codecooler VALUES (?,?,?,?,?) RETURNING codecooler_id";
         try {
             ResultSet rs = factory.execQuery(query,
                     userDetails.getFirstName(),
@@ -39,13 +39,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void remove(UserDetails userDetails) {
-        String query = "DELETE FROM codecooler WHERE id = ?";
+        String query = "DELETE FROM codecooler WHERE codecooler_id = ?";
         factory.execQuery(query, userDetails.getId());
     }
 
     @Override
     public void update(UserDetails userDetails) {
-        String query = "UPDATE codecooler SET first_name = ?, last_name = ?, email = ?, login = ?, password = ?, account_type = ? WHERE id = ?";
+        String query = "UPDATE codecooler SET first_name = ?, last_name = ?, email = ?, login = ?, password = ?, account_type = ? WHERE codecooler_id = ?";
         factory.execQuery(query,
                 userDetails.getFirstName(),
                 userDetails.getLastName(),
@@ -59,12 +59,12 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public UserDetails getUser(int id) {
         UserDetails result = null;
-        String query = "SELECT * FROM codecooler WHERE id = " + id;
-        ResultSet resultSet = factory.execQuery(query);
+        String query = "SELECT * FROM codecooler WHERE codecooler_id = ?";
+        ResultSet resultSet = factory.execQuery(query, id);
         //TODO: Extract to a method (lines 68-75 & 97-104)
         try {
             result = new UserDetails(
-                    resultSet.getInt("id"),
+                    resultSet.getInt("codecooler_id"),
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
                     resultSet.getString("email"),
@@ -92,7 +92,7 @@ public class UserDAOImpl implements UserDAO {
         try {
             while (resultSet.next()) {
                 userDetails.add(new UserDetails(
-                        resultSet.getInt("id"),
+                        resultSet.getInt("codecooler_id"),
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name"),
                         resultSet.getString("email"),

@@ -21,7 +21,6 @@ public class StudentDAOImpl implements StudentDAO {
         this.factory = factory;
     }
 
-
     public Integer add(Student student) {
         String query = "INSERT INTO student (?, ?, ?)";
         factory.execQueryInt(query, student.getUserDetails().getId(), student.getClassRoom().getId());
@@ -38,14 +37,14 @@ public class StudentDAOImpl implements StudentDAO {
 
     public Student getStudent(int id) {
         Student result = null;
-        String query = "SELECT * FROM student INNER JOIN codecooler ON student.user_id = codecooler.id WHERE student.user_id = ?";
+        String query = "SELECT * FROM student INNER JOIN codecooler ON student.student_id = codecooler.codecooler_id WHERE student.student_id = ?";
         try {
             ResultSet rs = factory.execQuery(query, id);
             rs.next();
             UserDetails ud = factory.getUserDAO().getUser(id);
             ClassRoom cr = factory.getClassDAO().getClass(rs.getInt("class_id"));
             List<Transaction> transactionDAO = factory.getTransactionDAO().getTransactionByUser(id);
-            result = new Student(rs.getInt("id"), ud, cr, getStudentInventory(id), transactionDAO);
+            result = new Student(rs.getInt("student_id"), ud, cr, getStudentInventory(id), transactionDAO);
         } catch (SQLException e) {
             System.out.println("Error: " + e.getErrorCode());
         }
@@ -54,13 +53,13 @@ public class StudentDAOImpl implements StudentDAO {
 
     private Inventory getStudentInventory(int id) {
         List<Item> items = new ArrayList<>();
-        String query = "SELECT * FROM inventory INNER JOIN item ON inventory.item_id = id WHERE student_id = ?";
+        String query = "SELECT * FROM inventory INNER JOIN item ON inventory.item_id = item.item_id WHERE student_id = ?";
         try {
             ResultSet rs = factory.execQuery(query, id);
             while (rs.next()) {
                 items.add(
                         new Item(
-                                rs.getInt("id"),
+                                rs.getInt("item_id"),
                                 rs.getString("name"),
                                 rs.getString("description"),
                                 rs.getInt("price"),
