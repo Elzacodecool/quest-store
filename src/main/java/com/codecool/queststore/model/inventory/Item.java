@@ -16,6 +16,13 @@ public class Item {
         this.category = category;
     }
 
+    public Item(String name, String description, int price, Category category) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.category = category;
+    }
+
     public int getId() {
         return id;
     }

@@ -1,8 +1,15 @@
 package com.codecool.queststore.model.user;
 
-public class Admin extends User {
+public class Admin {
+    private int id;
+    private UserDetails userDetails;
 
-    public Admin(int id, String firstName, String lastName, String email, String login, String password, AccountType accountType) {
-        super(id, firstName, lastName, email, login, password, accountType);
+    public Admin(int id, UserDetails userDetails) {
+        this.id = id;
+        this.userDetails = userDetails;
+    }
+
+    public Admin(UserDetails userDetails) {
+        this.userDetails = userDetails;
     }
 }

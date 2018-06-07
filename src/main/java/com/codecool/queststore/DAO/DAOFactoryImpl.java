@@ -4,7 +4,6 @@ import java.sql.*;
 
 public class DAOFactoryImpl extends DAOFactory {
     private Connection connection;
-    private static final String DRIVER = "org.postgresql.Driver";
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/";
     private static final String DB_NAME = "queststore";
     private static final String userName = "codecooler";
@@ -21,9 +20,8 @@ public class DAOFactoryImpl extends DAOFactory {
     private Connection createConnection() {
         Connection c = null;
         try {
-            Class.forName(DRIVER);
             c = DriverManager.getConnection(DB_URL + DB_NAME, userName, password);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
@@ -31,7 +29,19 @@ public class DAOFactoryImpl extends DAOFactory {
         return c;
     }
 
-    public ResultSet execQuery(String query, String ... parameters) {
+    public ResultSet execQuery(String query) {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public ResultSet execQuery(String query, String... parameters) {
         PreparedStatement preparedStatement;
         ResultSet resultSet = null;
         try {
@@ -99,6 +109,6 @@ public class DAOFactoryImpl extends DAOFactory {
 
     @Override
     public TransactionDAO getTransactionDAO() {
-        return new TransactionDAOImpl();
+        return new TransactionDAOImpl(this);
     }
 }

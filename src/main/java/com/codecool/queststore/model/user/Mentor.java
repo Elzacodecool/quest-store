@@ -1,8 +1,15 @@
 package com.codecool.queststore.model.user;
 
-public class Mentor extends User {
+public class Mentor {
+    private int id;
+    private UserDetails userDetails;
 
-    public Mentor(int id, String firstName, String lastName, String email, String login, String password, AccountType accountType) {
-        super(id, firstName, lastName, email, login, password, accountType);
+    public Mentor(int id, UserDetails userDetails) {
+        this.id = id;
+        this.userDetails = userDetails;
+    }
+
+    public Mentor(UserDetails userDetails) {
+        this.userDetails = userDetails;
     }
 }

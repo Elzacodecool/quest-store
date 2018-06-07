@@ -10,15 +10,25 @@ CREATE TABLE codecooler (
     account_type text
 );
 
+
+INSERT INTO codecooler (First_name, last_name, email, login, password, account_type) 
+VALUES ('Eliza', 'Golec', 'email@gmail.com', 'eliza', 'password', 'student');
+
 CREATE TABLE admin (
 	id serial PRIMARY KEY,
     user_id integer
 );
 
+INSERT INTO admin (user_id)
+VALUES (1);
+
 CREATE TABLE mentor (
 	id serial PRIMARY KEY,
     user_id integer
 );
+
+INSERT INTO mentor (user_id) 
+VALUES (1);
 
 CREATE TABLE student (
 	id serial PRIMARY KEY,
@@ -26,10 +36,16 @@ CREATE TABLE student (
     class_id integer
 );
 
+INSERT INTO student (user_id, class_id) 
+VALUES (1, 1);
+
 CREATE TABLE class (
 	id serial PRIMARY KEY,
     name text
 );
+
+INSERT INTO class (name)
+VALUES ('webRoom');
 
 CREATE TABLE mentor_class (
     mentor_id integer REFERENCES mentor(id)
@@ -39,6 +55,9 @@ CREATE TABLE mentor_class (
     PRIMARY KEY (mentor_id, class_id)
 );
 
+INSERT INTO mentor_class (mentor_id, class_id) 
+VALUES (1, 1);
+
 CREATE TABLE item (
     id serial PRIMARY KEY,
     name text,
@@ -47,13 +66,18 @@ CREATE TABLE item (
     category text
 );
 
+INSERT INTO item (name, decription, price, category) 
+VALUES ('name', 'description', 25, 'single');
+
 CREATE TABLE transaction (
+    id serial PRIMARY KEY,
     student_id integer REFERENCES student(id)
              ON UPDATE CASCADE ON DELETE CASCADE,
     item_id integer REFERENCES item(id)
              ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (student_id, item_id)
+    amount integer
 );
+
 
 CREATE TABLE inventory (
     student_id integer REFERENCES student(id)
@@ -61,4 +85,5 @@ CREATE TABLE inventory (
     item_id integer REFERENCES item(id)
              ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (student_id, item_id)
-)
+);
+
