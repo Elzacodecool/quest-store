@@ -50,7 +50,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
 
     @Override
     public List<Transaction> getTransactionByUser(int userId) {
-        ResultSet resultSet = daoFactory.execQuery("SELECT * FROM transaction WHERE user_id = ?;", userId);
+        ResultSet resultSet = daoFactory.execQuery("SELECT * FROM transaction WHERE student_id = ?;", userId);
         return getTransactionsByResultSet(resultSet);
     }
 
