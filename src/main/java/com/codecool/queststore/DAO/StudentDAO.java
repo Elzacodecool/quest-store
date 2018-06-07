@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface StudentDAO {
     Integer add(Student student);
-    void remove(Student student);
+    void remove(int idi);
     void update(Student student);
     Student getStudent(int id);
 //    List<Student> getStudentsByRoom(ClassRoom classRoom);
