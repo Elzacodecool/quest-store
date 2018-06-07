@@ -9,7 +9,7 @@ public interface StudentDAO {
     Integer add(Student student);
     void remove(Student student);
     void update(Student student);
-    Student getStudent(int id);
-    List<Student> getStudentsByRoom(ClassRoom classRoom);
-    List<Student> getAllStudents(Student student);
+    Student getStudent(Student student);
+//    List<Student> getStudentsByRoom(ClassRoom classRoom);
+//    List<Student> getAllStudents(Student student);
 }

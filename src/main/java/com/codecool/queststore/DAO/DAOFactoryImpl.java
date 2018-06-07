@@ -121,4 +121,9 @@ public class DAOFactoryImpl extends DAOFactory {
     public ClassDAO getClassDAO() {
         return new ClassDAOImpl(this);
     }
+
+    @Override
+    public StudentDAO getStudentDAO() {
+        return new StudentDAOImpl(this);
+    }
 }

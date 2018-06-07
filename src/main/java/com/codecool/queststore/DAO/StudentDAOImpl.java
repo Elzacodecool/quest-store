@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDAOImpl {
+public class StudentDAOImpl implements StudentDAO {
 
     private DAOFactory factory;
 
@@ -22,8 +22,8 @@ public class StudentDAOImpl {
     }
 
 
-    public Integer add(UserDetails userDetails) {
-        return factory.getUserDAO().add(userDetails);
+    public Integer add(Student student) {
+        return factory.getUserDAO().add(student.getUserDetails());
     }
     
     public void remove(Student student) {
