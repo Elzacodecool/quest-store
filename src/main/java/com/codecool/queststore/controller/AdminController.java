@@ -29,15 +29,22 @@ public class AdminController {
         classDAO.addMentor(mentor, classRoom);
     }
 
-    public void editMentor() {
+    public void editMentorPassword() {
         Mentor mentor = new Mentor(new UserDetails("name", "lastName", "email", "login", "passwqrd"));
         mentorDAO.add(mentor);
         mentor.getUserDetails().setPassword("123");
         mentorDAO.update(mentor);
     }
 
+    public void removeMentorFromClass() {
+        Mentor mentor = mentorDAO.getMentor(2);
+        ClassRoom classRoom = classDAO.getClass(1);
+        classDAO.removeMentor(mentor, classRoom);
+
+    }
+
     public static void main(String[] args) {
         AdminController adminController = new AdminController();
-        adminController.editMentor();
+        adminController.removeMentorFromClass();
     }
 }

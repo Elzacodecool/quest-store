@@ -78,7 +78,7 @@ public class ClassDAOImpl implements ClassDAO {
 
     @Override
     public void removeMentor(Mentor mentor, ClassRoom classRoom) {
-        String query = "REMOVE FROM mentor_class WHERE mentor_id = ? AND class_id = ?";
+        String query = "DELETE FROM mentor_class WHERE mentor_id = ? AND class_id = ?";
         factory.execQueryInt(query, mentor.getId(), classRoom.getId());
     }
 }

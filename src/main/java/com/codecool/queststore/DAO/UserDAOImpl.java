@@ -72,7 +72,6 @@ public class UserDAOImpl implements UserDAO {
                     resultSet.getString("email"),
                     resultSet.getString("login"),
                     resultSet.getString("password"));
-
         } catch (SQLException e) {
             e.getErrorCode();
         }
