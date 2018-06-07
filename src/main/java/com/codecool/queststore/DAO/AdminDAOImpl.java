@@ -54,7 +54,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public void add(Admin admin) {
         int user_id = userDAO.add(admin.getUserDetails());
-        String query = "INSERT INTO admin (user_id) VALUES(?);";
+        String query = "INSERT INTO admin (codecooler_id) VALUES(?);";
         daoFactory.execQuery(query, user_id);
     }
 
