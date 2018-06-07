@@ -42,7 +42,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
 
         try {
             int id = resultSet.getInt(ID_INDEX);
-            Student student = daoFactory.getUserDAO().getUser(resultSet.getInt(STUDENT_ID));
+            Student student = (Student) daoFactory.getUserDAO().getUser(resultSet.getInt(STUDENT_ID));
             Item item = daoFactory.getItemDAO().get(resultSet.getInt(ITEM_ID));
             int amount = resultSet.getInt(AMOUNT_ID);
 
@@ -72,7 +72,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
         int itemId = transaction.getItem().getId();
         int amount = transaction.getAmount();
 
-        daoFactory.execQuery(query, studentId, itemId, amount);
+        daoFactory.execQueryInt(query, studentId, itemId, amount);
     }
 
     @Override
@@ -92,6 +92,6 @@ public class TransactionDAOImpl implements  TransactionDAO {
         int itemId = transaction.getItem().getId();
         int amount = transaction.getAmount();
 
-        daoFactory.execQuery(query, studentId, itemId, amount, id);
+        daoFactory.execQueryInt(query, studentId, itemId, amount, id);
     }
 }

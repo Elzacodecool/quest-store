@@ -56,13 +56,33 @@ public class DAOFactoryImpl extends DAOFactory {
         return resultSet;
     }
 
-    public ResultSet execQuery(String query, int... parameters) {
+    public ResultSet execQuery(String sqlQuery, int numberParameter, String...parameters) {
         PreparedStatement preparedStatement;
         ResultSet resultSet = null;
         try {
-            preparedStatement = connection.prepareStatement(query);
-            for (int i = 0; i < parameters.length; i++) {
-                preparedStatement.setInt(i + 1, parameters[i]);
+            preparedStatement = connection.prepareStatement(sqlQuery);
+            int index = 1;
+            for (String parameter : parameters) {
+                preparedStatement.setString(index, parameter);
+                index++;
+            }
+            preparedStatement.setInt(index, numberParameter);
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public ResultSet execQueryInt(String sqlQuery, int...numberParameter) {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(sqlQuery);
+            int index = 1;
+            for (int parameter : numberParameter) {
+                preparedStatement.setInt(index, parameter);
+                index++;
             }
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {
@@ -83,11 +103,20 @@ public class DAOFactoryImpl extends DAOFactory {
 
     @Override
     public ItemDAO getItemDAO() {
-        return new ItemDAOImpl();
+        return new ItemDAOImpl(this) {
+        };
     }
 
     @Override
     public TransactionDAO getTransactionDAO() {
         return new TransactionDAOImpl(this);
+    }
+
+    public ClassDAO getClassDAO() {
+        return new ClassDAOImpl(this);
+    }
+
+    public UserDAO getUserDAO() {
+        return new UserDAOImpl(this);
     }
 }
