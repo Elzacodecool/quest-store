@@ -52,7 +52,8 @@ public class StudentDAOImpl implements StudentDAO {
 
     private Inventory getStudentInventory(int id) {
         List<Item> items = new ArrayList<>();
-        String query = "SELECT * FROM inventory INNER JOIN item ON inventory.item_id = id WHERE student_id = ?";
+        String query = "SELECT * FROM inventory INNER JOIN item ON inventory.item_id = item.item_id " +
+                "WHERE inventory.student_id = ?;";
         try {
             ResultSet rs = factory.execQuery(query, id);
             while (rs.next()) {
