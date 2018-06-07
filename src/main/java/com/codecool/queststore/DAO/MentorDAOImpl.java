@@ -1,5 +1,6 @@
 package com.codecool.queststore.DAO;
 
+import com.codecool.queststore.model.classRoom.ClassRoom;
 import com.codecool.queststore.model.user.Mentor;
 import com.codecool.queststore.model.user.UserDetails;
 
@@ -40,17 +41,29 @@ public class MentorDAOImpl implements MentorDAO {
 
     @Override
     public List<Mentor> getAllMentors() {
-        List<Mentor> admins = new ArrayList<>();
         String query = "SELECT * FROM codecooler JOIN mentor ON codecooler.codecooler_id = mentor.codecooler_id;";
-            try {
-                ResultSet resultSet = daoFactory.execQuery(query);
-                while (resultSet.next()) {
-                    admins.add(getMentorByUserId(resultSet));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        ResultSet resultSet = daoFactory.execQuery(query);
+        return getMentorsByResultSet(resultSet);
+    }
+
+    private List<Mentor> getMentorsByResultSet(ResultSet resultSet) {
+        List<Mentor> mentors = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                mentors.add(getMentorByUserId(resultSet));
             }
-            return admins;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mentors;
+    }
+
+    @Override
+    public List<Mentor> getMentorsFromClass(ClassRoom classRoom) {
+        String query = "SELECT * FROM mentor JOIN mentor_class ON mentor.mentor_id = mentor_class.mentor_id " +
+                " WHERE mentor_class.class_id = ?;";
+        ResultSet resultSet = daoFactory.execQuery(query, classRoom.getId());
+        return getMentorsByResultSet(resultSet);
     }
 
     @Override
