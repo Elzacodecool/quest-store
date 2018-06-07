@@ -16,13 +16,15 @@ public class MentorController {
     private StudentDAO studentDAO;
     private ItemDAO itemDAO;
     private ClassDAO classDAO;
+    private DAOFactory daoFactory;
     private UI ui;
 
     public MentorController() {
-        mentorDAO = new MentorDAOImpl();
-        itemDAO = new ItemDAOImpl();
-        studentDAO = new StudentDAOImpl();
-        classDAO = new ClassDAOImpl();
+        daoFactory = new DAOFactoryImpl();
+        mentorDAO = new MentorDAOImpl(daoFactory);
+        itemDAO = new ItemDAOImpl(daoFactory);
+        studentDAO = new StudentDAOImpl(daoFactory);
+        classDAO = new ClassDAOImpl(daoFactory);
         ui = new UI();
     }
 
