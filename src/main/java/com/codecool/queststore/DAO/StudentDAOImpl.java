@@ -38,7 +38,7 @@ public class StudentDAOImpl implements StudentDAO {
 
     public Student getStudent(int id) {
         Student result = null;
-        String query = "SELECT * FROM student INNER JOIN codecooler ON student.student_id = codecooler.codecooler_id WHERE student.student_id = ?";
+        String query = "SELECT * FROM student INNER JOIN codecooler ON student.student_id = codecooler.codecooler_id WHERE student.student_id = ? LIMIT 1";
         try {
             ResultSet rs = factory.execQuery(query, id);
             rs.next();
@@ -62,7 +62,7 @@ public class StudentDAOImpl implements StudentDAO {
                         new Item(
                                 rs.getInt("item_id"),
                                 rs.getString("name"),
-                                rs.getString("description"),
+                                rs.getString("decription"),
                                 rs.getInt("price"),
                                 new Category(rs.getString("category")
                                 )
@@ -70,7 +70,7 @@ public class StudentDAOImpl implements StudentDAO {
                 );
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getErrorCode());
+            System.out.println("Inventory Error: " + e.getSQLState());
         }
         return new Inventory(id, items);
     }
