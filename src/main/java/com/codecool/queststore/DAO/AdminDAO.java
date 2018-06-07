@@ -9,5 +9,5 @@ public interface AdminDAO {
     void remove(Admin admin);
     void update(Admin admin);
     Admin getAdmin(int id);
-    List<Admin> getAllAdmins(Admin admin);
+    List<Admin> getAllAdmins();
 }
