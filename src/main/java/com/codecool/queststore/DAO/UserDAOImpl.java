@@ -76,7 +76,7 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.getErrorCode();
         }
-        return result;
+        return userDetails;
     }
 
     @Override
