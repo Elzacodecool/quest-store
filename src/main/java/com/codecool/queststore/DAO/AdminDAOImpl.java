@@ -20,14 +20,19 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public Admin getAdmin(int id) {
         String query = "SELECT codecooler.id FROM codecooler JOIN admin ON codecooler.id = admin.user_id WHERE codecooler.id = ?;";
-        try{
-            int user_id = daoFactory.execQuery(query, id).getInt("id");
-            UserDetails userDetails = daoFactory.getUserDAO().getUser(user_id);
+        ResultSet resultSet = daoFactory.execQuery(query, id);
+        return getAdminByUserId(resultSet);
+    }
+
+    private Admin getAdminByUserId(ResultSet resultSetUserId) {
+       try{
+            int user_id = resultSetUserId.getInt("id");
+            UserDetails userDetails = userDAO.getUser(user_id);
             return new Admin(userDetails);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return  null;
     }
 
     @Override
