@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 
 public abstract class DAOFactory {
     public abstract ItemDAO getItemDAO();
+    public abstract ClassDAO getClassDAO();
     public abstract TransactionDAO getTransactionDAO();
     public abstract UserDAO getUserDAO();
     public abstract ResultSet execQuery(String query);

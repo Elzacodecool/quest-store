@@ -95,4 +95,9 @@ public class DAOFactoryImpl extends DAOFactory {
     public UserDAO getUserDAO() {
         return new UserDAOImpl(this);
     }
+
+    @Override
+    public ClassDAO getClassDAO() {
+        return new ClassDAOImpl(this);
+    }
 }
