@@ -62,7 +62,7 @@ public class StudentDAOImpl {
                                 rs.getString("name"),
                                 rs.getString("description"),
                                 rs.getInt("price"),
-                                getItemCategory(rs.getString("category")
+                                new Category(rs.getString("category")
                                 )
                         )
                 );
@@ -71,22 +71,5 @@ public class StudentDAOImpl {
             System.out.println("Error: " + e.getErrorCode());
         }
         return new Inventory(s.getId(), items);
-
-    }
-
-    private Category getItemCategory(String c) {
-        Category cat = null;
-        switch (c) {
-            case "QUEST":
-                cat = Category.QUEST;
-                break;
-            case "SINGLE_ARTIFACT":
-                cat = Category.SINGLE_ARTIFACT;
-                break;
-            case "GROUP_ARTIFACT":
-                cat = Category.GROUP_ARTIFACT;
-                break;
-        }
-        return cat;
     }
 }
