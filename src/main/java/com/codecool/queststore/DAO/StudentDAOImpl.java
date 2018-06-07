@@ -23,6 +23,8 @@ public class StudentDAOImpl implements StudentDAO {
 
 
     public Integer add(Student student) {
+        String query = "INSERT INTO student (?, ?, ?)";
+        factory.execQueryInt(query, student.getUserDetails().getId(), student.getClassRoom().getId());
         return factory.getUserDAO().add(student.getUserDetails());
     }
     
