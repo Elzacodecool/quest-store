@@ -19,16 +19,17 @@ public class AdminDAOImpl implements AdminDAO {
 
     @Override
     public Admin getAdmin(int id) {
-        String query = "SELECT codecooler.id FROM codecooler JOIN admin ON codecooler.id = admin.user_id WHERE codecooler.id = ?;";
+        String query = "SELECT * FROM codecooler JOIN admin ON codecooler.codecooler_id = admin.codecooler_id WHERE codecooler.codecooler_id = ?;";
         ResultSet resultSet = daoFactory.execQuery(query, id);
         return getAdminByUserId(resultSet);
     }
 
-    private Admin getAdminByUserId(ResultSet resultSetUserId) {
-       try{
-            int user_id = resultSetUserId.getInt("id");
+    private Admin getAdminByUserId(ResultSet resultSet) {
+        try{
+            int user_id = resultSet.getInt("codecooler_id");
+            int admin_id = resultSet.getInt("admin_id");
             UserDetails userDetails = userDAO.getUser(user_id);
-            return new Admin(userDetails);
+            return new Admin(admin_id, userDetails);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,7 +39,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public List<Admin> getAllAdmins() {
         List<Admin> admins = new ArrayList<>();
-        String query = "SELECT codecooler.id FROM codecooler JOIN admin ON codecooler.id = admin.user_id;";
+        String query = "SELECT * FROM codecooler JOIN admin ON codecooler.codecooler_id = admin.codecooler_id;";
         try {
             ResultSet resultSet = daoFactory.execQuery(query);
             while (resultSet.next()) {
