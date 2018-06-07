@@ -3,7 +3,9 @@ package com.codecool.queststore.DAO;
 import com.codecool.queststore.model.user.Admin;
 import com.codecool.queststore.model.user.UserDetails;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminDAOImpl implements AdminDAO {
@@ -12,6 +14,7 @@ public class AdminDAOImpl implements AdminDAO {
 
     public AdminDAOImpl(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
+        this.userDAO = daoFactory.getUserDAO();
     }
 
     @Override
