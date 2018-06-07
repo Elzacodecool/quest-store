@@ -36,8 +36,18 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public List<Admin> getAllAdmins(Admin admin) {
-        return null;
+    public List<Admin> getAllAdmins() {
+        List<Admin> admins = new ArrayList<>();
+        String query = "SELECT codecooler.id FROM codecooler JOIN admin ON codecooler.id = admin.user_id;";
+        try {
+            ResultSet resultSet = daoFactory.execQuery(query);
+            while (resultSet.next()) {
+                admins.add(getAdminByUserId(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return admins;
     }
 
     @Override
@@ -47,11 +57,11 @@ public class AdminDAOImpl implements AdminDAO {
 
     @Override
     public void remove(Admin admin) {
-
+        userDAO.remove(admin.getUserDetails());
     }
 
     @Override
     public void update(Admin admin) {
-
+        userDAO.update(admin.getUserDetails());
     }
 }
