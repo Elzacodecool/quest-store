@@ -18,15 +18,6 @@ public class UserDAOImpl implements UserDAO {
         this.factory = factory;
     }
 
-    /*
-	id serial PRIMARY KEY,
-    first_name text,
-    last_name text,
-    email text,
-    login text,
-    password text,
-    account_type text
-     */
     @Override
     public int add(UserDetails userDetails) {
         Integer userDetailsId = null;

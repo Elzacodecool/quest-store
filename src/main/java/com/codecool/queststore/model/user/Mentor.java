@@ -13,7 +13,11 @@ public class Mentor {
         this.userDetails = userDetails;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public UserDetails getUserDetails() {
-        return this.userDetails;
+        return userDetails;
     }
 }
