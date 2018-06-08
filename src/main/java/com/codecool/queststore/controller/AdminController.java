@@ -6,6 +6,7 @@ import com.codecool.queststore.model.user.Mentor;
 import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 import com.codecool.queststore.view.UI;
+import org.postgresql.util.PSQLException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,5 +180,6 @@ public class AdminController {
     public static void main(String[] args) {
         AdminController adminController = new AdminController();
         adminController.runController();
+
     }
 }
