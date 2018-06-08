@@ -10,6 +10,6 @@ public interface StudentDAO {
     void remove(int idi);
     void update(Student student);
     Student getStudent(int id);
-//    List<Student> getStudentsByRoom(ClassRoom classRoom);
-//    List<Student> getAllStudents(Student student);
+    List<Student> getStudentsByRoom(ClassRoom classRoom);
+    List<Student> getAllStudents();
 }

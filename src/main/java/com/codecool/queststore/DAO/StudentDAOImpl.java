@@ -48,7 +48,7 @@ public class StudentDAOImpl implements StudentDAO {
 
     public Student getStudent(int id) {
         Student result = null;
-        String query = "SELECT * FROM student INNER JOIN codecooler ON student.student_id = codecooler.codecooler_id WHERE student.student_id = ? LIMIT 1";
+        String query = "SELECT * FROM student INNER JOIN codecooler ON student.codecooler_id = codecooler.codecooler_id WHERE student.student_id = ? LIMIT 1";
         ResultSet rs = factory.execQuery(query, id);
         try {
             rs.next();
@@ -83,5 +83,36 @@ public class StudentDAOImpl implements StudentDAO {
             System.out.println("Inventory Error: " + e.getSQLState());
         }
         return new Inventory(id, items);
+    }
+
+    public List<Student> getStudentsByRoom(ClassRoom classRoom) {
+        List<Student> studentList = new ArrayList<>();
+        String query = "SELECT * FROM codecooler JOIN student ON codecooler.codecooler_id = student.codecooler_id " +
+                " WHERE student.class_id = ?;";
+        ResultSet rs = factory.execQuery(query, classRoom.getId());
+        try {
+            while (rs.next()) {
+                studentList.add(
+                        new Student(factory.getUserDAO().getUser(rs.getInt("codecooler_id")), classRoom));
+            }
+        } catch (SQLException e) {
+            System.out.println("Student Error: " + e.getSQLState());
+        }
+        return studentList;
+    }
+
+    public List<Student> getAllStudents() {
+        List<Student> studentList = new ArrayList<>();
+        String query = "SELECT * FROM codecooler JOIN student ON codecooler.codecooler_id = student.codecooler_id;";
+        ResultSet rs = factory.execQuery(query);
+        try {
+            while (rs.next()) {
+                int id = rs.getInt("student_id");
+                studentList.add(getStudent(id));
+            }
+        } catch (SQLException e) {
+            System.out.println("Student Error: " + e.getSQLState());
+        }
+        return studentList;
     }
 }

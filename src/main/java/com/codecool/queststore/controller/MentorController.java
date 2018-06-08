@@ -1,6 +1,7 @@
 package com.codecool.queststore.controller;
 
 import com.codecool.queststore.DAO.*;
+import com.codecool.queststore.model.Transaction;
 import com.codecool.queststore.model.classRoom.ClassRoom;
 import com.codecool.queststore.model.inventory.Category;
 import com.codecool.queststore.model.inventory.Item;
@@ -18,6 +19,7 @@ public class MentorController {
     private ItemDAO itemDAO;
     private ClassDAO classDAO;
     private DAOFactory daoFactory;
+    private TransactionDAO transactionDAO;
     private UI ui;
 
     public MentorController() {
@@ -26,6 +28,7 @@ public class MentorController {
         itemDAO = new ItemDAOImpl(daoFactory);
         studentDAO = new StudentDAOImpl(daoFactory);
         classDAO = new ClassDAOImpl(daoFactory);
+        transactionDAO = new TransactionDAOImpl(daoFactory);
         ui = new UI();
     }
 
@@ -59,7 +62,7 @@ public class MentorController {
                     break;
 
                 case 6:
-
+                    addQuestToStudent();
                     break;
 
                 case 7:
@@ -79,8 +82,8 @@ public class MentorController {
                                "[2] Add Quest",
                                "[3] Add Artifact",
                                "[4] Update Quest",
-                               "[5] Update Artifact"
-
+                               "[5] Update Artifact",
+                               "[6] Add Quest to student"
                                };
 
         return mentorMenu;
@@ -136,9 +139,6 @@ public class MentorController {
 
     private ClassRoom chooseClassRoom() {
         List<ClassRoom> classRoomList = classDAO.getAll();
-
-        System.out.println(classRoomList.size());
-
         String[] className = new String[classRoomList.size()];
         for (int i = 0; i < classRoomList.size(); i++) {
             ui.displayLine(className[i] = "[" + i + "] " + classRoomList.get(i).getClassName());
@@ -192,5 +192,30 @@ public class MentorController {
         item.setPrice(price);
         itemDAO.update(item);
 
+    }
+
+    private void addQuestToStudent() {
+        List<Item> itemList = itemDAO.getQuests();
+        Item item = getItem(itemList);
+        Student student = chooseStudent();
+        Transaction transaction = new Transaction(student, item, item.getPrice());
+        transactionDAO.add(transaction);
+
+    }
+
+    private Student chooseStudent() {
+        List<Student> studentList = studentDAO.getAllStudents();
+        System.out.println(studentList.size());
+        for (int i = 0; i < studentList.size(); i++) {
+            UserDetails us = studentList.get(i).getUserDetails();
+            ui.displayLine("[" + i + "] " + us.getFirstName() + " " + us.getLastName());
+        }
+        int indexStudent = ui.getInputInt("Type your choice: ");
+        return studentList.get(indexStudent);
+    }
+
+    public static void main(String[] args) {
+        MentorController mentorController = new MentorController();
+        mentorController.runController();
     }
 }

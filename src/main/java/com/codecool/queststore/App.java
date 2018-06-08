@@ -25,7 +25,7 @@ public class App {
         DAO.getStudentDAO().update(dupa);
 //        DAO.getStudentDAO().remove(3);
 
-        
+
 //        System.out.println(DAO.getStudentDAO().getStudent(4).getUserDetails().getFirstName());
 //        System.out.println(DAO.getStudentDAO().getStudent(4).getUserDetails().getLastName());
         System.out.println(DAO.getStudentDAO().getStudent(4).getUserDetails().getPassword());

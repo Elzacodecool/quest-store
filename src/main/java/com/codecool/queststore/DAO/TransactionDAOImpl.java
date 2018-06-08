@@ -12,7 +12,7 @@ import java.util.List;
 public class TransactionDAOImpl implements  TransactionDAO {
     private DAOFactory daoFactory;
 
-    TransactionDAOImpl(DAOFactory daoFactory) {
+    public TransactionDAOImpl(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
 
