@@ -11,5 +11,5 @@ public interface StudentDAO {
     void update(Student student);
     Student getStudent(int id);
 //    List<Student> getStudentsByRoom(ClassRoom classRoom);
-//    List<Student> getAllStudents(Student student);
+    List<Student> getAllStudents();
 }

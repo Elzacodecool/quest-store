@@ -62,6 +62,21 @@ public class StudentDAOImpl implements StudentDAO {
         return result;
     }
 
+    @Override
+    public List <Student> getAllStudents() {
+        List<Student> students = new ArrayList <>();
+        String query = "SELECT * FROM student INNER JOIN codecooler ON student.student.id = codecooler.codecooler.id";
+        ResultSet results = factory.execQuery(query);
+        try {
+            while(results.next()) {
+
+                students.add(new Student())
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getSQLState());
+        }
+    }
+
     private Inventory getStudentInventory(int id) {
         List <Item> items = new ArrayList <>();
         String query = "SELECT * FROM inventory INNER JOIN item ON inventory.item_id = item.item_id WHERE student_id = ?";
