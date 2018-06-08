@@ -2,6 +2,8 @@ package com.codecool.queststore.view;
 
 import java.io.Console;
 import java.util.Arrays;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class UI {
@@ -18,9 +20,20 @@ public class UI {
     }
 
     public int getInputInt(String message) {
-        displayLine(message);
+        System.out.print(message);
+        boolean isCorrectValue = false;
+        int inputInt = 0;
+        while (!isCorrectValue) {
+            try {
+                scanner = new Scanner(System.in);
+                inputInt = scanner.nextInt();
+                isCorrectValue = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Wrong value!");
+            }
+        }
 
-        return scanner.nextInt();
+        return inputInt;
     }
 
     public String askUserPassword() {
@@ -44,6 +57,18 @@ public class UI {
 
     public void displayLine(String lineContent) {
         System.out.println(lineContent);
+    }
+
+    public void displayArray(String[] array) {
+        for (String line : array) {
+            System.out.println(line);
+        }
+    }
+
+    public void displayList(List<String> textList) {
+        for (String line : textList) {
+            System.out.println(line);
+        }
     }
 
     public void clearScreen() {
