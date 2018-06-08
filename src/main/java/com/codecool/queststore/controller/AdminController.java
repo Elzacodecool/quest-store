@@ -162,6 +162,7 @@ public class AdminController {
     public void seeMentorData() {
         Mentor mentor = getMentorFromInput();
         for (ClassRoom classRoom : classDAO.getClassesByMentor(mentor)) {
+            System.out.println(classRoom.getClassName());
             for (Student student : studentDAO.getStudentsByRoom(classRoom)) { // do napisania
                 System.out.println(student.getUserDetails().getFirstName() + " " + student.getUserDetails().getLastName());
             }

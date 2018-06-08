@@ -69,7 +69,7 @@ public class ItemDAOImpl implements  ItemDAO {
     @Override
     public List<Item> getArtifact() {
         List<Item> itemList = new ArrayList<>();
-        String sqlQuery = "SELECT * FROM item WHERE category = \'%Artifact\';";
+        String sqlQuery = "SELECT * FROM item WHERE category LIKE \'%Artifact\';";
         ResultSet resultSet = daoFactory.execQuery(sqlQuery);
         try {
             while (resultSet.next()) {

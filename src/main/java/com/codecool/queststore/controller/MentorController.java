@@ -78,7 +78,7 @@ public class MentorController {
     }
 
     private String[] getMenu() {
-        String[] mentorMenu = {"[1] Create codecooler account",
+        String[] mentorMenu = {"[1] Create student account",
                                "[2] Add Quest",
                                "[3] Add Artifact",
                                "[4] Update Quest",
@@ -184,7 +184,7 @@ public class MentorController {
     }
 
     private void updateItem(Item item) {
-        String name = ui.getInputString("Type name of Quest: ");
+        String name = ui.getInputString("Type name: ");
         String description = ui.getInputString("Type description of Quest: ");
         int price = ui.getInputInt("Type price of Quest: ");
         item.setName(name);
