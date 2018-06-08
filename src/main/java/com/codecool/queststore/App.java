@@ -19,13 +19,13 @@ public class App {
         ClassRoom cr = DAO.getClassDAO().getClass(2);
         System.out.println(dupa.getUserDetails().getPassword());
         System.out.println(dupa.getClassRoom().getClassName());
-        dupa.getUserDetails().setPassword("CHUJ CI W DUPE");
+        dupa.getUserDetails().setPassword("wooopwoop");
 //        dupa.setClassRoom(classroom);
         dupa.setClassRoom(cr);
         DAO.getStudentDAO().update(dupa);
 //        DAO.getStudentDAO().remove(3);
 
-
+//        List<Student> studentList = DAO.getStudentDAO().ge
 //        System.out.println(DAO.getStudentDAO().getStudent(4).getUserDetails().getFirstName());
 //        System.out.println(DAO.getStudentDAO().getStudent(4).getUserDetails().getLastName());
         System.out.println(DAO.getStudentDAO().getStudent(4).getUserDetails().getPassword());
