@@ -23,7 +23,7 @@ public class ItemDAOImpl implements  ItemDAO {
     @Override
     public Item get(int id) {
         Item item = null;
-        String sqlQuery = "SELECT * FROM item WHERE id = ?;";
+        String sqlQuery = "SELECT * FROM item WHERE item_id = ?;";
         ResultSet resultSet = daoFactory.execQuery(sqlQuery, id);
         try {
             resultSet.next();
@@ -83,21 +83,21 @@ public class ItemDAOImpl implements  ItemDAO {
 
     @Override
     public void add(Item item) {
-        String sqlQuery = "INSERT INTO item (name, decription, category, price) VALUES (?, ?, ?, ?)";
+        String sqlQuery = "INSERT INTO item (name, description, category, price) VALUES (?, ?, ?, ?)";
         daoFactory.execQuery(sqlQuery, item.getPrice(), item.getName(), item.getDescription(), item.getCategory().getName());
     }
 
     @Override
     public void remove(Item item) {
-        String sqlQuery = "DELETE FROM item WHERE id = ?";
+        String sqlQuery = "DELETE FROM item WHERE item_id = ?";
         daoFactory.execQueryInt(sqlQuery, item.getId());
     }
 
     @Override
     public void update(Item item) {
-        String sqlQuery = "UPDATE item SET price = ? WHERE id = ?";
+        String sqlQuery = "UPDATE item SET price = ? WHERE item_id = ?";
         daoFactory.execQueryInt(sqlQuery, item.getPrice(), item.getId());
-        sqlQuery = "UPDATE item SET name = ?, decription = ?, category = ? WHERE id = ?";
+        sqlQuery = "UPDATE item SET name = ?, description = ?, category = ? WHERE item_id = ?";
         daoFactory.execQuery(sqlQuery, item.getId(), item.getName(), item.getDescription(), item.getCategory().getName());
     }
 

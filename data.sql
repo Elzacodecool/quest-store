@@ -71,7 +71,7 @@ VALUES (1, 1);
 CREATE TABLE item (
     item_id serial PRIMARY KEY,
     name text,
-    decription text,
+    description text,
     price integer,
     category text
 );
