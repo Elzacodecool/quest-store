@@ -85,9 +85,9 @@ CREATE TABLE transaction (
     item_id integer,
     amount integer,
     FOREIGN KEY (student_id) REFERENCES student (student_id)
-		ON DELETE CASCADE ON UPDATE NO ACTION,
+		ON DELETE NO ACTION ON UPDATE NO ACTION,
     FOREIGN KEY (item_id) REFERENCES item (item_id)
-		ON DELETE CASCADE ON UPDATE NO ACTION
+		ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 
@@ -98,6 +98,6 @@ CREATE TABLE inventory (
     FOREIGN KEY (student_id) REFERENCES student (student_id)
 		ON DELETE CASCADE ON UPDATE NO ACTION,
     FOREIGN KEY (item_id) REFERENCES item (item_id)
-		ON DELETE CASCADE ON UPDATE NO ACTION
+		ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
