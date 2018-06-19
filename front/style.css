@@ -13,5 +13,15 @@ body
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-{
+}
 
+#main-header
+{
+	height: fit-content;
+	padding: 4% 2%;
+	font-size: 68px;
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
