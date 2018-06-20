@@ -23,7 +23,7 @@ function createTiles(tiles) {
 		tile.setAttribute("class", className);
 
 		var image = document.createElement("i");
-		image.setClass(tiles[i][IMAGE_CLASS]);
+		image.setAttribute("class", tiles[i][IMAGE_CLASS_INDEX]);
 		tile.appendChild(image);
 		
 		var paragraph = document.createElement("p");
