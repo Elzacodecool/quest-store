@@ -61,12 +61,13 @@ nav
 	flex-flow: row wrap;
 }
 
-.panel
+.tile
 {
-	background-color: blue;
+	flex: 1;
 	min-width: 290px;
 	min-height: 179px;
 	margin: 12px;
+	background-color: #404040;
 }
 
 
