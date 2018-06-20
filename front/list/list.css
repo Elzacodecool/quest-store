@@ -1,0 +1,13 @@
+.lists {
+    display: flex;
+    flex-direction: column;
+}
+
+.group {
+    background-color: blue;
+    
+}
+
+.group-name {
+}
+
