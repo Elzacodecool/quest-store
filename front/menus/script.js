@@ -8,25 +8,26 @@ function changeColors() {
 	}
 }
 
-function createTiles(tilesNamesArray) {
+function createTiles(tiles) {
 
-	var TITLE = 0;
-	var TILE_TYPE = 1;
+	var TITLE_INDEX = 0;
+	var TILE_TYPE_INDEX = 1;
+	var IMAGE_CLASS_INDEX = 2;
 
 	var mainDiv = document.getElementById("content-container");
-	for (var i = 0; i < tilesNamesArray.length; i++) {
+	for (var i = 0; i < tiles.length; i++) {
 		
 		var tile = document.createElement("div");
 
-		var className = getClassName(tilesNamesArray[i][TILE_TYPE]);
+		var className = getClassName(tiles[i][TILE_TYPE_INDEX]);
 		tile.setAttribute("class", className);
 
 		var image = document.createElement("i");
-		image.setClass(tilesNamesArray[i][IMAGE_CLASS]);
+		image.setClass(tiles[i][IMAGE_CLASS]);
 		tile.appendChild(image);
 		
 		var paragraph = document.createElement("p");
-		paragraph.innerHTML = tilesNamesArray[i][TITLE];
+		paragraph.innerHTML = tiles[i][TITLE_INDEX];
 		tile.appendChild(paragraph);
 		
 		mainDiv.appendChild(tile);
