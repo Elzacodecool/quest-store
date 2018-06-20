@@ -8,6 +8,8 @@
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="fontello/css/fontello.css">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+	<script src="script.js"></script>
 </head>
 
 <body title="black">
@@ -29,50 +31,17 @@
 	<nav>
 	<div id="content-container">
 
-		<div class="tile user-tiles">
-			<i class="icon-user-plus"></i>
-			<p>Add user</p>
-		</div>
-
-		<div class="tile user-tiles">
-			<i class="icon-id-card"></i>
-			<p>Edit user</p>
-		</div>
-
-		<div class="tile user-tiles">
-			<i class="icon-user-pair"></i>
-			<p>Show all users</p>
-		</div>
-
-		<div class="tile artifact-tiles">
-			<i class="icon-rocket"></i>
-			<p>Add artifact</p>
-		</div>
-
-		<div class="tile artifact-tiles">
-			<i class="icon-user-plus"></i>
-			<p>Edit artifact</p>
-		</div>
-
-		<div class="tile quest-tiles">
-			<i class="icon-book"></i>
-			<p>Add Quest</p>
-		</div>
-
-		<div class="tile quest-tiles">
-			<i class="icon-book-open"></i>
-			<p>Edit quest</p>
-		</div>
-
-		<div class="tile quest-tiles">
-			<i class="icon-blind"></i>
-			<p>Manage quests</p>
-		</div>
-
-		<div class="tile logout-tiles">
-			<i class="icon-power"></i>
-			<p>Logout</p>
-		</div>
+		<script>createTiles([
+							["Add student", "User"],
+							["Edit student", "User"],
+							["Show students", "User"],
+							["Add artifact", "Artifact"],
+							["Edit artifact", "Artifact"],
+							["Add quest", "Quest"],
+							["Edit quest", "Quest"],
+							["Manage quests", "Quest"],
+							["Logout", "Logout"]
+							])</script>
 
 	</div>
 	</nav>
@@ -82,7 +51,5 @@
 	</div>
 	
 </body>
-
-	<script src="script.js"></script>
 
 </html>
