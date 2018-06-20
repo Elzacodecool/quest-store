@@ -20,6 +20,10 @@ function createTiles(tilesNamesArray) {
 
 		var className = getClassName(tilesNamesArray[i][TILE_TYPE]);
 		tile.setAttribute("class", className);
+
+		var image = document.createElement("i");
+		image.setClass(tilesNamesArray[i][IMAGE_CLASS]);
+		tile.appendChild(image);
 		
 		var paragraph = document.createElement("p");
 		paragraph.innerHTML = tilesNamesArray[i][TITLE];
