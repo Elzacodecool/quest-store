@@ -11,8 +11,11 @@
 }
 
 .group {
-    background-color: blue;
-    
+    align-items: stretch;
+    padding-bottom: 10vh;
+    border-top-style: dotted;
+    border-width: 10px;
+    border-color: rgba(128, 128, 128, 0.411);
 }
 
 .group-name {
