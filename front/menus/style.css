@@ -65,7 +65,7 @@ nav
 {
 	border-radius: 5px;
 	flex: 1;
-	min-width: 290px;
+	min-width: fit-content;
 	min-height: 179px;
 	margin: 12px;	
 
