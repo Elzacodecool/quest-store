@@ -66,16 +66,16 @@ nav
 	flex: 1;
 	min-width: 290px;
 	min-height: 179px;
-	margin: 12px;
-	background-color: #404040;
-}
+	margin: 12px;	
 
-.tile-content
-{
-	padding: 5%;
-	font-size: 28px;
-	text-align: center;
-	line-height: 12px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	background-color: #404040;
+	line-height: 2px;
+	font-size: 48px;
 }
 
 
