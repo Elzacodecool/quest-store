@@ -63,6 +63,7 @@ nav
 
 .tile
 {
+	border-radius: 5px;
 	flex: 1;
 	min-width: 290px;
 	min-height: 179px;
@@ -76,12 +77,50 @@ nav
 	background-color: #404040;
 	line-height: 2px;
 	font-size: 48px;
+	font-weight: 700;
 }
 
+.tile:hover
+{
+	cursor: pointer;
+}
 
+.user-tiles
+{
+	background-color: #3333CC;
+}
 
+.user-tiles:hover
+{
+	background-color: #4444DD;
+}
 
+.artifact-tiles
+{
+	background-color: #EECC77;
+}
 
+.artifact-tiles:hover
+{
+	background-color: #FFDD88;
+}
 
+.quest-tiles
+{
+	background-color: #AACC66;
+}
 
+.quest-tiles:hover
+{
+	background-color: #BBDD77;
+}
 
+.logout-tiles
+{
+	background-color: #DD3333;
+}
+
+.logout-tiles:hover
+{
+	background-color: #FF4444;
+}
