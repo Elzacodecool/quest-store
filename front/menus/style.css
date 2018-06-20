@@ -47,15 +47,15 @@ body
 
 #content-container
 {
-	min-height: 500px;
+	margin-top: 24px;
+	min-height: 178px;
 	display: flex;
 	flex-flow: row wrap;
 }
 
 .panel
 {
-	background-color: blue;
-	width: 251px;
-	height: 154px;
+	min-width: 251px;
+	min-height: 154px;
 	margin: 12px;
 }
