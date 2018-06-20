@@ -17,8 +17,8 @@ function createTiles(tilesNamesArray) {
 	for (var i = 0; i < tilesNamesArray.length; i++) {
 		
 		var tile = document.createElement("div");
+
 		var className = getClassName(tilesNamesArray[i][TILE_TYPE]);
-		
 		tile.setAttribute("class", className);
 		
 		var paragraph = document.createElement("p");
