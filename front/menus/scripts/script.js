@@ -3,6 +3,7 @@ function createTiles(tiles) {
 	var TITLE_INDEX = 0;
 	var TILE_TYPE_INDEX = 1;
 	var IMAGE_CLASS_INDEX = 2;
+	var LINK_INDEX = 3;
 
 	var mainDiv = document.getElementById("content-container");
 	for (var i = 0; i < tiles.length; i++) {
@@ -11,14 +12,19 @@ function createTiles(tiles) {
 
 		var className = getClassName(tiles[i][TILE_TYPE_INDEX]);
 		tile.setAttribute("class", className);
+		
+		var a = document.createElement("a");
+		a.setAttribute("class", "foreign-link");
+		a.href = tiles[i][LINK_INDEX];
+		tile.appendChild(a);
 
 		var image = document.createElement("i");
 		image.setAttribute("class", tiles[i][IMAGE_CLASS_INDEX]);
-		tile.appendChild(image);
+		a.appendChild(image);
 		
 		var paragraph = document.createElement("p");
 		paragraph.innerHTML = tiles[i][TITLE_INDEX];
-		tile.appendChild(paragraph);
+		a.appendChild(paragraph);
 		
 		mainDiv.appendChild(tile);
 	}
