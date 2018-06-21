@@ -21,11 +21,18 @@ body
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	flex-wrap: wrap;
 }
 
 #main-header-user-name
 {
 	margin: 4% 2%;
+}
+
+#main-header-cash
+{
+	color: #FFFF00;
+	align-self: flex-end;
 }
 
 #main-header-logo
@@ -66,7 +73,7 @@ nav
 	border-radius: 5px;
 	flex: 1;
 	min-width: fit-content;
-	min-height: 179px;
+	min-height: 220px;
 	margin: 12px;	
 
 	display: flex;
@@ -85,6 +92,13 @@ nav
 	cursor: pointer;
 }
 
+.foreign-link
+{
+	text-align: center;
+	text-decoration: none;
+	color: #F0F0F0;
+}
+
 .user-tiles
 {
 	background-color: #008E9C;
@@ -97,7 +111,7 @@ nav
 
 .artifact-tiles
 {
-	background-color: #EECC77;
+	background-color: #FFB800;
 }
 
 .artifact-tiles:hover
@@ -107,20 +121,20 @@ nav
 
 .quest-tiles
 {
-	background-color: #AACC66;
+	background-color: #42874B;
 }
 
 .quest-tiles:hover
 {
-	background-color: #BBDD77;
+	background-color: #53985C;
 }
 
 .logout-tiles
 {
-	background-color: #DD3333;
+	background-color: #E62B3C;
 }
 
 .logout-tiles:hover
 {
-	background-color: #FF4444;
+	background-color: #F73C4D;
 }
