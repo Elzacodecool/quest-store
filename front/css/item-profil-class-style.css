@@ -47,7 +47,7 @@ body
 	}
 }
 
-#content-containter-photo {
+#content-container-photo {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
