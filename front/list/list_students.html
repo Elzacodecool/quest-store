@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Quest Store</title>
+
+    <script src="script.js"></script>
+	<link rel="stylesheet" href="../style.css">
+	<link rel="stylesheet" href="list.css">
+    <link rel="stylesheet" href="styleList.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+
+<body>
+
+	<div id="main-header">
+		<div id="main-header-user-name">
+			<section>Ola Kowalska</section>
+		</div>
+
+		<div id="main-header-logo">
+			<header>Quest Store</header>
+		</div>
+	</div>
+
+    <div id="content-container">
+
+        <div class="title">
+            <h1>students:</h1>
+        </div>
+
+        <div class="lists">
+            <form class="group">
+                <div class="group-name">
+                    <h2>web room</h2>
+                </div>
+
+                <div class="buttons">
+                    <label for="select-all">
+                        <input id="select-all" type="checkbox" onClick="toggle(this)" value="Select all"/>
+                        <a class="button">
+                            select all
+                        </a>
+                    </label>
+                    <input type="submit" value="Submit" class="button">
+                </div>
+
+                <div class="group-items">
+                    <input id="i1" type="checkbox" name="student">
+                    <label for="i1" class="item-container button-class">
+                        <div class="item">
+                            <img src="../profiles/img/student.png" alt="student photo">
+                            <div class="item-name">
+                                <h4 id="name">
+                                    lukasz wrona
+                                </h4>
+                            </div>
+                        </div>
+                    </label>
+
+                    <input id="i2" type="checkbox" name="student">
+                    <label for="i2" class="item-container button-class">
+                        <div class="item">
+                            <img src="../profiles/img/student.png" alt="student photo">
+                            <div class="item-name">
+                                <h4 id="name">
+                                    Ela Krzych
+                                </h4>
+                            </div>
+                        </div>
+                    </label>
+
+                    <input id="i3" type="checkbox" name="student">
+                    <label for="i3" class="item-container button-class">
+                        <div class="item">
+                            <img src="../profiles/img/student.png" alt="student photo">
+                            <div class="item-name">
+                                <h4 id="name">
+                                    Adam Romanowski
+                                </h4>
+                            </div>
+                        </div>
+                    </label>
+
+                    <input id="i4" type="checkbox" name="student">
+                    <label for="i4" class="item-container button-class">
+                        <div class="item">
+                            <img src="../profiles/img/student.png" alt="student photo">
+                            <div class="item-name">
+                                <h4 id="name">
+                                    Eliza Golec
+                                </h4>
+                            </div>
+                        </div>
+                    </label>
+
+                    <input id="i5" type="checkbox" name="student">
+                    <label for="i5" class="item-container button-class">
+                        <div class="item">
+                            <img src="../profiles/img/student.png" alt="student photo">
+                            <div class="item-name">
+                                <h4 id="name">
+                                    Imie Nazwisko
+                                </h4>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+            </form>
+        </div>
+	</div>
+
+	<div id="footer">
+		<footer>Copyright &copy 2018 Truskawki</footer>
+	</div>
+	
+</body>
+</html>
