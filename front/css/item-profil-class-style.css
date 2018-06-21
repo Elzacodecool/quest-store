@@ -36,10 +36,18 @@ body
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	margin-bottom: 30px;
+	/*height: fit-content;*/
 
 }
 
-#content-containter-photo {
+@media all and (max-width: 700px) {
+	#content-container {
+		flex-direction: column;
+	}
+}
+
+#content-container-photo {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
@@ -68,20 +76,27 @@ body
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-	height: 700px;
+	height: fit-content;
+	align-items: center;
 }
 
 #profile-content {
 	display: flex;
 	flex-direction: column;
 	text-align: left;
+	align-items: center;
 	background-color: #008e9c;
 	color: white;
 	border-radius: 5px;
-	width: 400px;
-	height: 430px;
+	width: fit-content;
+	max-width: 325px;
+	min-width: 325px;
+	height: fit-content;
+	min-height: 370px;
 	padding-top: 20px;
 	padding-left: 30px;
+	padding-right: 30px;
+	padding-bottom: 30px;
 	margin-left: 12px;
 }
 
@@ -89,11 +104,11 @@ body
 	display: flex;
 	flex-direction: column;
 	text-align: left;
-	background-color: #008e9c;
+	/*background-color: #008e9c;*/
 	color: white;
 	border-radius: 5px;
 	width: 400px;
-	height: 150px;
+	height: fit-content;
 	padding-top: 10px;
 	padding-left: 30px;
 	margin-top: 12px;
@@ -101,6 +116,7 @@ body
 }
 
 #class-label {
+	margin: 5px;
 	font-size: 20px;
 	color: white;
 }
@@ -117,7 +133,7 @@ body
 	font-size: 18px;
 	background-color: lightblue;
 	color: white;
-	width: 160px;
+	width: 130px;
 	height: 30px;
 	/*text-align: left;*/
 	margin: 12px;
@@ -204,4 +220,10 @@ body
 	text-align: center;
 	font-size: 16px;
 	color: #909090;
+}
+
+@media all and (max-width: 700px) {
+	#content-container {
+		flex-direction: column;
+	}
 }
