@@ -94,7 +94,7 @@
 
 .button-class {
 	display: flex;
-	justify-content: left;
+	justify-content: center;
 	align-items: center;
 	font-size: 18px;
 	background-color: lightblue;
@@ -201,6 +201,14 @@ input[type=checkbox]:checked + label {
 	text-align: center;
 	font-size: 16px;
 	color: #909090;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+input[type=radio]:checked + label {
+    background-color: #e62b3c;
 }
 
 @media all and (max-width: 700px) {
