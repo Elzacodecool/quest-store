@@ -77,6 +77,16 @@ nav
 	background-color: #53985C;
 }
 
+.classroom-tiles
+{
+	background-color: #374F35;
+}
+
+.classroom-tiles:hover
+{
+	background-color: #486046;
+}
+
 .logout-tiles
 {
 	background-color: #E62B3C;
