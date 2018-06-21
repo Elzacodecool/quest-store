@@ -4,3 +4,7 @@ function toggle(source) {
     checkboxes[i].checked = source.checked;
   }
 }
+
+function acceptQuest() {
+    alert("Quest was added");
+}
