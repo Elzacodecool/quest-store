@@ -7,6 +7,7 @@
 
 	<link rel="stylesheet" href="../css/item-profile-class-style.css">
 	<link rel="stylesheet" href="../style.css">
+	<link rel="icon" href="../img/logo.png">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 
 <body>
@@ -17,7 +18,7 @@
 	</div>
 
 	<div id="main-header-logo">
-		<header>Quest Store</header>
+		<header><a id="back-to-menu" href="../menus/menu-admin.html">QuestSt<img id="logo" src="../img/logo.png">re</a></header>
 	</div>
 </div>
 
@@ -36,39 +37,38 @@
 		<div id="profile-content">
 			<div class="profile-content-pool">
 				<label class="profile-content-label" for="profile-content-label">First Name:<br></label>
-				<input type="text" class="profile-content-input text-font">
+				<input type="text" class="profile-content-input text-font" readonly>
 			</div>
 
 			<div class="profile-content-pool">
 				<label class="profile-content-label" for="profile-content-label">Last Name:<br></label>
-				<input type="text" class="profile-content-input text-font">
+				<input type="text" class="profile-content-input text-font" readonly>
 			</div>
 
 			<div class="profile-content-pool">
 				<label class="profile-content-label" for="profile-content-label">E-mail:<br></label>
-				<input type="text" class="profile-content-input text-font">
+				<input type="text" class="profile-content-input text-font" readonly>
 			</div>
 
 			<div class="profile-content-pool">
 				<label class="profile-content-label" for="profile-content-label">Login:<br></label>
-				<input type="text" class="profile-content-input text-font">
-			</div>
-
-			<div class="profile-content-pool">
-				<label class="profile-content-label" for="profile-content-label">Password:<br></label>
-				<input class="profile-content-input" type="password" placeholder="Enter Password" name="Password" required>
+				<input type="text" class="profile-content-input text-font" readonly>
 			</div>
 
 
 				<a id="class-label">Class:</a>
 
 
-				<div id="classes">
-					<label class="button-class"><input type="checkbox" name="Room">Python</label>
-					<label class="button-class"><input type="checkbox" name="Room">Java-OOP</label>
-					<label class="button-class"><input type="checkbox" name="Room">WEB-ROOM</label>
-					<label class="button-class"><input type="checkbox" name="Room">Java-Adw</label>
-				</div>
+			<div id="classes">
+				<input id="c1" type="checkbox" name="Room">
+				<label for="c1" class="button-class">Python</label>
+				<input id="c2" type="checkbox" name="Room">
+				<label for="c2" class="button-class">Java-OOP</label>
+				<input id="c3" type="checkbox" name="Room">
+				<label for="c3" class="button-class">WEB-ROOM</label>
+				<input id="c4" type="checkbox" name="Room">
+				<label for="c4" class="button-class">Java-Adw</label>
+			</div>
 
 
 		</div>

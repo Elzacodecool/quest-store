@@ -94,7 +94,7 @@
 
 .button-class {
 	display: flex;
-	justify-content: left;
+	justify-content: center;
 	align-items: center;
 	font-size: 18px;
 	background-color: lightblue;
@@ -109,16 +109,6 @@
 .button-class:hover {
 	cursor: pointer;
 	opacity: 0.7;
-}
-
-input[type=checkbox] + label {
-  color: #ccc;
-  font-style: italic;
-}
-
-input[type=checkbox]:checked + label {
-  color: #f00;
-  font-style: normal;
 }
 
 .profile-content-pool {
@@ -201,6 +191,22 @@ input[type=checkbox]:checked + label {
 	text-align: center;
 	font-size: 16px;
 	color: #909090;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+input[type=radio]:checked + label {
+    background-color: #e62b3c;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox]:checked + label {
+    background-color: #e62b3c;
 }
 
 @media all and (max-width: 700px) {
