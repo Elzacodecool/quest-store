@@ -1,7 +1,13 @@
 #main-header-cash
 {
 	color: #FFFF00;
-	align-self: flex-end;
+	height: fit-content;
+	font-size: 68px;
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	flex-wrap: wrap;
 }
 
 nav
