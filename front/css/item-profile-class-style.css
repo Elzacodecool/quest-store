@@ -111,16 +111,6 @@
 	opacity: 0.7;
 }
 
-input[type=checkbox] + label {
-  color: #ccc;
-  font-style: italic;
-}
-
-input[type=checkbox]:checked + label {
-  color: #f00;
-  font-style: normal;
-}
-
 .profile-content-pool {
 
 }
@@ -208,6 +198,14 @@ input[type=radio] {
 }
 
 input[type=radio]:checked + label {
+    background-color: #e62b3c;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox]:checked + label {
     background-color: #e62b3c;
 }
 
