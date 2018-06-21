@@ -7,6 +7,7 @@
 
 	<link rel="stylesheet" href="css/login-style.css">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	<script src="scripts/script.js"></script>
 
 </head>
 
@@ -14,11 +15,11 @@
 
 	<div class="main-container">
 		<div class="inputs">
-			<form>
+			<form id="form" action="#">
 				<div class="input">
 					<label>
 						<p>Login</p>
-						<input>
+						<input id="login" autocomplete="off">
 					</label>
 				</div>
 
@@ -31,8 +32,7 @@
 
 				<div class="input">
 					<label>
-						<p></p>
-						<input id="button" type="submit" value="Log in" onclick="">
+						<input id="button" type="submit" value="Log in" onclick="checkInput()">
 					</label>
 				</div>
 			</form>
