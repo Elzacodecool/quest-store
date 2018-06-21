@@ -185,6 +185,11 @@ body
 	text-transform: uppercase;
 }
 
+#back-button:visited {
+    text-decoration: none;
+    color: white;
+}
+
 #confirm-button {
 	display: flex;
 	justify-content: center;
@@ -203,6 +208,11 @@ body
 	cursor: pointer;
 	opacity: 0.7;
 }
+
+#back-button:visited {
+	color: white;
+}
+
 
 #confirm-button:hover {
 	cursor: pointer;
