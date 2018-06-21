@@ -24,6 +24,32 @@
     margin: 10%;
 }
 
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox]:checked + label {
+    background-color: lightblue;
+}
+
+.buttons {
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.button {
+    text-transform: uppercase;
+    font-size: 4vh;
+    background-color: lightblue;
+    border: none;
+    color: black;
+    padding: 10px 32px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
 .item img {
     height: 80%;
     width: 100%;

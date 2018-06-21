@@ -43,6 +43,9 @@ function getClassName(tileType) {
 	var LOGOUT = "Logout";
 	var LOGOUT_CLASS = "logout-tiles";
 
+	var CLASSROOM = "Classroom";
+	var CLASSROOM_CLASS = "classroom-tiles";
+
 	var className = "tile ";
 
 	if (tileType == USER) {
@@ -53,6 +56,8 @@ function getClassName(tileType) {
 		className = className + QUEST_CLASS;
 	} else if (tileType == LOGOUT) {
 		className = className + LOGOUT_CLASS;
+	} else if (tileType == CLASSROOM) {
+		className = className + CLASSROOM_CLASS;
 	}
 
 	return className;
