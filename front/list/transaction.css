@@ -41,8 +41,16 @@
     justify-content: center;
 }
 
-.item .text #name {
+ .text #name {
     color: black;
     font-size: large;
 }
 
+.wallet {
+    width: 13%;
+    padding-left: 58.5%;
+}
+
+.white-board {
+    background-color: whitesmoke;
+}
