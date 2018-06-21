@@ -15,12 +15,11 @@ body
 {
 	height: fit-content;
 	font-size: 68px;
-	margin-left: 10%;
-	margin-right: 10%;
 	
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: space-around;
+	flex-wrap: wrap;
 }
 
 #main-header-user-name
@@ -31,7 +30,31 @@ body
 #main-header-logo
 {
 	margin: 4% 2%;
-	text-align: right;
+	display: inline-block;
+}
+
+#back-to-menu
+{
+	text-decoration: none;
+	color: #F0F0F0;
+}
+
+#logo
+{
+	height: 48px;
+	width: 48px;
+}
+
+#main-header-cash
+{
+	color: #FFFF00;
+	height: fit-content;
+	font-size: 68px;
+	
+	display: none;
+	flex-direction: row;
+	justify-content: space-around;
+	flex-wrap: wrap;
 }
 
 #footer
