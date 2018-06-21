@@ -23,3 +23,47 @@ body
 	border-radius: 10px;
 	box-shadow: 0px 0px 20px 1px rgba(81, 81, 81, 0.7);
 }
+
+.inputs
+{
+	margin: 10%;
+	align-items: center;
+}
+
+input
+{
+	width: 90%;
+	padding: 5%;
+	background-color: #BBBBBB;
+	border: none;
+	font-size: 22px;
+	border-radius: 5px;
+}
+
+input:focus
+{
+	background-color: #F0F0F0;
+	border: none;
+}
+
+p
+{
+	text-align: center;
+	font-size: 22px;
+	letter-spacing: 3px;
+}
+
+#button
+{
+	width: 100%;
+	background-color: #42874B;
+	margin-top: 20%;
+	letter-spacing: 2px;
+}
+
+#button:hover
+{
+	width: 100%;
+	background-color: #53985C;
+	cursor: pointer;
+}
