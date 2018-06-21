@@ -1,0 +1,93 @@
+#main-header-cash
+{
+	color: #FFFF00;
+	align-self: flex-end;
+}
+
+nav
+{
+	width: 100%;
+}
+
+#content-container
+{
+	width: 100%;
+	margin-top: 24px;
+	margin-bottom: 24px;
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.tile
+{
+	border-radius: 5px;
+	flex: 1;
+	min-width: fit-content;
+	min-width: -moz-max-content;
+	min-height: 220px;
+	margin: 12px;	
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	background-color: #404040;
+	line-height: 2px;
+	font-size: 48px;
+	font-weight: 700;
+}
+
+.tile:hover
+{
+	cursor: pointer;
+}
+
+.foreign-link
+{
+	height: 100%;
+	padding: 5%;
+	text-align: center;
+	text-decoration: none;
+	color: #F0F0F0;
+}
+
+.user-tiles
+{
+	background-color: #008E9C;
+}
+
+.user-tiles:hover
+{
+	background-color: #119FAD;
+}
+
+.artifact-tiles
+{
+	background-color: #FFB800;
+}
+
+.artifact-tiles:hover
+{
+	background-color: #FFDD88;
+}
+
+.quest-tiles
+{
+	background-color: #42874B;
+}
+
+.quest-tiles:hover
+{
+	background-color: #53985C;
+}
+
+.logout-tiles
+{
+	background-color: #E62B3C;
+}
+
+.logout-tiles:hover
+{
+	background-color: #F73C4D;
+}
