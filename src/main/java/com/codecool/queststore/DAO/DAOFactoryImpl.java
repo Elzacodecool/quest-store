@@ -102,6 +102,11 @@ public class DAOFactoryImpl extends DAOFactory {
     }
 
     @Override
+    public AccountDAO getAccountDAO() {
+        return new AccountDAOImpl(this);
+    }
+
+    @Override
     public ItemDAO getItemDAO() {
         return new ItemDAOImpl(this) {
         };

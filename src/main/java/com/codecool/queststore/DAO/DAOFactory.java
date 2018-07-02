@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 public abstract class DAOFactory {
+    public abstract AccountDAO getAccountDAO();
     public abstract ItemDAO getItemDAO();
     public abstract ClassDAO getClassDAO();
     public abstract TransactionDAO getTransactionDAO();
