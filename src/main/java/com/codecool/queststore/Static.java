@@ -1,6 +1,7 @@
-package com.codecool.krk;
+package com.codecool.queststore;
 
-import com.codecool.krk.helpers.MimeTypeResolver;
+
+import com.codecool.queststore.helpers.MimeTypeResolver;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
