@@ -6,12 +6,11 @@ import com.codecool.queststore.model.user.Mentor;
 import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 import com.codecool.queststore.view.UI;
-import org.postgresql.util.PSQLException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminController {
+public class AdminControllerTemp {
     private DAOFactory daoFactory = new DAOFactoryImpl();
     private MentorDAO mentorDAO = daoFactory.getMentorDAO();
     private ClassDAO classDAO = daoFactory.getClassDAO();
@@ -19,7 +18,7 @@ public class AdminController {
 
     private UI ui;
 
-    public AdminController() {
+    public AdminControllerTemp() {
         daoFactory = new DAOFactoryImpl();
         mentorDAO = new MentorDAOImpl(daoFactory);
         studentDAO = new StudentDAOImpl(daoFactory);
@@ -178,7 +177,7 @@ public class AdminController {
 
 
     public static void main(String[] args) {
-        AdminController adminController = new AdminController();
+        AdminControllerTemp adminController = new AdminControllerTemp();
         adminController.runController();
 
     }

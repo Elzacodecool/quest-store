@@ -12,7 +12,7 @@ import com.codecool.queststore.view.UI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MentorController {
+public class MentorControllerTemp {
 
     private MentorDAO mentorDAO;
     private StudentDAO studentDAO;
@@ -22,7 +22,7 @@ public class MentorController {
     private TransactionDAO transactionDAO;
     private UI ui;
 
-    public MentorController() {
+    public MentorControllerTemp() {
         daoFactory = new DAOFactoryImpl();
         mentorDAO = new MentorDAOImpl(daoFactory);
         itemDAO = new ItemDAOImpl(daoFactory);
@@ -33,6 +33,7 @@ public class MentorController {
     }
 
     public void runController() {
+        System.out.println(studentDAO.getStudent(1));
         boolean isRunning = true;
 
         while (isRunning) {
@@ -198,24 +199,26 @@ public class MentorController {
         List<Item> itemList = itemDAO.getQuests();
         Item item = getItem(itemList);
         Student student = chooseStudent();
-        Transaction transaction = new Transaction(student, item, item.getPrice());
-        transactionDAO.add(transaction);
+
+//        Transaction transaction = new Transaction(student, item, item.getPrice());
+//        transactionDAO.add(transaction);
 
     }
 
     private Student chooseStudent() {
         List<Student> studentList = studentDAO.getAllStudents();
-        System.out.println(studentList.size());
-        for (int i = 0; i < studentList.size(); i++) {
-            UserDetails us = studentList.get(i).getUserDetails();
-            ui.displayLine("[" + i + "] " + us.getFirstName() + " " + us.getLastName());
-        }
-        int indexStudent = ui.getInputInt("Type your choice: ");
-        return studentList.get(indexStudent);
+//        System.out.println(studentList.size());
+//        for (int i = 0; i < studentList.size(); i++) {
+//            UserDetails us = studentList.get(i).getUserDetails();
+//            ui.displayLine("[" + i + "] " + us.getFirstName() + " " + us.getLastName());
+//        }
+//        int indexStudent = ui.getInputInt("Type your choice: ");
+//        return studentList.get(indexStudent);
+        return null;
     }
 
     public static void main(String[] args) {
-        MentorController mentorController = new MentorController();
+        MentorControllerTemp mentorController = new MentorControllerTemp();
         mentorController.runController();
     }
 }
