@@ -37,11 +37,11 @@ public class TransactionDAOImpl implements  TransactionDAO {
     private Transaction getTransactionByResultSet(ResultSet resultSet) {
         try {
             int id = resultSet.getInt("transaction_id");
-            Student student = daoFactory.getStudentDAO().getStudent(resultSet.getInt("student_id"));
+            int studentId = resultSet.getInt("student_id");
             Item item = daoFactory.getItemDAO().get(resultSet.getInt("item_id"));
             int amount = resultSet.getInt("amount");
 
-            return new Transaction(id, student, item, amount);
+            return new Transaction(id, studentId, item, amount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,7 +63,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
     @Override
     public void add(Transaction transaction) {
         String query = "INSERT INTO transaction (student_id, item_id, amount) VALUES (?, ?, ?);";
-        int studentId = transaction.getStudent().getId();
+        int studentId = transaction.getStudentId();
         int itemId = transaction.getItem().getId();
         int amount = transaction.getAmount();
 
@@ -83,7 +83,7 @@ public class TransactionDAOImpl implements  TransactionDAO {
                 "SET student_id=?, item_id=?, amount=? " +
                 "WHERE transaction_id = ? ;";
         int id = transaction.getId();
-        int studentId = transaction.getStudent().getId();
+        int studentId = transaction.getStudentId();
         int itemId = transaction.getItem().getId();
         int amount = transaction.getAmount();
 
