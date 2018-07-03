@@ -200,21 +200,20 @@ public class MentorControllerTemp {
         Item item = getItem(itemList);
         Student student = chooseStudent();
 
-//        Transaction transaction = new Transaction(student, item, item.getPrice());
-//        transactionDAO.add(transaction);
+        Transaction transaction = new Transaction(student.getId(), item, item.getPrice());
+        transactionDAO.add(transaction);
 
     }
 
     private Student chooseStudent() {
         List<Student> studentList = studentDAO.getAllStudents();
-//        System.out.println(studentList.size());
-//        for (int i = 0; i < studentList.size(); i++) {
-//            UserDetails us = studentList.get(i).getUserDetails();
-//            ui.displayLine("[" + i + "] " + us.getFirstName() + " " + us.getLastName());
-//        }
-//        int indexStudent = ui.getInputInt("Type your choice: ");
-//        return studentList.get(indexStudent);
-        return null;
+        System.out.println(studentList.size());
+        for (int i = 0; i < studentList.size(); i++) {
+            UserDetails us = studentList.get(i).getUserDetails();
+            ui.displayLine("[" + i + "] " + us.getFirstName() + " " + us.getLastName());
+        }
+        int indexStudent = ui.getInputInt("Type your choice: ");
+        return studentList.get(indexStudent);
     }
 
     public static void main(String[] args) {
