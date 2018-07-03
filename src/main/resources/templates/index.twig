@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Log in - Quest Store</title>
+
+	<link rel="icon" href="/static/img/logo.png">
+	<link rel="stylesheet" href="/static/css/login-style.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	<script src="scripts/script.js"></script>
+
+</head>
+
+<body>
+
+	<div class="main-container">
+		<header>QuestSt<img id="logo" src="/static/img/logo.png">re</header>
+		<div class="inputs">
+			<form id="form" method="POST">
+				<div class="input">
+					<label><p>Login</p></label>
+					<input id="login" autocomplete="off" name="login" title="login" required>
+				</div>
+
+				<div class="input">
+					<label><p>Password</p></label>
+					<input type="password" name="password" title="password" required>
+				</div>
+
+				<div class="input">
+					<label></label>
+					<input id="button" type="submit" value="Log in" onclick="checkInput()">
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>
