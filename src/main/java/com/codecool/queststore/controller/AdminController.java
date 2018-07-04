@@ -43,6 +43,8 @@ public class AdminController implements HttpHandler {
         } else if (mentorDataConfirmed(actionsDatas, method)) {
             createMentor(httpExchange);
             redirect(httpExchange, "/admin");
+        } else if (requestToAddClassRoom(actionsDatas, method)) {
+            response = getResponse("templates/add-class.twig");
         } else if (requestLogout(actionsDatas, method)) {
             clearSession();
             redirect(httpExchange, "/index");
@@ -127,6 +129,13 @@ public class AdminController implements HttpHandler {
         boolean isDataCorrect = actionsDatas.get("data").equals("add-mentor");
         boolean isPostMethod = method.equals("POST");
         return isActionCorrect && isDataCorrect && isPostMethod;
+    }
+
+    private boolean requestToAddClassRoom(Map<String, String> actionsDatas, String method) {
+        boolean isActionCorrect = actionsDatas.get("action").contains("admin");
+        boolean isDataCorrect = actionsDatas.get("data").equals("add-class");
+        boolean isGetMethod = method.equals("GET");
+        return isActionCorrect && isDataCorrect && isGetMethod;
     }
 
     private boolean requestLogout(Map<String, String> actionsDatas, String method) {
