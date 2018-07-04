@@ -26,23 +26,24 @@ public class AdminController implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        String sessionId = getSessionIdbyCookie(cookieStr);
-
-        if (sessionExpired(sessionId)) { redirect(httpExchange, "index"); }
+        redirectToLoginPageIfSessionExpired(httpExchange);
 
         this.admin = getAdminByCookie(httpExchange);
         Map<String, String> actionsDatas = parseURI(httpExchange);
 
-
-        String directionURI = getDirectionUri(httpExchange);
-
-        if (requestToMenu(directionURI)) {
-
+        String response = "";
+        if (requestToMenu(actionsDatas)) {
+            String response = getResponse(httpExchange);
         }
 
-        String response = getResponse(httpExchange);
         sendResponse(httpExchange, response);
+    }
+
+    private void redirectToLoginPageIfSessionExpired(HttpExchange httpExchange) throws IOException {
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        String sessionId = getSessionIdbyCookie(cookieStr);
+
+        if (sessionExpired(sessionId)) { redirect(httpExchange, "index"); }
     }
 
     private String getSessionIdbyCookie(String cookieStr) {
