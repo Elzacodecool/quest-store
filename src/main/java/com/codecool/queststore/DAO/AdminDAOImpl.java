@@ -26,6 +26,7 @@ public class AdminDAOImpl implements AdminDAO {
 
     private Admin getAdminByUserId(ResultSet resultSet) {
         try{
+            resultSet.next();
             int user_id = resultSet.getInt("codecooler_id");
             int admin_id = resultSet.getInt("admin_id");
             UserDetails userDetails = userDAO.getUser(user_id);
