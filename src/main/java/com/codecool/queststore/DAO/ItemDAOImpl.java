@@ -83,7 +83,7 @@ public class ItemDAOImpl implements  ItemDAO {
 
     @Override
     public void add(Item item) {
-        String sqlQuery = "INSERT INTO item (name, description, category, price) VALUES (?, ?, ?, ?)";
+        String sqlQuery = "INSERT INTO item (name, decription, category, price) VALUES (?, ?, ?, ?)";
         daoFactory.execQuery(sqlQuery, item.getPrice(), item.getName(), item.getDescription(), item.getCategory().getName());
     }
 
