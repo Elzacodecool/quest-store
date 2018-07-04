@@ -154,6 +154,15 @@ public class AdminController implements HttpHandler {
         mentorDAO.add(mentor);
     }
 
+    private void createClassRoom(HttpExchange httpExchange) throws IOException {
+        Map<String, String> formMap = new RequestFormater().getMapFromRequest(httpExchange);
+        String classRoomName = formMap.get("classname");
+        ClassRoom classRoom = new ClassRoom(0, classRoomName);
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        ClassDAO classDAO = daoFactory.getClassDAO();
+        classDAO.add(classRoom);
+    }
+
     private void clearSession() {
         SingletonAcountContainer acountContainer = SingletonAcountContainer.getInstance();
         acountContainer.removeSession(admin.getUserDetails().getId());
