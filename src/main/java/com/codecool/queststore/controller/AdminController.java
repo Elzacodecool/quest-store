@@ -180,6 +180,17 @@ public class AdminController implements HttpHandler {
         return isActionCorrect && isDataCorrect;
     }
 
+    private void manageDataAndRedirect(HttpExchange httpExchange) throws IOException {
+        String dataUri = getDataUri(httpExchange);
+
+        switch (dataUri) {
+            case "add-mentor":
+                createMentor(httpExchange);
+                redirect(httpExchange, "/admin");
+                break;
+        }
+    }
+
     private void createMentor(HttpExchange httpExchange) throws IOException {
         Map<String, String> formMap = new RequestFormater().getMapFromRequest(httpExchange);
         UserDetails userDetails = new UserDetails(formMap.get("firstname"), formMap.get("lastname"), formMap.get("email"), formMap.get("login"), formMap.get("password"), "mentor");
