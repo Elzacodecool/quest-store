@@ -42,22 +42,6 @@ public class AdminController implements HttpHandler {
         }
 
         sendResponse(httpExchange, response);
-
-//        Map<String, String> actionsDatas = parseURI(httpExchange);
-//        if (requestToMenu(actionsDatas, method)) {
-//            response = getResponse("templates/menu-admin.twig");
-//        } else if (requestToAddMentor(actionsDatas, method)) {
-//            response = getResponse("templates/add-mentor.twig");
-//        } else if (mentorDataConfirmed(actionsDatas, method)) {
-//            createMentor(httpExchange);
-//            redirect(httpExchange, "/admin");
-//        } else if (requestToAddClassRoom(actionsDatas, method)) {
-//            response = getResponse("templates/add-class.twig");
-//        } else if (requestLogout(actionsDatas, method)) {
-//            clearSession();
-//            redirect(httpExchange, "/index");
-//        }
-
     }
 
     private void redirectToLoginPageIfSessionExpired(HttpExchange httpExchange) throws IOException {
@@ -146,39 +130,6 @@ public class AdminController implements HttpHandler {
     }
 
     private boolean isGetMethod(String method) { return method.equals("GET"); }
-
-    private boolean requestToMenu(Map<String, String> actionsDatas, String method) {
-        boolean isDataCorrect = actionsDatas.get("data").equals("admin");
-        boolean isGetMethod = method.equals("GET");
-        return isDataCorrect && isGetMethod;
-    }
-
-    private boolean requestToAddMentor(Map<String, String> actionsDatas, String method) {
-        boolean isActionCorrect = actionsDatas.get("action").contains("admin");
-        boolean isDataCorrect = actionsDatas.get("data").equals("add-mentor");
-        boolean isGetMethod = method.equals("GET");
-        return isActionCorrect && isDataCorrect && isGetMethod;
-    }
-
-    private boolean mentorDataConfirmed(Map<String, String> actionsDatas, String method) {
-        boolean isActionCorrect = actionsDatas.get("action").contains("admin");
-        boolean isDataCorrect = actionsDatas.get("data").equals("add-mentor");
-        boolean isPostMethod = method.equals("POST");
-        return isActionCorrect && isDataCorrect && isPostMethod;
-    }
-
-    private boolean requestToAddClassRoom(Map<String, String> actionsDatas, String method) {
-        boolean isActionCorrect = actionsDatas.get("action").contains("admin");
-        boolean isDataCorrect = actionsDatas.get("data").equals("add-class");
-        boolean isGetMethod = method.equals("GET");
-        return isActionCorrect && isDataCorrect && isGetMethod;
-    }
-
-    private boolean requestLogout(Map<String, String> actionsDatas, String method) {
-        boolean isActionCorrect = actionsDatas.get("action").contains("admin");
-        boolean isDataCorrect = actionsDatas.get("data").equals("logout");
-        return isActionCorrect && isDataCorrect;
-    }
 
     private void manageDataAndRedirect(HttpExchange httpExchange) throws IOException {
         String dataUri = getDataUri(httpExchange);
