@@ -1,12 +1,11 @@
 package com.codecool.queststore.controller;
 
-import com.codecool.queststore.DAO.AdminDAO;
-import com.codecool.queststore.DAO.AdminDAOImpl;
-import com.codecool.queststore.DAO.DAOFactory;
-import com.codecool.queststore.DAO.DAOFactoryImpl;
+import com.codecool.queststore.DAO.*;
+import com.codecool.queststore.model.RequestFormater;
 import com.codecool.queststore.model.SingletonAcountContainer;
 import com.codecool.queststore.model.classRoom.ClassRoom;
 import com.codecool.queststore.model.user.Admin;
+import com.codecool.queststore.model.user.Mentor;
 import com.codecool.queststore.model.user.UserDetails;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -127,8 +126,13 @@ public class AdminController implements HttpHandler {
         return isActionCorrect && isDataCorrect && isPostMethod;
     }
 
-    private void createMentor(HttpExchange httpExchange) {
-
+    private void createMentor(HttpExchange httpExchange) throws IOException {
+        Map<String, String> formMap = new RequestFormater().getMapFromRequest(httpExchange);
+        UserDetails userDetails = new UserDetails(formMap.get("firstname"), formMap.get("lastname"), formMap.get("email"), formMap.get("login"), formMap.get("password"), "mentor");
+        Mentor mentor = new Mentor(0, userDetails);
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        MentorDAO mentorDAO = daoFactory.getMentorDAO();
+        mentorDAO.add(mentor);
     }
 
     private String getResponse(String templatePath) {
