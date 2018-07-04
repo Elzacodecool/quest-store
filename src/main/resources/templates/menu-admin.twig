@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Main page - Quest Store</title>
+
+	<link rel="icon" href="../img/logo.png">
+	<link rel="stylesheet" href="static/css/menu-style.css">
+	<link rel="stylesheet" href="static/css/fontello/fontello.css">
+	<link rel="stylesheet" href="static/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+	<script src="static/scripts/script.js"></script>
+</head>
+
+<body>
+
+	<div id="main-header">
+		<div id="main-header-user-name">
+			<section>{{ fullname }}</section>
+		</div>
+
+		<div id="main-header-logo">
+			<header><a id="back-to-menu" href="menu-admin.html">QuestSt<img id="logo" src="static/img/logo.png">re</a></header>
+		</div>
+	</div>
+
+	<div id="main-header-cash">
+		<section class="icon-money">500</section>
+	</div>
+
+	<nav>
+	<div id="content-container">
+
+		<script>createTiles([
+							["Add mentor", "User", "icon-user-plus", "../profiles/add-edit-mentor.html"],
+							["Edit mentor", "User", "icon-id-card", "../list/mentors.html"],
+							["Show mentors", "User", "icon-user-pair", "../list/mentors-no-edit.html"],
+							["Add class", "Classroom", "icon-rocket", "../classes/add-edit-class.html"],
+							["Edit class", "Classroom", "icon-user-plus", "../list/classes.html"],
+							["Logout", "Logout", "icon-power", "../index.html"],
+							])</script>
+
+	</div>
+	</nav>
+
+	<div id="footer">
+		<footer>Copyright &copy 2018 Truskawki</footer>
+	</div>
+
+</body>
+
+</html>

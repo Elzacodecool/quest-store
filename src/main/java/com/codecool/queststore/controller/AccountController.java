@@ -29,43 +29,91 @@ public class AccountController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+
         String method = httpExchange.getRequestMethod();
-        String response = getResponse();
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        HttpCookie httpCookie;
-        String sessionId = "";
+
+        if (pageLoadedAndCookieExists(method, cookieStr)) {
+            redirectToMenuByCookie(cookieStr, httpExchange);
+        } else if (userPushedLoginButton(method)) {
+            redirectToMenuByUserType(httpExchange);
+        } else {
+            String response = getResponse();
+            sendResponse(httpExchange, response);
+        }
+    }
+
+    private boolean pageLoadedAndCookieExists(String method, String cookieStr) {
+        return method.equals("GET") && cookieStr != null;
+    }
+
+    private boolean userPushedLoginButton(String method) {
+        return method.equals("POST");
+    }
+
+    private void redirectToMenuByCookie(String cookieStr, HttpExchange httpExchange) throws IOException {
+
+        String sessionId = getSessionIdbyCookie(cookieStr);
+        if (sessionExpired(sessionId)) {
+            String response = getResponse();
+            sendResponse(httpExchange, response);
+        } else {
+            String accountType = getAccountType(sessionId);
+            login(httpExchange, accountType);
+        }
+    }
+
+    private String getSessionIdbyCookie(String cookieStr) {
+        HttpCookie httpCookie = HttpCookie.parse(cookieStr).get(0);
+        return httpCookie.toString().split("=")[1];
+    }
+
+    private boolean sessionExpired(String sessionId) {
+        return sessionId == null;
+    }
+
+    private String getAccountType(String sessionId) {
         SingletonAcountContainer accountContainer = SingletonAcountContainer.getInstance();
+        int codecoolerId = accountContainer.getCodecoolerId(sessionId);
+        return accountDAO.getAccountType(codecoolerId);
+    }
 
-        if (method.equals("GET") && cookieStr != null) {
-            httpCookie = HttpCookie.parse(cookieStr).get(0);
-            sessionId = httpCookie.getValue();
-            int id = 0;
-            if (accountContainer.checkIfContains(sessionId)) {
-                id = accountContainer.getCodecoolerId(sessionId);
-                String accountType = accountDAO.getAccountType(id);
-                login(httpExchange, accountType);
-            }
+    private void redirectToMenuByUserType(HttpExchange httpExchange) throws IOException {
 
+        Map<String, String> loginPassword = parseForm(httpExchange);
+        String login = loginPassword.get("login");
+        String password = loginPassword.get("password");
+
+        if (loginPasswordValid(login, password)) {
+            String uuid = UUID.randomUUID().toString();
+            addNewSession(uuid, login, password);
+            prepareCookieToSend(uuid, httpExchange);
+            String accountType = accountDAO.getAccountType(login, password);
+            login(httpExchange, accountType);
+        } else {
+            String response = getResponse("Login or password incorrect!");
+            sendResponse(httpExchange, response);
         }
+    }
 
-        if (method.equals("POST")) {
-            RequestFormater requestFormater = new RequestFormater();
-            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
-            if (accountDAO.validateAccount(formMap.get("login"), formMap.get("password"))) {
-                UUID uuid = UUID.randomUUID();
-                httpCookie = new HttpCookie("sessionId", uuid.toString());
-                httpExchange.getResponseHeaders().add("Set-Cookie", httpCookie.toString());
-                String accountType = accountDAO.getAccountType(formMap.get("login"), formMap.get("password"));
-                int id = accountDAO.getCodecoolerId(formMap.get("login"), formMap.get("password"));
-                accountContainer.addAccount(uuid.toString(), id);
-                login(httpExchange, accountType);
-            }
-        }
+    private Map<String, String> parseForm(HttpExchange httpExchange) throws IOException {
+        RequestFormater requestFormater = new RequestFormater();
+        return requestFormater.getMapFromRequest(httpExchange);
+    }
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+    private boolean loginPasswordValid(String login, String password) {
+        return accountDAO.validateAccount(login, password);
+    }
+
+    private void addNewSession(String uuid, String login, String password) {
+        int id = accountDAO.getCodecoolerId(login, password);
+        SingletonAcountContainer accountContainer = SingletonAcountContainer.getInstance();
+        accountContainer.addAccount(uuid, id);
+    }
+
+    private void prepareCookieToSend(String uuid, HttpExchange httpExchange) {
+        HttpCookie httpCookie = new HttpCookie("sessionId", uuid);
+        httpExchange.getResponseHeaders().add("Set-Cookie", httpCookie.toString());
     }
 
     private void login(HttpExchange httpExchange, String accountType) throws IOException {
@@ -85,13 +133,24 @@ public class AccountController implements HttpHandler {
         httpExchange.close();
     }
 
+    private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
     private String getResponse() {
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/index.twig");
         JtwigModel jtwigModel = JtwigModel.newModel();
-        String response = jtwigTemplate.render(jtwigModel);
-
-        return response;
+        return jtwigTemplate.render(jtwigModel);
     }
 
+    private String getResponse(String message) {
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/index.twig");
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        jtwigModel.with("message", message);
+        return jtwigTemplate.render(jtwigModel);
+    }
 
 }
