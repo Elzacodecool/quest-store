@@ -107,6 +107,9 @@ public class AdminController implements HttpHandler {
             case "list-classes":
                 response = getResponse("templates/classes-list-admin-view.twig");
                 break;
+            case "edit-class":
+                response = getResponse("templates/edit-class.twig", Integer.parseInt(getLastAction(httpExchange)));
+                break;
             case "logout":
                 clearSession();
                 redirect(httpExchange, "/index");
@@ -119,6 +122,8 @@ public class AdminController implements HttpHandler {
     private String getDataUri(HttpExchange httpExchange) {
         return parseURI(httpExchange).get("data");
     }
+
+    private String getLastAction(HttpExchange httpExchange) { return parseURI(httpExchange).get("action");}
 
     private Map<String, String> parseURI(HttpExchange httpExchange) {
 
@@ -177,6 +182,19 @@ public class AdminController implements HttpHandler {
         JtwigModel jtwigModel = JtwigModel.newModel();
         setHeaderDetails(jtwigModel);
         if (templatePath.contains("add-mentor") || templatePath.contains("classes-list-admin-view")) { setClassRooms(jtwigModel); }
+
+        return jtwigTemplate.render(jtwigModel);
+    }
+
+    private String getResponse(String templatePath, int classId) {
+
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        setHeaderDetails(jtwigModel);
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        ClassDAO classDAO = daoFactory.getClassDAO();
+        ClassRoom classRoom = classDAO.getClass(classId);
+        jtwigModel.with("classname", classRoom.getClassName());
 
         return jtwigTemplate.render(jtwigModel);
     }
