@@ -175,6 +175,20 @@ public class AdminController implements HttpHandler {
         classDAO.add(classRoom);
     }
 
+    private void updateClassRoom(HttpExchange httpExchange) throws IOException {
+        Map<String, String> formMap = new RequestFormater().getMapFromRequest(httpExchange);
+        String classRoomName = formMap.get("classname");
+
+        int classId = Integer.parseInt(getLastAction(httpExchange));
+
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        ClassDAO classDAO = daoFactory.getClassDAO();
+        ClassRoom classRoom = classDAO.getClass(classId);
+
+        classRoom.setClassName(classRoomName);
+        // classDAO.update(classRoom); TODO - WHY DAO UPDATES ALL CLASSROOMS ???
+    }
+
     private void clearSession() {
         SingletonAcountContainer acountContainer = SingletonAcountContainer.getInstance();
         acountContainer.removeSession(admin.getUserDetails().getId());
