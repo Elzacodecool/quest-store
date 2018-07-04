@@ -35,6 +35,8 @@ public class AdminController implements HttpHandler {
         String response = "";
         if (requestToMenu(actionsDatas)) {
             response = getResponse("templates/menu-admin.twig");
+        } else if (requestToAddMentor(actionsDatas)) {
+            response = getResponse("templates/add-mentor.twig");
         }
         sendResponse(httpExchange, response);
     }
@@ -100,14 +102,24 @@ public class AdminController implements HttpHandler {
 
     private boolean requestToMenu(Map<String, String> actionsDatas) { return actionsDatas.get("data").equals("admin"); }
 
+    private boolean requestToAddMentor(Map<String, String> actionsDatas) {
+        boolean isActionCorrect = actionsDatas.get("action").contains("admin");
+        boolean isDataCorrect = actionsDatas.get("data").equals("add-mentor");
+        return isActionCorrect && isDataCorrect;
+    }
+
     private String getResponse(String templatePath) {
 
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel jtwigModel = JtwigModel.newModel();
-        UserDetails userDetails = admin.getUserDetails();
-        jtwigModel.with("fullname", userDetails.getFirstName() + " " + userDetails.getLastName());
+        setHeaderDetails(jtwigModel);
 
         return jtwigTemplate.render(jtwigModel);
+    }
+
+    private void setHeaderDetails(JtwigModel jtwigModel) {
+        UserDetails userDetails = admin.getUserDetails();
+        jtwigModel.with("fullname", userDetails.getFirstName() + " " + userDetails.getLastName());
     }
 
     private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
