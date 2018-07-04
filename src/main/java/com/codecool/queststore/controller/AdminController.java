@@ -44,7 +44,7 @@ public class AdminController implements HttpHandler {
             createMentor(httpExchange);
             redirect(httpExchange, "/admin");
         } else if (requestLogout(actionsDatas, method)) {
-            clearSession(httpExchange);
+            clearSession();
             redirect(httpExchange, "/index");
         }
         sendResponse(httpExchange, response);
@@ -142,6 +142,11 @@ public class AdminController implements HttpHandler {
         DAOFactoryImpl daoFactory = new DAOFactoryImpl();
         MentorDAO mentorDAO = daoFactory.getMentorDAO();
         mentorDAO.add(mentor);
+    }
+
+    private void clearSession() {
+        SingletonAcountContainer acountContainer = SingletonAcountContainer.getInstance();
+        acountContainer.removeSession(admin.getUserDetails().getId());
     }
 
     private String getResponse(String templatePath) {
