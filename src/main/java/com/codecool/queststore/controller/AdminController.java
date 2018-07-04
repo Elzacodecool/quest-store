@@ -107,6 +107,26 @@ public class AdminController implements HttpHandler {
         return new AdminDAOImpl(daoFactory);
     }
 
+    private void constructResponse(HttpExchange httpExchange, String response) throws IOException {
+        String dataUri = getDataUri(httpExchange);
+
+        switch (dataUri) {
+            case "admin":
+                response = getResponse("templates/menu-admin.twig");
+                break;
+            case "add-mentor":
+                response = getResponse("templates/add-mentor.twig");
+                break;
+            case "add-class":
+                response = getResponse("templates/add-class.twig");
+                break;
+            case "logout":
+                clearSession();
+                redirect(httpExchange, "/index");
+                break;
+        }
+    }
+
     private Map<String, String> parseURI(HttpExchange httpExchange) {
 
         String uri = httpExchange.getRequestURI().toString();
