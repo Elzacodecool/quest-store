@@ -150,6 +150,10 @@ public class AdminController implements HttpHandler {
             case "add-class":
                 createClassRoom(httpExchange);
                 redirect(httpExchange, "/admin");
+                break;
+            case "edit-class":
+                updateClassRoom(httpExchange);
+                redirect(httpExchange, "/admin");
         }
     }
 
