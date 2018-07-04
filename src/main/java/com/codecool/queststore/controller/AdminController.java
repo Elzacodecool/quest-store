@@ -41,6 +41,7 @@ public class AdminController implements HttpHandler {
 
     private void redirectToLoginPageIfSessionExpired(HttpExchange httpExchange) throws IOException {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        String sessionId = getSessionIdbyCookie(cookieStr);
 
         if (sessionExpired(sessionId)) { redirect(httpExchange, "index"); }
     }
