@@ -33,7 +33,7 @@ public class AdminController implements HttpHandler {
 
         String response = "";
         if (requestToMenu(actionsDatas)) {
-            String response = getResponse(httpExchange);
+            response = getResponse(httpExchange, "templates/menu-admin.twig");
         }
 
         sendResponse(httpExchange, response);
@@ -98,10 +98,12 @@ public class AdminController implements HttpHandler {
         return keyValue;
     }
 
-    private String getResponse(HttpExchange httpExchange) {
+    private boolean requestToMenu(Map<String, String> actionsDatas) { return actionsDatas.get("data").equals("admin"); }
+
+    private String getResponse(HttpExchange httpExchange, String templatePath) {
 
         Admin admin = getAdminByCookie(httpExchange);
-        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/menu-admin.twig");
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel jtwigModel = JtwigModel.newModel();
         jtwigModel.with("fullname", admin.getUserDetails().getFirstName() + " " + admin.getUserDetails().getLastName());
         String response = jtwigTemplate.render(jtwigModel);
