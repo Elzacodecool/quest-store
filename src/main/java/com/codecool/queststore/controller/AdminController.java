@@ -89,13 +89,11 @@ public class AdminController implements HttpHandler {
 
         String uri = httpExchange.getRequestURI().toString();
         String[] actionsDatas = uri.split("/");
+
         Map <String, String> keyValue = new HashMap<>();
-
-        for (int i = 0; i < actionsDatas.length - 1; i++) {
-            keyValue.put("action", actionsDatas[i]);
-        }
-
+        for (int i = 0; i < actionsDatas.length - 1; i++) { keyValue.put("action", actionsDatas[i]); }
         keyValue.put("data", actionsDatas[actionsDatas.length - 1]);
+
         return keyValue;
     }
 
