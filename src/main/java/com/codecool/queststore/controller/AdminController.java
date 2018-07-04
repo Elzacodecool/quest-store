@@ -176,7 +176,7 @@ public class AdminController implements HttpHandler {
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel jtwigModel = JtwigModel.newModel();
         setHeaderDetails(jtwigModel);
-        if (templatePath.contains("add-mentor")) { setClassRooms(jtwigModel); }
+        if (templatePath.contains("add-mentor") || templatePath.contains("classes-list-admin-view")) { setClassRooms(jtwigModel); }
 
         return jtwigTemplate.render(jtwigModel);
     }
