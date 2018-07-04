@@ -16,11 +16,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpCookie;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminController implements HttpHandler {
 
     private Admin admin;
-    private URI uri;
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -28,10 +29,20 @@ public class AdminController implements HttpHandler {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         String sessionId = getSessionIdbyCookie(cookieStr);
 
-        if (sessionExpired(sessionId)) {
-            redirect(httpExchange, "index");
+        if (sessionExpired(sessionId)) { redirect(httpExchange, "index"); }
+
+        this.admin = getAdminByCookie(httpExchange);
+        Map<String, String> actionsDatas = parseURI(httpExchange);
+
+
+        String directionURI = getDirectionUri(httpExchange);
+
+        if (requestToMenu(directionURI)) {
+
         }
-        
+
+        String response = getResponse(httpExchange);
+        sendResponse(httpExchange, response);
     }
 
     private String getSessionIdbyCookie(String cookieStr) {
@@ -48,17 +59,6 @@ public class AdminController implements HttpHandler {
         headers.add("Location", location);
         httpExchange.sendResponseHeaders(302, -1);
         httpExchange.close();
-    }
-
-    private String getResponse(HttpExchange httpExchange) {
-
-        Admin admin = getAdminByCookie(httpExchange);
-        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/menu-admin.twig");
-        JtwigModel jtwigModel = JtwigModel.newModel();
-        jtwigModel.with("fullname", admin.getUserDetails().getFirstName() + " " + admin.getUserDetails().getLastName());
-        String response = jtwigTemplate.render(jtwigModel);
-
-        return response;
     }
 
     private Admin getAdminByCookie(HttpExchange httpExchange) {
@@ -83,6 +83,31 @@ public class AdminController implements HttpHandler {
     private AdminDAOImpl getAdminDao() {
         DAOFactoryImpl daoFactory = new DAOFactoryImpl();
         return new AdminDAOImpl(daoFactory);
+    }
+
+    private Map<String, String> parseURI(HttpExchange httpExchange) {
+
+        String uri = httpExchange.getRequestURI().toString();
+        String[] actionsDatas = uri.split("/");
+        Map <String, String> keyValue = new HashMap<>();
+
+        for (int i = 0; i < actionsDatas.length - 1; i++) {
+            keyValue.put("action", actionsDatas[i]);
+        }
+
+        keyValue.put("data", actionsDatas[actionsDatas.length - 1]);
+        return keyValue;
+    }
+
+    private String getResponse(HttpExchange httpExchange) {
+
+        Admin admin = getAdminByCookie(httpExchange);
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/menu-admin.twig");
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        jtwigModel.with("fullname", admin.getUserDetails().getFirstName() + " " + admin.getUserDetails().getLastName());
+        String response = jtwigTemplate.render(jtwigModel);
+
+        return response;
     }
 
     private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
