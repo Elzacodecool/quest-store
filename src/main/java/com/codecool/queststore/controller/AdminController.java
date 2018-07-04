@@ -19,10 +19,7 @@ public class AdminController implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = getResponse(httpExchange);
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        sendResponse(httpExchange, response);
     }
 
     private String getResponse(HttpExchange httpExchange) {
@@ -30,7 +27,7 @@ public class AdminController implements HttpHandler {
         Admin admin = getAdminByCookie(httpExchange);
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/menu-admin.twig");
         JtwigModel jtwigModel = JtwigModel.newModel();
-        jtwigModel.with("fullname", admin.getUserDetails().getFirstName() + admin.getUserDetails().getLastName());
+        jtwigModel.with("fullname", admin.getUserDetails().getFirstName() + " " + admin.getUserDetails().getLastName());
         String response = jtwigTemplate.render(jtwigModel);
 
         return response;
@@ -58,5 +55,12 @@ public class AdminController implements HttpHandler {
     private AdminDAOImpl getAdminDao() {
         DAOFactoryImpl daoFactory = new DAOFactoryImpl();
         return new AdminDAOImpl(daoFactory);
+    }
+
+    private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
     }
 }
