@@ -104,6 +104,9 @@ public class AdminController implements HttpHandler {
             case "add-class":
                 response = getResponse("templates/add-class.twig");
                 break;
+            case "list-classes":
+                response = getResponse("templates/classes-list-admin-view.twig");
+                break;
             case "logout":
                 clearSession();
                 redirect(httpExchange, "/index");
