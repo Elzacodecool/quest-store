@@ -32,24 +32,32 @@ public class AdminController implements HttpHandler {
 
         this.admin = getAdminByCookie(httpExchange);
 
-        Map<String, String> actionsDatas = parseURI(httpExchange);
         String method = httpExchange.getRequestMethod();
-
         String response = "";
-        if (requestToMenu(actionsDatas, method)) {
-            response = getResponse("templates/menu-admin.twig");
-        } else if (requestToAddMentor(actionsDatas, method)) {
-            response = getResponse("templates/add-mentor.twig");
-        } else if (mentorDataConfirmed(actionsDatas, method)) {
-            createMentor(httpExchange);
-            redirect(httpExchange, "/admin");
-        } else if (requestToAddClassRoom(actionsDatas, method)) {
-            response = getResponse("templates/add-class.twig");
-        } else if (requestLogout(actionsDatas, method)) {
-            clearSession();
-            redirect(httpExchange, "/index");
+
+        if (isGetMethod(method)) {
+            constructResponse(httpExchange, response);
+        } else {
+            manageDataAndRedirect(httpExchange);
         }
+
         sendResponse(httpExchange, response);
+
+//        Map<String, String> actionsDatas = parseURI(httpExchange);
+//        if (requestToMenu(actionsDatas, method)) {
+//            response = getResponse("templates/menu-admin.twig");
+//        } else if (requestToAddMentor(actionsDatas, method)) {
+//            response = getResponse("templates/add-mentor.twig");
+//        } else if (mentorDataConfirmed(actionsDatas, method)) {
+//            createMentor(httpExchange);
+//            redirect(httpExchange, "/admin");
+//        } else if (requestToAddClassRoom(actionsDatas, method)) {
+//            response = getResponse("templates/add-class.twig");
+//        } else if (requestLogout(actionsDatas, method)) {
+//            clearSession();
+//            redirect(httpExchange, "/index");
+//        }
+
     }
 
     private void redirectToLoginPageIfSessionExpired(HttpExchange httpExchange) throws IOException {
@@ -110,6 +118,8 @@ public class AdminController implements HttpHandler {
 
         return keyValue;
     }
+
+    private boolean isGetMethod(String method) { method.equals("GET"); }
 
     private boolean requestToMenu(Map<String, String> actionsDatas, String method) {
         boolean isDataCorrect = actionsDatas.get("data").equals("admin");
