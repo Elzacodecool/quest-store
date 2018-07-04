@@ -85,18 +85,19 @@ public class AdminControllerTemp {
     }
 
     public void createMentor() {
-        Mentor mentor = new Mentor(getDetailsFromInput());
-        mentorDAO.add(mentor);
+//        Mentor mentor = new Mentor(getDetailsFromInput());
+//        mentorDAO.add(mentor);
     }
 
-    private UserDetails getDetailsFromInput() {
-        String firstName = ui.getInputString("Type first name: ");
-        String lastName = ui.getInputString("Type last name: ");
-        String email = ui.getInputString("Type email: ");
-        String login = ui.getInputString("Type login name: ");
-        String password = ui.getInputString("Type password: ");
-        return new UserDetails(firstName, lastName, email, login, password);
-    }
+//    private UserDetails getDetailsFromInput() {
+//        String firstName = ui.getInputString("Type first name: ");
+//        String lastName = ui.getInputString("Type last name: ");
+//        String email = ui.getInputString("Type email: ");
+//        String login = ui.getInputString("Type login name: ");
+//        String password = ui.getInputString("Type password: ");
+//        String acc
+//        return new UserDetails(firstName, lastName, email, login, password);
+//    }
 
     public void addClass() {
         String name = ui.getInputString("Type first name: ");

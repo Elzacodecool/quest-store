@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Quest Store</title>
+
+	<link rel="stylesheet" href="/static/css/item-profile-class-style.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="icon" href="/static/img/logo.png">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+<body>
+
+<div id="main-header">
+	<div id="main-header-user-name">
+		<section>{{ fullname }}</section>
+	</div>
+
+	<div id="main-header-logo">
+		<header><a id="back-to-menu" href="../menus/menu-mentor.html">QuestSt<img id="logo" src="/static/img/logo.png">re</a></header>
+	</div>
+</div>
+
+<form method="POST" id="content-container">
+	<div id="left-container">
+		<div id="content-container-photo">
+			<img id="student-photo" src="/static/img/student.png" alt="student-photo">
+		</div>
+		<div id="buttons-container">
+			<a href="javascript:history.back();" id="back-button" style="text-decoration: none;color: white;">Back</a>
+			<input type="submit" value="Submit" id="confirm-button">
+		</div>
+	</div>
+
+
+	<form method="POST" id="right-content">
+		<div id="profile-content">
+			<div class="profile-content-pool">
+				<label class="profile-content-label" for="profile-content-label">First Name:<br></label>
+				<input type="text" class="profile-content-input text-font" pattern="^[A-Z][a-z]{2,}$" name="firstname" title="Name must have only letter
+				and must contain more than 2 characters, uppercase first letter" required>
+			</div>
+
+			<div class="profile-content-pool">
+				<label class="profile-content-label" for="profile-content-label">Last Name:<br></label>
+				<input type="text" class="profile-content-input text-font" pattern="^[A-Z][a-z]{2,}$" name="lastname" title="Name must have only letter
+				and must contain more than 2 characters, uppercase first letter" required>
+			</div>
+
+			<div class="profile-content-pool">
+				<label class="profile-content-label" for="profile-content-label">E-mail:<br></label>
+				<input type="text" class="profile-content-input text-font" pattern="^[a-zA-Z0-9.-]+@[a-zA-Z]+\.[a-zA-Z]+$" name="email" title="Wrong email" required>
+			</div>
+
+			<div class="profile-content-pool">
+				<label class="profile-content-label" for="profile-content-label">Login:<br></label>
+				<input type="text" class="profile-content-input text-font" pattern="^[a-zA-Z0-9_-]{3,}" name="login" title="Name must start from letter or number
+				and must contains more than 2 characters" required>
+			</div>
+
+			<div class="profile-content-pool">
+				<label class="profile-content-label" for="profile-content-label">Password:<br></label>
+				<input class="profile-content-input" type="password" placeholder="Enter Password" name="password" required>
+			</div>
+
+
+				<p id="class-label">Class:</p>
+
+
+			<div id="classes">
+			    {% for room in classroom %}
+				    <input id="{{ room.id }}" type="radio" name="room" value="{{ room.id }}">
+				    <label for="{{ room.id }}" class="button-class">{{ room.className }}</label>
+				{% endfor %}
+			</div>
+
+
+		</div>
+
+	</form>
+
+</form>
+
+	<div id="footer">
+		<footer>Copyright &copy 2018 Truskawki</footer>
+	</div>
+
+	<script src="js/classTyper.js"></script>
+
+</body>
+</html>

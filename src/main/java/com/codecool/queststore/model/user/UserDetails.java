@@ -7,22 +7,25 @@ public class UserDetails {
     private String email;
     private String login;
     private String password;
+    private String accountType;
 
-    public UserDetails(int id, String firstName, String lastName, String email, String login, String password) {
+    public UserDetails(int id, String firstName, String lastName, String email, String login, String password, String accountType) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.login = login;
         this.password = password;
+        this.accountType = accountType;
     }
 
-    public UserDetails(String firstName, String lastName, String email, String login, String password) {
+    public UserDetails(String firstName, String lastName, String email, String login, String password, String accountType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.login = login;
         this.password = password;
+        this.accountType = accountType;
     }
 
     public int getId() {
@@ -69,4 +72,11 @@ public class UserDetails {
         this.password = password;
     }
 
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
 }

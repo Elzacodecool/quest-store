@@ -22,7 +22,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public int add(UserDetails userDetails) {
         Integer userDetailsId = null;
-        String query = "INSERT INTO codecooler (first_name, last_name, email, login, password) VALUES (?,?,?,?,?) RETURNING codecooler_id;";
+        String query = "INSERT INTO codecooler (first_name, last_name, email, login, password, account_type) VALUES (?,?,?,?,?,?) RETURNING codecooler_id;";
 
         try {
             ResultSet rs = factory.execQuery(query,
@@ -30,7 +30,8 @@ public class UserDAOImpl implements UserDAO {
                     userDetails.getLastName(),
                     userDetails.getEmail(),
                     userDetails.getLogin(),
-                    userDetails.getPassword()
+                    userDetails.getPassword(),
+                    userDetails.getAccountType()
             );
             rs.next();
             userDetailsId = rs.getInt(1);
@@ -77,7 +78,8 @@ public class UserDAOImpl implements UserDAO {
                     resultSet.getString("last_name"),
                     resultSet.getString("email"),
                     resultSet.getString("login"),
-                    resultSet.getString("password"));
+                    resultSet.getString("password"),
+                    resultSet.getString("account_type"));
         } catch (SQLException e) {
             e.getErrorCode();
         }
@@ -104,7 +106,8 @@ public class UserDAOImpl implements UserDAO {
                         resultSet.getString("last_name"),
                         resultSet.getString("email"),
                         resultSet.getString("login"),
-                        resultSet.getString("password")));
+                        resultSet.getString("password"),
+                        resultSet.getString("account_type")));
             }
         } catch (SQLException e) {
             e.getErrorCode();
