@@ -43,6 +43,9 @@ public class AdminController implements HttpHandler {
         } else if (mentorDataConfirmed(actionsDatas, method)) {
             createMentor(httpExchange);
             redirect(httpExchange, "/admin");
+        } else if (requestLogout(actionsDatas, method)) {
+            clearSession(httpExchange);
+            redirect(httpExchange, "/index");
         }
         sendResponse(httpExchange, response);
     }
