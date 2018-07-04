@@ -36,7 +36,7 @@ public class AdminController implements HttpHandler {
         String response = "";
 
         if (isGetMethod(method)) {
-            constructResponse(httpExchange, response);
+            response = constructResponse(httpExchange, response);
         } else {
             manageDataAndRedirect(httpExchange);
         }
@@ -107,7 +107,7 @@ public class AdminController implements HttpHandler {
         return new AdminDAOImpl(daoFactory);
     }
 
-    private void constructResponse(HttpExchange httpExchange, String response) throws IOException {
+    private String constructResponse(HttpExchange httpExchange, String response) throws IOException {
         String dataUri = getDataUri(httpExchange);
 
         switch (dataUri) {
@@ -125,6 +125,12 @@ public class AdminController implements HttpHandler {
                 redirect(httpExchange, "/index");
                 break;
         }
+
+        return response;
+    }
+
+    private String getDataUri(HttpExchange httpExchange) {
+        return parseURI(httpExchange).get("data");
     }
 
     private Map<String, String> parseURI(HttpExchange httpExchange) {
@@ -139,7 +145,7 @@ public class AdminController implements HttpHandler {
         return keyValue;
     }
 
-    private boolean isGetMethod(String method) { method.equals("GET"); }
+    private boolean isGetMethod(String method) { return method.equals("GET"); }
 
     private boolean requestToMenu(Map<String, String> actionsDatas, String method) {
         boolean isDataCorrect = actionsDatas.get("data").equals("admin");
