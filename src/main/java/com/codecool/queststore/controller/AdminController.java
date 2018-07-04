@@ -6,6 +6,7 @@ import com.codecool.queststore.DAO.DAOFactory;
 import com.codecool.queststore.DAO.DAOFactoryImpl;
 import com.codecool.queststore.model.SingletonAcountContainer;
 import com.codecool.queststore.model.user.Admin;
+import com.codecool.queststore.model.user.UserDetails;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -33,15 +34,13 @@ public class AdminController implements HttpHandler {
 
         String response = "";
         if (requestToMenu(actionsDatas)) {
-            response = getResponse(httpExchange, "templates/menu-admin.twig");
+            response = getResponse("templates/menu-admin.twig");
         }
-
         sendResponse(httpExchange, response);
     }
 
     private void redirectToLoginPageIfSessionExpired(HttpExchange httpExchange) throws IOException {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        String sessionId = getSessionIdbyCookie(cookieStr);
 
         if (sessionExpired(sessionId)) { redirect(httpExchange, "index"); }
     }
@@ -100,15 +99,14 @@ public class AdminController implements HttpHandler {
 
     private boolean requestToMenu(Map<String, String> actionsDatas) { return actionsDatas.get("data").equals("admin"); }
 
-    private String getResponse(HttpExchange httpExchange, String templatePath) {
+    private String getResponse(String templatePath) {
 
-        Admin admin = getAdminByCookie(httpExchange);
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel jtwigModel = JtwigModel.newModel();
-        jtwigModel.with("fullname", admin.getUserDetails().getFirstName() + " " + admin.getUserDetails().getLastName());
-        String response = jtwigTemplate.render(jtwigModel);
+        UserDetails userDetails = admin.getUserDetails();
+        jtwigModel.with("fullname", userDetails.getFirstName() + " " + userDetails.getLastName());
 
-        return response;
+        return jtwigTemplate.render(jtwigModel);
     }
 
     private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
