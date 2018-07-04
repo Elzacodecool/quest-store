@@ -30,13 +30,18 @@ public class AdminController implements HttpHandler {
         redirectToLoginPageIfSessionExpired(httpExchange);
 
         this.admin = getAdminByCookie(httpExchange);
+
         Map<String, String> actionsDatas = parseURI(httpExchange);
+        String method = httpExchange.getRequestMethod();
 
         String response = "";
-        if (requestToMenu(actionsDatas)) {
+        if (requestToMenu(actionsDatas, method)) {
             response = getResponse("templates/menu-admin.twig");
-        } else if (requestToAddMentor(actionsDatas)) {
+        } else if (requestToAddMentor(actionsDatas, method)) {
             response = getResponse("templates/add-mentor.twig");
+        } else if (mentorDataConfirmed(actionsDatas, method)) {
+//            createMentor(httpExchange);
+            redirect(httpExchange, "/admin");
         }
         sendResponse(httpExchange, response);
     }
@@ -100,12 +105,24 @@ public class AdminController implements HttpHandler {
         return keyValue;
     }
 
-    private boolean requestToMenu(Map<String, String> actionsDatas) { return actionsDatas.get("data").equals("admin"); }
+    private boolean requestToMenu(Map<String, String> actionsDatas, String method) {
+        boolean isDataCorrect = actionsDatas.get("data").equals("admin");
+        boolean isGetMethod = method.equals("GET");
+        return isDataCorrect && isGetMethod;
+    }
 
-    private boolean requestToAddMentor(Map<String, String> actionsDatas) {
+    private boolean requestToAddMentor(Map<String, String> actionsDatas, String method) {
         boolean isActionCorrect = actionsDatas.get("action").contains("admin");
         boolean isDataCorrect = actionsDatas.get("data").equals("add-mentor");
-        return isActionCorrect && isDataCorrect;
+        boolean isGetMethod = method.equals("GET");
+        return isActionCorrect && isDataCorrect && isGetMethod;
+    }
+
+    private boolean mentorDataConfirmed(Map<String, String> actionsDatas, String method) {
+        boolean isActionCorrect = actionsDatas.get("action").contains("admin");
+        boolean isDataCorrect = actionsDatas.get("data").equals("add-mentor");
+        boolean isPostMethod = method.equals("POST");
+        return isActionCorrect && isDataCorrect && isPostMethod;
     }
 
     private String getResponse(String templatePath) {
