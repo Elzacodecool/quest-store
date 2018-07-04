@@ -5,6 +5,7 @@ import com.codecool.queststore.DAO.AdminDAOImpl;
 import com.codecool.queststore.DAO.DAOFactory;
 import com.codecool.queststore.DAO.DAOFactoryImpl;
 import com.codecool.queststore.model.SingletonAcountContainer;
+import com.codecool.queststore.model.classRoom.ClassRoom;
 import com.codecool.queststore.model.user.Admin;
 import com.codecool.queststore.model.user.UserDetails;
 import com.sun.net.httpserver.Headers;
@@ -18,6 +19,7 @@ import java.io.OutputStream;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AdminController implements HttpHandler {
@@ -40,7 +42,7 @@ public class AdminController implements HttpHandler {
         } else if (requestToAddMentor(actionsDatas, method)) {
             response = getResponse("templates/add-mentor.twig");
         } else if (mentorDataConfirmed(actionsDatas, method)) {
-//            createMentor(httpExchange);
+            createMentor(httpExchange);
             redirect(httpExchange, "/admin");
         }
         sendResponse(httpExchange, response);
@@ -125,11 +127,16 @@ public class AdminController implements HttpHandler {
         return isActionCorrect && isDataCorrect && isPostMethod;
     }
 
+    private void createMentor(HttpExchange httpExchange) {
+
+    }
+
     private String getResponse(String templatePath) {
 
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel jtwigModel = JtwigModel.newModel();
         setHeaderDetails(jtwigModel);
+        if (templatePath.contains("add-mentor")) { setClassRooms(jtwigModel); }
 
         return jtwigTemplate.render(jtwigModel);
     }
@@ -137,6 +144,11 @@ public class AdminController implements HttpHandler {
     private void setHeaderDetails(JtwigModel jtwigModel) {
         UserDetails userDetails = admin.getUserDetails();
         jtwigModel.with("fullname", userDetails.getFirstName() + " " + userDetails.getLastName());
+    }
+
+    private void setClassRooms(JtwigModel jtwigModel) {
+        List<ClassRoom> classRooms = new DAOFactoryImpl().getClassDAO().getAll();
+        jtwigModel.with("classroom", classRooms);
     }
 
     private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
