@@ -129,6 +129,12 @@ public class AdminController implements HttpHandler {
         return isActionCorrect && isDataCorrect && isPostMethod;
     }
 
+    private boolean requestLogout(Map<String, String> actionsDatas, String method) {
+        boolean isActionCorrect = actionsDatas.get("action").contains("admin");
+        boolean isDataCorrect = actionsDatas.get("data").equals("logout");
+        return isActionCorrect && isDataCorrect;
+    }
+
     private void createMentor(HttpExchange httpExchange) throws IOException {
         Map<String, String> formMap = new RequestFormater().getMapFromRequest(httpExchange);
         UserDetails userDetails = new UserDetails(formMap.get("firstname"), formMap.get("lastname"), formMap.get("email"), formMap.get("login"), formMap.get("password"), "mentor");
