@@ -139,6 +139,9 @@ public class AdminController implements HttpHandler {
                 createMentor(httpExchange);
                 redirect(httpExchange, "/admin");
                 break;
+            case "add-class":
+                createClassRoom(httpExchange);
+                redirect(httpExchange, "/admin");
         }
     }
 
