@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpCookie;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MentorController implements HttpHandler {
@@ -33,6 +34,8 @@ public class MentorController implements HttpHandler {
     private QuestManagment questManagment;
     private String response;
     private String sessionId;
+    private Map<String, String> formMap;
+    private SingletonAcountContainer accountContainer;
 
     public MentorController() {
         daoFactory = new DAOFactoryImpl();
@@ -44,6 +47,8 @@ public class MentorController implements HttpHandler {
         itemDAO = daoFactory.getItemDAO();
         mentorMenuContainer = new MentorMenuContainer();
         questManagment = new QuestManagment();
+        formMap = new HashMap<>();
+        accountContainer = SingletonAcountContainer.getInstance();
     }
 
     @Override
@@ -51,35 +56,24 @@ public class MentorController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         URI uri = httpExchange.getRequestURI();
         String stringUri = uri.toString();
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        validateCookie(stringUri, httpExchange, cookieStr);
+
+
         System.out.println(stringUri);
         System.out.println(method);
 
 
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        HttpCookie httpCookie;
-        SingletonAcountContainer accountContainer = SingletonAcountContainer.getInstance();
-        if (stringUri.contains("mentor") && cookieStr != null) {
-            httpCookie = HttpCookie.parse(cookieStr).get(0);
-            sessionId = httpCookie.getValue();
-            int id = 0;
-            if (accountContainer.checkIfContains(sessionId)) {
-                id = accountContainer.getCodecoolerId(sessionId);
-                String accountType = accountDAO.getAccountType(id);
-                if (!accountType.equals("mentor")) {
-                    redirect(httpExchange, "account");
-                } else {
-                    mentor = mentorDAO.getMentor(id);
-                    mentorMenuContainer.setMentor(mentor);
-                }
-            }
-        }
+
+
+        formMap = getFormMap(httpExchange, method);
         response = mentorMenuContainer.getMenuMentor();
 
         if (stringUri.equals("/mentor/add-student") && method.equals("GET")) {
             response = mentorMenuContainer.getMenuAddStudent();
 
         } else if (stringUri.equals("/mentor/add-student") && method.equals("POST")) {
-            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
+
             int classId = Integer.parseInt(formMap.get("room"));
             ClassRoom classRoom = classDAO.getClass(classId);
             UserDetails userDetails = new UserDetails(formMap.get("firstname"), formMap.get("lastname"), formMap.get("email"), formMap.get("login"), formMap.get("password"), "student");
@@ -99,7 +93,7 @@ public class MentorController implements HttpHandler {
 
         } else if (stringUri.contains("/mentor/student-to-edit") && method.equals("POST")) {
             System.out.println("----------------------------------------------------");
-            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
+
             int classId = Integer.parseInt(formMap.get("room"));
             ClassRoom classRoom = classDAO.getClass(classId);
             UserDetails userDetails = new UserDetails(formMap.get("firstname"), formMap.get("lastname"), formMap.get("email"), formMap.get("login"), formMap.get("password"), "student");
@@ -111,7 +105,7 @@ public class MentorController implements HttpHandler {
             response = mentorMenuContainer.getMenuAddArtifact();
 
         } else if (stringUri.contains("add-artifact") && method.equals("POST")) {
-            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
+
             int price = Integer.parseInt(formMap.get("price"));
             Category category = new Category(formMap.get("category"));
             Item item = new Item(formMap.get("artifactname"), formMap.get("description"), price, category);
@@ -122,7 +116,7 @@ public class MentorController implements HttpHandler {
             response = mentorMenuContainer.getMenuAddQuest();
 
         } else if (stringUri.contains("add-quest") && method.equals("POST")) {
-            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
+
             int price = -Integer.parseInt(formMap.get("reward"));
             Category category = new Category("Quest");
             Item item = new Item(formMap.get("questname"), formMap.get("description"), price, category);
@@ -151,7 +145,7 @@ public class MentorController implements HttpHandler {
             response = mentorMenuContainer.getMenuStudentChooser(questManagment.getClassId());
 
         } else if (stringUri.contains("/mentor/quest-to-students") && method.equals("POST")) {
-            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
+
             questManagment.addQuestToStudents(formMap);
             response = mentorMenuContainer.getMenuStudentChooser(questManagment.getClassId());
             redirect(httpExchange, "/mentor");
@@ -165,7 +159,7 @@ public class MentorController implements HttpHandler {
             response = mentorMenuContainer.getMenuEditArtifact(artifactId);
 
         } else if (stringUri.contains("/mentor/artifact-to-edit/artifact-id") && method.equals("POST")) {
-            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
+
             int artifactId = getParameter(uri);
             int price = -Integer.parseInt(formMap.get("price"));
             Category category = new Category(formMap.get("category"));
@@ -182,8 +176,6 @@ public class MentorController implements HttpHandler {
             response = mentorMenuContainer.getMenuEditQuest(artifactId);
 
         } else if (stringUri.contains("/mentor/quest-to-edit/quest-id") && method.equals("POST")) {
-            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
-            System.out.println(formMap);
             int questId = getParameter(uri);
             int price = Integer.parseInt(formMap.get("price"));
             Category category = new Category("Quest");
@@ -202,6 +194,40 @@ public class MentorController implements HttpHandler {
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    private Map<String, String> getFormMap(HttpExchange httpExchange, String method) throws IOException {
+        if (method.equals("POST")) {
+            return requestFormater.getMapFromRequest(httpExchange);
+        }
+
+        return null;
+    }
+
+    private void checkAccount(HttpExchange httpExchange, String accountType, int id) throws IOException {
+        if (!accountType.equals("mentor")) {
+            redirect(httpExchange, "account");
+        } else {
+            mentor = mentorDAO.getMentor(id);
+            mentorMenuContainer.setMentor(mentor);
+        }
+    }
+
+    private void checkIfExistSessionId(HttpExchange httpExchange, int id) throws IOException {
+        if (accountContainer.checkIfContains(sessionId)) {
+            id = accountContainer.getCodecoolerId(sessionId);
+            String accountType = accountDAO.getAccountType(id);
+            checkAccount(httpExchange, accountType, id);
+        }
+    }
+
+    private void validateCookie(String stringUri, HttpExchange httpExchange, String cookieStr) throws IOException {
+        if (stringUri.contains("mentor") && cookieStr != null) {
+            HttpCookie httpCookie = HttpCookie.parse(cookieStr).get(0);
+            sessionId = httpCookie.getValue();
+            int id = 0;
+            checkIfExistSessionId(httpExchange, id);
+        }
     }
 
     private void redirect(HttpExchange httpExchange, String location) throws IOException {
