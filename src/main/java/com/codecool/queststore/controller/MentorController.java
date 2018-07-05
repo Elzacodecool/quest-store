@@ -58,17 +58,24 @@ public class MentorController implements HttpHandler {
         uri = httpExchange.getRequestURI();
         String stringUri = uri.toString();
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-
         validateCookie(stringUri, httpExchange, cookieStr);
-
         formMap = getFormMap(httpExchange, method);
         response = mentorMenuContainer.getMenuMentor();
-        manageDataEndRequest(stringUri, method, httpExchange);
+        manageDataByMethod(stringUri, method, httpExchange);
 
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    private void manageDataByMethod(String stringUri, String method, HttpExchange httpExchange) throws IOException {
+        if (method.equals("GET")) {
+            manageDataEndRequest(stringUri, method, httpExchange);
+
+        } else if (method.equals("POST")) {
+            manageDataByMethodPost(stringUri, method, httpExchange);
+        }
     }
 
     private Map<String, String> getFormMap(HttpExchange httpExchange, String method) throws IOException {
@@ -183,92 +190,96 @@ public class MentorController implements HttpHandler {
     }
 
     private void manageDataEndRequest(String stringUri, String method, HttpExchange httpExchange) throws IOException {
-        if (stringUri.equals("/mentor/add-student") && method.equals("GET")) {
+        if (stringUri.equals("/mentor/add-student")) {
             response = mentorMenuContainer.getMenuAddStudent();
 
-        } else if (stringUri.equals("/mentor/add-student") && method.equals("POST")) {
-            addStudent();
-            redirect(httpExchange, "/mentor");
-
-        } else if (stringUri.equals("/mentor/student-classes") && method.equals("GET")) {
+        } else if (stringUri.equals("/mentor/student-classes")) {
             response = mentorMenuContainer.getMenuStudentClassesToEdit();
 
-        } else if (stringUri.contains("/mentor/student-classes/class-id") && method.equals("GET")) {
+        } else if (stringUri.contains("/mentor/student-classes/class-id")) {
             int classId = getParameter(uri);
             response = mentorMenuContainer.getMenuStudentOfClassToEdit(classId);
 
-        } else if (stringUri.contains("/mentor/student-to-edit") && method.equals("GET")) {
+        } else if (stringUri.contains("/mentor/student-to-edit")) {
             String login = getLogin(uri);
             response = mentorMenuContainer.getMenuEditStudent(login);
 
-        } else if (stringUri.contains("/mentor/student-to-edit") && method.equals("POST")) {
-            editStudent();
-            redirect(httpExchange, "/mentor");
-
-        } else if (stringUri.contains("add-artifact") && method.equals("GET")) {
+        } else if (stringUri.contains("add-artifact")) {
             response = mentorMenuContainer.getMenuAddArtifact();
 
-        } else if (stringUri.contains("add-artifact") && method.equals("POST")) {
-            addArtifact();
-            redirect(httpExchange, "/mentor");
-
-        } else if (stringUri.contains("add-quest") && method.equals("GET")) {
+        } else if (stringUri.contains("add-quest")) {
             response = mentorMenuContainer.getMenuAddQuest();
 
-        } else if (stringUri.contains("add-quest") && method.equals("POST")) {
-            addQuest();
-            redirect(httpExchange, "/mentor");
-
-        } else if (stringUri.equals("/mentor/quests-students") && method.equals("GET")) {
+        } else if (stringUri.equals("/mentor/quests-students")) {
             response = mentorMenuContainer.getMenuQuestsStudents();
 
-        } else if (stringUri.contains("mentor/quest-to-student/quest-id") && method.equals("GET")) {
+        } else if (stringUri.contains("mentor/quest-to-student/quest-id")) {
             response = mentorMenuContainer.getMenuQuestsStudents();
             int questId = getParameter(uri);
             questManagment.setQuestId(questId);
             redirect(httpExchange, "/mentor/quest-classes");
 
-        } else if (stringUri.contains("/mentor/quest-classes") && method.equals("GET")) {
+        } else if (stringUri.contains("/mentor/quest-classes")) {
             response = mentorMenuContainer.getMenuStudentClassesToAddQuest();
 
-        } else if (stringUri.contains("quest-student-classes/class-id") && method.equals("GET")) {
+        } else if (stringUri.contains("quest-student-classes/class-id")) {
             int classId = getParameter(uri);
             questManagment.setClassId(classId);
             redirect(httpExchange, "/mentor/quest-to-students");
 
-        }  else if (stringUri.contains("/mentor/quest-to-students") && method.equals("GET")) {
+        }  else if (stringUri.contains("/mentor/quest-to-students")) {
             response = mentorMenuContainer.getMenuStudentChooser(questManagment.getClassId());
 
-        } else if (stringUri.contains("/mentor/quest-to-students") && method.equals("POST")) {
+        } else if (stringUri.equals("/mentor/edit-artifact-list")) {
+            response = mentorMenuContainer.getMenuArtifactsToEdit();
+
+        } else if (stringUri.contains("/mentor/artifact-to-edit/artifact-id")) {
+            int artifactId = getParameter(uri);
+            response = mentorMenuContainer.getMenuEditArtifact(artifactId);
+
+        } else if (stringUri.equals("/mentor/edit-quest-list")) {
+            response = mentorMenuContainer.getMenuQuestsToEdit();
+
+        } else if (stringUri.contains("/mentor/quest-to-edit/quest-id")) {
+            int artifactId = getParameter(uri);
+            response = mentorMenuContainer.getMenuEditQuest(artifactId);
+
+        } else if (stringUri.contains("logout")) {
+            clearSession();
+            redirect(httpExchange, "/index");
+        }
+    }
+
+    private void manageDataByMethodPost(String stringUri, String method, HttpExchange httpExchange) throws IOException {
+        if (stringUri.equals("/mentor/add-student")) {
+            addStudent();
+            redirect(httpExchange, "/mentor");
+
+        } else if (stringUri.contains("/mentor/student-to-edit")) {
+            editStudent();
+            redirect(httpExchange, "/mentor");
+
+        } else if (stringUri.contains("add-artifact")) {
+            addArtifact();
+            redirect(httpExchange, "/mentor");
+
+        } else if (stringUri.contains("/mentor/quest-to-students")) {
             questManagment.addQuestToStudents(formMap);
             response = mentorMenuContainer.getMenuStudentChooser(questManagment.getClassId());
             redirect(httpExchange, "/mentor");
 
-        } else if (stringUri.equals("/mentor/edit-artifact-list") && method.equals("GET")) {
-            response = mentorMenuContainer.getMenuArtifactsToEdit();
+        } else if (stringUri.contains("add-quest")) {
+            addQuest();
+            redirect(httpExchange, "/mentor");
 
-        } else if (stringUri.contains("/mentor/artifact-to-edit/artifact-id") && method.equals("GET")) {
-            int artifactId = getParameter(uri);
-            response = mentorMenuContainer.getMenuEditArtifact(artifactId);
-
-        } else if (stringUri.contains("/mentor/artifact-to-edit/artifact-id") && method.equals("POST")) {
+        } else if (stringUri.contains("/mentor/artifact-to-edit/artifact-id")) {
             editArtifact();
             redirect(httpExchange, "/mentor");
 
-        } else if (stringUri.equals("/mentor/edit-quest-list") && method.equals("GET")) {
-            response = mentorMenuContainer.getMenuQuestsToEdit();
-
-        } else if (stringUri.contains("/mentor/quest-to-edit/quest-id") && method.equals("GET")) {
-            int artifactId = getParameter(uri);
-            response = mentorMenuContainer.getMenuEditQuest(artifactId);
-
-        } else if (stringUri.contains("/mentor/quest-to-edit/quest-id") && method.equals("POST")) {
+        } else if (stringUri.contains("/mentor/quest-to-edit/quest-id")) {
             editQuest();
             redirect(httpExchange, "/mentor");
 
-        } else if (stringUri.contains("logout") && method.equals("GET")) {
-            clearSession();
-            redirect(httpExchange, "/index");
         }
     }
 }
