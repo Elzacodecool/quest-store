@@ -3,6 +3,7 @@ package com.codecool.queststore.controller;
 import com.codecool.queststore.DAO.*;
 import com.codecool.queststore.model.RequestFormater;
 import com.codecool.queststore.model.classRoom.ClassRoom;
+import com.codecool.queststore.model.inventory.Category;
 import com.codecool.queststore.model.inventory.Item;
 import com.codecool.queststore.model.user.Mentor;
 import com.codecool.queststore.model.user.Student;
@@ -122,6 +123,33 @@ public class MentorMenuContainer {
         String response = jtwigTemplate.render(jtwigModel);
 
         return response;
+    }
+
+    public String getMenuArtifactsToEdit() {
+        List<Item> artifactList = itemDAO.getArtifact();
+
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/edit-artifact-list.twig");
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        List<Item> singleArtifactList = getArtifactByCategory(artifactList, "Single Artifact");
+        System.out.println("size"+singleArtifactList.size());
+        jtwigModel.with("singleartifact", singleArtifactList);
+        List<Item> groupArtifactList = getArtifactByCategory(artifactList, "Group Artifact");
+        jtwigModel.with("groupartifact", groupArtifactList);
+        String response = jtwigTemplate.render(jtwigModel);
+
+        return response;
+    }
+
+    private List<Item> getArtifactByCategory(List<Item> itemList, String category) {
+        List<Item> artifactList = new ArrayList<>();
+        for (Item item : itemList) {
+            String itemCategoryName = item.getCategory().getName();
+            if (category.equals(itemCategoryName)) {
+                artifactList.add(item);
+            }
+        }
+
+        return artifactList;
     }
 
     public String getMenuAddQuest() {
