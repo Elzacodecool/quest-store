@@ -1,9 +1,6 @@
 package com.codecool.queststore.controller;
 
-import com.codecool.queststore.DAO.DAOFactory;
-import com.codecool.queststore.DAO.DAOFactoryImpl;
-import com.codecool.queststore.DAO.ItemDAO;
-import com.codecool.queststore.DAO.StudentDAOImpl;
+import com.codecool.queststore.DAO.*;
 import com.codecool.queststore.model.SingletonAcountContainer;
 import com.codecool.queststore.model.Transaction;
 import com.codecool.queststore.model.classRoom.ClassRoom;
@@ -109,6 +106,9 @@ public class StudentController implements HttpHandler {
             case "store-artifacts-to-buy":
                 response = getResponse("templates/store-student-buy-items.twig");
                 break;
+            case "buy":
+                response = getResponse("templates/buy-artifact-student.twig", Integer.parseInt(getLastAction(httpExchange)));
+                break;
             case "logout":
                 clearSession();
                 redirect(httpExchange, "/index");
@@ -159,6 +159,15 @@ public class StudentController implements HttpHandler {
         return jtwigTemplate.render(jtwigModel);
     }
 
+    private String getResponse(String templatePath, int itemId) {
+
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        setHeaderDetails(jtwigModel);
+        setItemData(jtwigModel, itemId);
+        return jtwigTemplate.render(jtwigModel);
+    }
+
     private void setHeaderDetails(JtwigModel jtwigModel) {
         UserDetails userDetails = student.getUserDetails();
         jtwigModel.with("fullname", userDetails.getFirstName() + " " + userDetails.getLastName());
@@ -194,6 +203,16 @@ public class StudentController implements HttpHandler {
         List<Item> artifacts = itemDAO.getArtifact();
 
         jtwigModel.with("artifacts", artifacts);
+    }
+
+    private void setItemData(JtwigModel jtwigModel, int itemId) {
+        DAOFactory daoFactory = new DAOFactoryImpl();
+        ItemDAO itemDAO = daoFactory.getItemDAO();
+        Item artifact = itemDAO.get(itemId);
+
+        jtwigModel.with("name", artifact.getName());
+        jtwigModel.with("description", artifact.getDescription());
+        jtwigModel.with("price", artifact.getPrice());
     }
 
     private void clearSession() {
