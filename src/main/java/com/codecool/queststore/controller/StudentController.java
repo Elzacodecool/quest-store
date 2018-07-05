@@ -3,6 +3,7 @@ package com.codecool.queststore.controller;
 import com.codecool.queststore.DAO.DAOFactoryImpl;
 import com.codecool.queststore.DAO.StudentDAOImpl;
 import com.codecool.queststore.model.SingletonAcountContainer;
+import com.codecool.queststore.model.classRoom.ClassRoom;
 import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 import com.sun.net.httpserver.Headers;
@@ -141,6 +142,7 @@ public class StudentController implements HttpHandler {
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel jtwigModel = JtwigModel.newModel();
         setHeaderDetails(jtwigModel);
+        if (templatePath.contains("student-view")) { setStudentInfo(jtwigModel); }
 
         return jtwigTemplate.render(jtwigModel);
     }
@@ -150,6 +152,17 @@ public class StudentController implements HttpHandler {
         jtwigModel.with("fullname", userDetails.getFirstName() + " " + userDetails.getLastName());
         System.out.println(student.getCash());
         jtwigModel.with("money", Integer.toString(student.getCash()));
+    }
+
+    private void setStudentInfo(JtwigModel jtwigModel) {
+        UserDetails userDetails = student.getUserDetails();
+        ClassRoom classRoom = student.getClassRoom();
+
+        jtwigModel.with("firstname", userDetails.getFirstName());
+        jtwigModel.with("lastname", userDetails.getLastName());
+        jtwigModel.with("email", userDetails.getEmail());
+        jtwigModel.with("login", userDetails.getLogin());
+        jtwigModel.with("classname", classRoom.getClassName());
     }
 
     private void clearSession() {
