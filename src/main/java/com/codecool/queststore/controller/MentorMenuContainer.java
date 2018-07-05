@@ -127,7 +127,6 @@ public class MentorMenuContainer {
 
     public String getMenuArtifactsToEdit() {
         List<Item> artifactList = itemDAO.getArtifact();
-
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/edit-artifact-list.twig");
         JtwigModel jtwigModel = JtwigModel.newModel();
         List<Item> singleArtifactList = getArtifactByCategory(artifactList, "Single Artifact");
@@ -140,12 +139,31 @@ public class MentorMenuContainer {
         return response;
     }
 
+    public String getMenuQuestsToEdit() {
+        List<Item> questList = itemDAO.getQuests();
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/edit-quest-list.twig");
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        jtwigModel.with("quests", questList);
+        String response = jtwigTemplate.render(jtwigModel);
+
+        return response;
+    }
+
     public String getMenuEditArtifact(int itemId) {
         Item item = itemDAO.get(itemId);
-        int priceToDisplay = -item.getPrice();
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/edit-artifact.twig");
         JtwigModel jtwigModel = JtwigModel.newModel();
         jtwigModel.with("artifact", item);
+        String response = jtwigTemplate.render(jtwigModel);
+
+        return response;
+    }
+
+    public String getMenuEditQuest(int itemId) {
+        Item item = itemDAO.get(itemId);
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/edit-quest.twig");
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        jtwigModel.with("quest", item);
         String response = jtwigTemplate.render(jtwigModel);
 
         return response;

@@ -5,7 +5,7 @@
 
     <title>Quest Store</title>
 
-    <link rel="icon" href="/static/img/logo.png">
+    <link rel="icon" href="/static/css/img/logo.png">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/list.css">
     <link rel="stylesheet" href="/static/css/styleList.css">
@@ -16,7 +16,7 @@
 
 <div id="main-header">
     <div id="main-header-user-name">
-        <section>{{ fullname }}</section>
+        <section>Ola Kowalska</section>
     </div>
 
     <div id="main-header-logo">
@@ -33,8 +33,8 @@
     <div class="lists">
         <div class="group">
             <div class="group-items">
-                {% for quest in questlist %}
-                    <a href="mentor/quest-to-student/quest-id/{{ quest.id }}" class="item-container">
+                {% for quest in quests %}
+                    <a href="/mentor/quest-to-edit/quest-id/{{ quest.id }}" class="item-container">
                         <div class="item">
                             <img src="/static/img/quest.png" alt="quest photo">
                             <div class="item-name">
@@ -45,6 +45,7 @@
                         </div>
                     </a>
                 {% endfor %}
+
             </div>
         </div>
     </div>

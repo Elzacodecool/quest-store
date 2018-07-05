@@ -131,7 +131,7 @@ public class MentorController implements HttpHandler {
         } else if (stringUri.equals("/mentor/quests-students") && method.equals("GET")) {
             response = mentorMenuContainer.getMenuQuestsStudents();
 
-        } else if (stringUri.contains("quest-id") && method.equals("GET")) {
+        } else if (stringUri.contains("mentor/quest-to-student/quest-id") && method.equals("GET")) {
             response = mentorMenuContainer.getMenuQuestsStudents();
             int questId = getParameter(uri);
             questManagment.setQuestId(questId);
@@ -169,6 +169,24 @@ public class MentorController implements HttpHandler {
             int price = -Integer.parseInt(formMap.get("price"));
             Category category = new Category(formMap.get("category"));
             Item item = new Item(artifactId, formMap.get("artifactname"), formMap.get("description"), price, category);
+            itemDAO.update(item);
+            redirect(httpExchange, "/mentor");
+
+        } else if (stringUri.equals("/mentor/edit-quest-list") && method.equals("GET")) {
+            response = mentorMenuContainer.getMenuQuestsToEdit();
+
+        } else if (stringUri.contains("/mentor/quest-to-edit/quest-id") && method.equals("GET")) {
+            int artifactId = getParameter(uri);
+            System.out.println(artifactId);
+            response = mentorMenuContainer.getMenuEditQuest(artifactId);
+
+        } else if (stringUri.contains("/mentor/quest-to-edit/quest-id") && method.equals("POST")) {
+            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
+            System.out.println(formMap);
+            int questId = getParameter(uri);
+            int price = Integer.parseInt(formMap.get("price"));
+            Category category = new Category("Quest");
+            Item item = new Item(questId, formMap.get("artifactname"), formMap.get("description"), price, category);
             itemDAO.update(item);
             redirect(httpExchange, "/mentor");
 
