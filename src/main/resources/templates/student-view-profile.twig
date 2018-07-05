@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Title</title>
+
+	<link rel="stylesheet" href="/static/css/item-profile-class-style.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="icon" href="static/img/logo.png">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+<body>
+
+<div id="main-header">
+	<div id="main-header-user-name">
+		<section>{{ fullname }}</section>
+	</div>
+
+	<div id="main-header-logo">
+		<header><a id="back-to-menu" href=/student">QuestSt<img id="logo" src="/static/img/logo.png">re</a></header>
+	</div>
+</div>
+
+<form id="content-container">
+	<div id="left-container">
+		<div id="content-container-photo">
+			<img id="student-photo" src="/static/img/student.png" alt="student-photo">
+		</div>
+		<div id="buttons-container">
+			<a href="javascript:history.back();" id="back-button" style="text-decoration: none;color: white;">Back</a>
+			<a id="confirm-button">Transaction</a>
+		</div>
+	</div>
+
+
+	<form id="right-content">
+		<div id="profile-content">
+			<div class="profile-content-pool">
+				<label class="profile-content-label" for="profile-content-label">First Name:<br></label>
+				<input type="text" class="profile-content-input text-font" value="{{ firstname }}" readonly>
+			</div>
+
+			<div class="profile-content-pool">
+				<label class="profile-content-label" for="profile-content-label">Last Name:<br></label>
+				<input type="text" class="profile-content-input text-font" value="{{ lastname }}" readonly>
+			</div>
+
+			<div class="profile-content-pool">
+				<label class="profile-content-label" for="profile-content-label">E-mail:<br></label>
+				<input type="text" class="profile-content-input text-font" value="{{ email }}" readonly>
+			</div>
+
+			<div class="profile-content-pool">
+				<label class="profile-content-label" for="profile-content-label">Login:<br></label>
+				<input type="text" class="profile-content-input text-font" value="{{ login }}" readonly>
+			</div>
+
+
+				<a id="class-label">Class:</a>
+
+
+			<div id="classes">
+				<input id="c1" type="radio" name="Room" checked>
+				<label for="c1" class="button-class">{{ classname }}</label>
+			</div>
+
+
+		</div>
+
+	</form>
+
+</form>
+
+	<div id="footer">
+		<footer>Copyright &copy 2018 Truskawki</footer>
+	</div>
+
+</body>
+</html>
