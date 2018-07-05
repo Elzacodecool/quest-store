@@ -11,6 +11,7 @@ import java.util.HashMap;
  */
 public class MimeTypes {
 
+    public static final String MIME_APPLICATION_WOFF2 = "application/woff2";
     public static final String MIME_APPLICATION_ANDREW_INSET  = "application/andrew-inset";
     public static final String MIME_APPLICATION_JSON      = "application/json";
     public static final String MIME_APPLICATION_ZIP       = "application/zip";
@@ -130,6 +131,7 @@ public class MimeTypes {
                 }
             }
             {
+                put1("woff2", MIME_APPLICATION_WOFF2);
                 put1("xul", MIME_APPLICATION_VND_MOZZILLA_XUL_XML);
                 put1("json", MIME_APPLICATION_JSON);
                 put1("ice", MIME_X_CONFERENCE_X_COOLTALK);
