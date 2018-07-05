@@ -34,7 +34,7 @@ public class AdminController implements HttpHandler {
 
         String method = httpExchange.getRequestMethod();
         String response = "";
-
+ 
         if (isGetMethod(method)) {
             response = constructResponse(httpExchange, response);
         } else {
@@ -186,7 +186,7 @@ public class AdminController implements HttpHandler {
         ClassRoom classRoom = classDAO.getClass(classId);
 
         classRoom.setClassName(classRoomName);
-        // classDAO.update(classRoom); TODO - WHY DAO UPDATES ALL CLASSROOMS ???
+        classDAO.update(classRoom);// TODO - WHY DAO UPDATES ALL CLASSROOMS ???
     }
 
     private void clearSession() {
