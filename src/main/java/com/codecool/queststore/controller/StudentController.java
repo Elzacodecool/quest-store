@@ -3,6 +3,7 @@ package com.codecool.queststore.controller;
 import com.codecool.queststore.DAO.DAOFactoryImpl;
 import com.codecool.queststore.DAO.StudentDAOImpl;
 import com.codecool.queststore.model.SingletonAcountContainer;
+import com.codecool.queststore.model.Transaction;
 import com.codecool.queststore.model.classRoom.ClassRoom;
 import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpCookie;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StudentController implements HttpHandler {
@@ -145,15 +147,14 @@ public class StudentController implements HttpHandler {
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel jtwigModel = JtwigModel.newModel();
         setHeaderDetails(jtwigModel);
-        if (templatePath.contains("student-view")) { setStudentInfo(jtwigModel); }
-
+        if (templatePath.contains("student-view-profile")) { setStudentInfo(jtwigModel); }
+        if (templatePath.contains("transactions-student-view")) { setTransactionsInfo(jtwigModel); }
         return jtwigTemplate.render(jtwigModel);
     }
 
     private void setHeaderDetails(JtwigModel jtwigModel) {
         UserDetails userDetails = student.getUserDetails();
         jtwigModel.with("fullname", userDetails.getFirstName() + " " + userDetails.getLastName());
-        System.out.println(student.getCash());
         jtwigModel.with("money", Integer.toString(student.getCash()));
     }
 
@@ -166,6 +167,18 @@ public class StudentController implements HttpHandler {
         jtwigModel.with("email", userDetails.getEmail());
         jtwigModel.with("login", userDetails.getLogin());
         jtwigModel.with("classname", classRoom.getClassName());
+    }
+
+    private void setTransactionsInfo(JtwigModel jtwigModel) {
+        List<Transaction> transactions = student.getTransactionList();
+
+        int totalAmount = 0;
+        for (Transaction transaction : transactions) {
+            totalAmount += transaction.getAmount();
+        }
+
+        jtwigModel.with("transactions", transactions);
+        jtwigModel.with("totalamount", totalAmount);
     }
 
     private void clearSession() {
