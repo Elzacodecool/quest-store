@@ -24,6 +24,8 @@ public class App {
         httpServer.createContext("/mentor", new MentorController());
         httpServer.createContext("/student", new StudentController());
         httpServer.createContext("/static", new Static());
+        httpServer.createContext("/in-build", new InBuild());
+        httpServer.createContext("/", new AccountController());
 
         httpServer.setExecutor(null);
 
