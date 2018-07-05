@@ -140,6 +140,17 @@ public class MentorMenuContainer {
         return response;
     }
 
+    public String getMenuEditArtifact(int itemId) {
+        Item item = itemDAO.get(itemId);
+        int priceToDisplay = -item.getPrice();
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/edit-artifact.twig");
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        jtwigModel.with("artifact", item);
+        String response = jtwigTemplate.render(jtwigModel);
+
+        return response;
+    }
+
     private List<Item> getArtifactByCategory(List<Item> itemList, String category) {
         List<Item> artifactList = new ArrayList<>();
         for (Item item : itemList) {

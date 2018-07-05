@@ -154,6 +154,24 @@ public class MentorController implements HttpHandler {
             questManagment.addQuestToStudents(formMap);
             response = mentorMenuContainer.getMenuStudentChooser(questManagment.getClassId());
             redirect(httpExchange, "/mentor");
+
+        } else if (stringUri.equals("/mentor/edit-artifact-list") && method.equals("GET")) {
+            response = mentorMenuContainer.getMenuArtifactsToEdit();
+
+        } else if (stringUri.contains("/mentor/artifact-to-edit/artifact-id") && method.equals("GET")) {
+            int artifactId = getParameter(uri);
+            System.out.println(artifactId);
+            response = mentorMenuContainer.getMenuEditArtifact(artifactId);
+
+        } else if (stringUri.contains("/mentor/artifact-to-edit/artifact-id") && method.equals("POST")) {
+            Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
+            int artifactId = getParameter(uri);
+            int price = -Integer.parseInt(formMap.get("price"));
+            Category category = new Category(formMap.get("category"));
+            Item item = new Item(artifactId, formMap.get("artifactname"), formMap.get("description"), price, category);
+            itemDAO.update(item);
+            redirect(httpExchange, "/mentor");
+
         }
 
 
