@@ -95,9 +95,9 @@ public class ItemDAOImpl implements  ItemDAO {
 
     @Override
     public void update(Item item) {
-        String sqlQuery = "UPDATE item SET price = ? WHERE item_id = ?";
+        String sqlQuery = "UPDATE item SET price = ? WHERE item_id = ?;";
         daoFactory.execQueryInt(sqlQuery, item.getPrice(), item.getId());
-        sqlQuery = "UPDATE item SET name = ?, description = ?, category = ? WHERE item_id = ?";
+        sqlQuery = "UPDATE item SET name = ?, decription = ?, category = ? WHERE item_id = ?";
         daoFactory.execQuery(sqlQuery, item.getId(), item.getName(), item.getDescription(), item.getCategory().getName());
     }
 
@@ -107,5 +107,9 @@ public class ItemDAOImpl implements  ItemDAO {
         item = new Item(resultSet.getInt(INDEX_ID), resultSet.getString(INDEX_NAME), resultSet.getString(INDEX_DESCRIPTION), resultSet.getInt(INDEX_PRICE), category);
 
         return item;
+    }
+
+    public static void main(String[] args) {
+        Item item = new Item("asda", "sdasds", 1, new Category("Quest"));
     }
 }

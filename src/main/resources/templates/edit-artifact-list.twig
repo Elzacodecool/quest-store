@@ -5,7 +5,7 @@
 
     <title>Quest Store</title>
 
-    <link rel="icon" href="/static/img/logo.png">
+    <link rel="icon" href="/static/css/img/logo.png">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/list.css">
     <link rel="stylesheet" href="/static/css/styleList.css">
@@ -27,19 +27,44 @@
 <div id="content-container">
 
     <div class="title">
-        <h1>quests:</h1>
+        <h1>artifacts:</h1>
     </div>
 
     <div class="lists">
         <div class="group">
+            <div class="group-name">
+                <h2>single</h2>
+            </div>
+
             <div class="group-items">
-                {% for quest in questlist %}
-                    <a href="mentor/quest-to-student/quest-id/{{ quest.id }}" class="item-container">
+                {% for artifact in singleartifact %}
+                    <a href="/mentor/artifact-to-edit/artifact-id/{{ artifact.id }}" class="item-container">
                         <div class="item">
-                            <img src="/static/img/quest.png" alt="quest photo">
+                            <img src="/static/img/artifact.png" alt="artifact photo">
                             <div class="item-name">
                                 <h4 id="name">
-                                    {{ quest.name }}
+                                    {{ artifact.name }}
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="group">
+            <div class="group-name">
+                <h2>group</h2>
+            </div>
+
+            <div class="group-items">
+                {% for artifact in groupartifact %}
+                    <a href="/mentor/artifact-to-edit/artifact-id/{{ artifact.id }}" class="item-container">
+                        <div class="item">
+                            <img src="/static/img/artifact.png" alt="artifact photo">
+                            <div class="item-name">
+                                <h4 id="name">
+                                    {{ artifact.name }}
                                 </h4>
                             </div>
                         </div>
