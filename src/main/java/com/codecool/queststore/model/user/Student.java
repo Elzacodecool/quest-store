@@ -70,12 +70,12 @@ public class Student {
         return cash;
     }
 
-    public void buyItem() {
-        //TODO
-    }
-
-    public void buyItem(Item item, int coolcoins) {
-        //TODO
+    public void buyItem(Item item) {
+        DAOFactory daoFactory = new DAOFactoryImpl();
+        TransactionDAO transactionDAO = daoFactory.getTransactionDAO();
+        Transaction transaction = new Transaction(id, item, item.getPrice());
+        transactionDAO.add(transaction);
+        //NEED TO ADD TO INVENTORY. INVENTORY DOES NOT EXISTS TODO
     }
 
     public void useItem(Item item) {

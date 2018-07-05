@@ -142,8 +142,10 @@ public class StudentController implements HttpHandler {
         String dataUri = getDataUri(httpExchange);
 
         switch (dataUri) {
-            case "add-mentor":
-                redirect(httpExchange, "/admin");
+            case "buy":
+                System.out.println("WESZLO TUTAJ");
+                buyItem(httpExchange);
+                redirect(httpExchange, "/student");
                 break;
         }
     }
@@ -213,6 +215,12 @@ public class StudentController implements HttpHandler {
         jtwigModel.with("name", artifact.getName());
         jtwigModel.with("description", artifact.getDescription());
         jtwigModel.with("price", artifact.getPrice());
+    }
+
+    private void buyItem(HttpExchange httpExchange) {
+        DAOFactory daoFactory = new DAOFactoryImpl();
+        Item item = daoFactory.getItemDAO().get(Integer.parseInt(getLastAction(httpExchange)));
+        student.buyItem(item);
     }
 
     private void clearSession() {
