@@ -5,7 +5,7 @@
 
 	<title>Quest Store</title>
 
-    <link rel="icon" href="/static/img/logo.png">
+    <script src="script.js"></script>
 	<link rel="stylesheet" href="/static/css/style.css">
 	<link rel="stylesheet" href="/static/css/list.css">
     <link rel="stylesheet" href="/static/css/styleList.css">
@@ -20,7 +20,7 @@
 		</div>
 
 		<div id="main-header-logo">
-            <header><a id="back-to-menu" href="../menus/menu-mentor.html">QuestSt<img id="logo" src="/static/img/logo.png">re</a></header>
+            <header><a id="back-to-menu" href="menu-mentor.html">QuestSt<img id="logo" src="/static/img/logo.png">re</a></header>
 		</div>
 	</div>
 
@@ -31,14 +31,25 @@
         </div>
 
         <div class="lists">
-            <div class="group">
+            <form method="POST" class="group" onsubmit="acceptQuest()">
                 <div class="group-name">
-                    <h2>{{ classname }}</h2>
+                    <h2>web room</h2>
+                </div>
+
+                <div class="buttons">
+                    <label for="select-all">
+                        <input id="select-all" type="checkbox" onClick="toggle(this)" value="Select all"/>
+                        <a class="button">
+                            select all
+                        </a>
+                    </label>
+                    <input type="submit" value="Submit" class="button">
                 </div>
 
                 <div class="group-items">
                     {% for student in users %}
-                        <a href="/mentor/student-to-edit/{{ student.login }}" class="item-container">
+                        <input id="i{{ student.id }}" type="checkbox" name="student{{ student.id }}" value="{{ student.id }}">
+                        <label for="i{{ student.id }}" class="item-container button-class">
                             <div class="item">
                                 <img src="/static/img/student.png" alt="student photo">
                                 <div class="item-name">
@@ -47,10 +58,11 @@
                                     </h4>
                                 </div>
                             </div>
-                        </a>
+                        </label>
                     {% endfor %}
                 </div>
-            </div>
+
+            </form>
         </div>
 	</div>
 

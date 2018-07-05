@@ -87,6 +87,28 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public UserDetails getUserByLogin(String login) {
+        UserDetails userDetails = null;
+        String query = "SELECT * FROM codecooler WHERE login = ?;";
+        ResultSet resultSet = factory.execQuery(query, login);
+        //TODO: Extract to a method (lines 68-75 & 97-104)
+        try {
+            resultSet.next();
+            userDetails = new UserDetails(
+                    resultSet.getInt("codecooler_id"),
+                    resultSet.getString("first_name"),
+                    resultSet.getString("last_name"),
+                    resultSet.getString("email"),
+                    resultSet.getString("login"),
+                    resultSet.getString("password"),
+                    resultSet.getString("account_type"));
+        } catch (SQLException e) {
+            e.getErrorCode();
+        }
+        return userDetails;
+    }
+
+    @Override
     public List<UserDetails> getAllStudents(Mentor mentor) {
         //TODO: Implement!
         return null;
