@@ -32,8 +32,8 @@ public class ClassDAOImpl implements ClassDAO {
 
     @Override
     public void update(ClassRoom classRoom) {
-        String query = "UPDATE class SET name = ?;";
-        factory.execQuery(query, classRoom.getClassName());
+        String query = "UPDATE class SET name = ? WHERE class_id = ?;";
+        factory.execQuery(query, classRoom.getId(), classRoom.getClassName());
     }
 
     @Override
