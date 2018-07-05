@@ -103,6 +103,9 @@ public class StudentController implements HttpHandler {
             case "transactions-history":
                 response = getResponse("templates/transactions-student-view.twig");
                 break;
+            case "store-artifacts-to-buy":
+                response = getResponse("templates/store-student-buy-items.twig");
+                break;
             case "logout":
                 clearSession();
                 redirect(httpExchange, "/index");
