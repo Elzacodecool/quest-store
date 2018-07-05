@@ -54,6 +54,14 @@ public class Student {
         return transactionList;
     }
 
+    public int getCash() {
+        int cash = 0;
+        for (Transaction transaction : transactionList) {
+            cash += transaction.getAmount();
+        }
+        return cash;
+    }
+
     public void buyItem() {
         //TODO
     }
