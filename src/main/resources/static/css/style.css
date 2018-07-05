@@ -50,8 +50,8 @@ body
 	color: #FFFF00;
 	height: fit-content;
 	font-size: 68px;
-	
-	display: none;
+
+	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
 	flex-wrap: wrap;
