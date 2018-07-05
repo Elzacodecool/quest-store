@@ -1,10 +1,13 @@
 package com.codecool.queststore.controller;
 
+import com.codecool.queststore.DAO.DAOFactory;
 import com.codecool.queststore.DAO.DAOFactoryImpl;
+import com.codecool.queststore.DAO.ItemDAO;
 import com.codecool.queststore.DAO.StudentDAOImpl;
 import com.codecool.queststore.model.SingletonAcountContainer;
 import com.codecool.queststore.model.Transaction;
 import com.codecool.queststore.model.classRoom.ClassRoom;
+import com.codecool.queststore.model.inventory.Item;
 import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 import com.sun.net.httpserver.Headers;
@@ -152,6 +155,7 @@ public class StudentController implements HttpHandler {
         setHeaderDetails(jtwigModel);
         if (templatePath.contains("student-view-profile")) { setStudentInfo(jtwigModel); }
         if (templatePath.contains("transactions-student-view")) { setTransactionsInfo(jtwigModel); }
+        if (templatePath.contains("store-student-buy-items.twig")) { setArtifactsInfo(jtwigModel); }
         return jtwigTemplate.render(jtwigModel);
     }
 
@@ -182,6 +186,14 @@ public class StudentController implements HttpHandler {
 
         jtwigModel.with("transactions", transactions);
         jtwigModel.with("totalamount", totalAmount);
+    }
+
+    private void setArtifactsInfo(JtwigModel jtwigModel) {
+        DAOFactory daoFactory = new DAOFactoryImpl();
+        ItemDAO itemDAO = daoFactory.getItemDAO();
+        List<Item> artifacts = itemDAO.getArtifact();
+
+        jtwigModel.with("artifacts", artifacts);
     }
 
     private void clearSession() {
