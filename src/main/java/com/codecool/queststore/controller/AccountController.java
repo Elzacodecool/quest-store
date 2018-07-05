@@ -34,6 +34,7 @@ public class AccountController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
 
+
         if (pageLoadedAndCookieInContainer(method, cookieStr)) {
             redirectToMenuByCookie(cookieStr, httpExchange);
         } else if (userPushedLoginButton(method)) {
@@ -69,7 +70,9 @@ public class AccountController implements HttpHandler {
     }
 
     private String getSessionIdbyCookie(String cookieStr) {
+
         if (cookieStr == null) { return "notacookie"; }
+
         HttpCookie httpCookie = HttpCookie.parse(cookieStr).get(0);
         return httpCookie.toString().split("=")[1];
     }

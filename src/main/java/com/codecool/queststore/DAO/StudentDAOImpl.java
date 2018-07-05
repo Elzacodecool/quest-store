@@ -62,6 +62,22 @@ public class StudentDAOImpl implements StudentDAO {
         return result;
     }
 
+    public Student getStudentByLogin(String login) {
+        Student result = null;
+        String query = "SELECT * FROM student INNER JOIN codecooler ON student.codecooler_id = codecooler.codecooler_id WHERE codecooler.login = ? LIMIT 1";
+        ResultSet rs = factory.execQuery(query, login);
+        try {
+            rs.next();
+            UserDetails ud = factory.getUserDAO().getUserByLogin(login);
+            ClassRoom cr = factory.getClassDAO().getClass(rs.getInt("class_id"));
+            List <Transaction> transactionDAO = factory.getTransactionDAO().getTransactionByUser(rs.getInt("student_id"));
+            result = new Student(rs.getInt("student_id"), ud, cr, getStudentInventory(rs.getInt("student_id")), transactionDAO);
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getErrorCode());
+        }
+        return result;
+    }
+
     private Inventory getStudentInventory(int id) {
         List <Item> items = new ArrayList <>();
         String query = "SELECT * FROM inventory INNER JOIN item ON inventory.item_id = item.item_id WHERE student_id = ?";

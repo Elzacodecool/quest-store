@@ -10,6 +10,7 @@ public interface UserDAO {
     void remove(int id);
     void update(UserDetails userDetails);
     UserDetails getUser(int id);
+    UserDetails getUserByLogin(String login);
     List<UserDetails> getAllStudents(Mentor mentor);
     List<UserDetails> getAll();
 }

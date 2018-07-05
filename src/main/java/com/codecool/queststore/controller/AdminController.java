@@ -16,6 +16,7 @@ import org.jtwig.JtwigTemplate;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpCookie;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -232,5 +233,40 @@ public class AdminController implements HttpHandler {
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    private String getResponse(HttpExchange httpExchange) {
+
+        Admin admin = getAdminByCookie(httpExchange);
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate("templates/menu-admin.twig");
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        jtwigModel.with("fullname", admin.getUserDetails().getFirstName() + admin.getUserDetails().getLastName());
+        String response = jtwigTemplate.render(jtwigModel);
+
+        return response;
+    }
+
+    private Admin getAdminByCookie(HttpExchange httpExchange) {
+        String sessionId = getSessionId(httpExchange);
+        int codecoolerId = getCodecoolerId(sessionId);
+        AdminDAOImpl adminDAO = getAdminDao();
+        return adminDAO.getAdmin(codecoolerId);
+    }
+
+    private String getSessionId(HttpExchange httpExchange) {
+        HttpCookie httpCookie;
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        httpCookie = HttpCookie.parse(cookieStr).get(0);
+        return httpCookie.toString().split("=")[1];
+    }
+
+    private int getCodecoolerId(String sessionId) {
+        SingletonAcountContainer sessionsIDs = SingletonAcountContainer.getInstance();
+        return sessionsIDs.getCodecoolerId(sessionId);
+    }
+
+    private AdminDAOImpl getAdminDao() {
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        return new AdminDAOImpl(daoFactory);
     }
 }
