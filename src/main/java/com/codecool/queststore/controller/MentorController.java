@@ -75,10 +75,10 @@ public class MentorController implements HttpHandler {
         }
         response = mentorMenuContainer.getMenuMentor();
 
-        if (stringUri.contains("add-student") && method.equals("GET")) {
+        if (stringUri.equals("/mentor/add-student") && method.equals("GET")) {
             response = mentorMenuContainer.getMenuAddStudent();
 
-        } else if (stringUri.contains("add-student") && method.equals("POST")) {
+        } else if (stringUri.equals("/mentor/add-student") && method.equals("POST")) {
             Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
             int classId = Integer.parseInt(formMap.get("room"));
             ClassRoom classRoom = classDAO.getClass(classId);
@@ -93,11 +93,12 @@ public class MentorController implements HttpHandler {
             int classId = getParameter(uri);
             response = mentorMenuContainer.getMenuStudentOfClassToEdit(classId);
 
-        } else if (stringUri.contains("student-to-edit") && method.equals("GET")) {
+        } else if (stringUri.contains("/mentor/student-to-edit") && method.equals("GET")) {
             String login = getLogin(uri);
             response = mentorMenuContainer.getMenuEditStudent(login);
 
-        } else if (stringUri.contains("student-to-edit") && method.equals("POST")) {
+        } else if (stringUri.contains("/mentor/student-to-edit") && method.equals("POST")) {
+            System.out.println("----------------------------------------------------");
             Map<String, String> formMap = requestFormater.getMapFromRequest(httpExchange);
             int classId = Integer.parseInt(formMap.get("room"));
             ClassRoom classRoom = classDAO.getClass(classId);
@@ -190,6 +191,10 @@ public class MentorController implements HttpHandler {
             itemDAO.update(item);
             redirect(httpExchange, "/mentor");
 
+        } else if (stringUri.contains("logout") && method.equals("GET")) {
+            clearSession();
+            redirect(httpExchange, "/index");
+
         }
 
 
@@ -223,5 +228,10 @@ public class MentorController implements HttpHandler {
         int INDEX_LOGIN = uriArray.length - 1;
 
         return uriArray[INDEX_LOGIN];
+    }
+
+    private void clearSession() {
+        SingletonAcountContainer acountContainer = SingletonAcountContainer.getInstance();
+        acountContainer.removeSession(mentor.getId());
     }
 }
