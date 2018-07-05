@@ -14,6 +14,7 @@ import org.jtwig.JtwigTemplate;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpCookie;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,7 +34,8 @@ public class AccountController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
 
-        if (pageLoadedAndCookieExists(method, cookieStr)) {
+
+        if (pageLoadedAndCookieInContainer(method, cookieStr)) {
             redirectToMenuByCookie(cookieStr, httpExchange);
         } else if (userPushedLoginButton(method)) {
             redirectToMenuByUserType(httpExchange);
@@ -43,8 +45,12 @@ public class AccountController implements HttpHandler {
         }
     }
 
-    private boolean pageLoadedAndCookieExists(String method, String cookieStr) {
-        return method.equals("GET") && cookieStr != null;
+    private boolean pageLoadedAndCookieInContainer(String method, String cookieStr) {
+        boolean isMethodGet = method.equals("GET");
+        String sessionId = getSessionIdbyCookie(cookieStr);
+        SingletonAcountContainer accountContainer = SingletonAcountContainer.getInstance();
+        boolean isCookieInContainer = accountContainer.checkIfContains(sessionId);
+        return isMethodGet && isCookieInContainer;
     }
 
     private boolean userPushedLoginButton(String method) {
@@ -64,6 +70,9 @@ public class AccountController implements HttpHandler {
     }
 
     private String getSessionIdbyCookie(String cookieStr) {
+
+        if (cookieStr == null) { return "notacookie"; }
+
         HttpCookie httpCookie = HttpCookie.parse(cookieStr).get(0);
         return httpCookie.toString().split("=")[1];
     }

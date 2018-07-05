@@ -32,4 +32,12 @@ public class SingletonAcountContainer {
             return mapAccount.containsKey(sessionId);
         }
 
+        public void removeSession(int id) {
+            for (String session : mapAccount.keySet()) {
+                if (mapAccount.get(session) == id) {
+                    mapAccount.remove(session);
+                }
+            }
+        }
+
 }
