@@ -1,0 +1,26 @@
+!!! README !!!
+
+ISSUES IN PROJECT:
+---------------------------------------------------------------------------------------------
+Tiles that are not working (time leak):
+
+	1. Admin: (Made by Roman)
+		- Edit mentor
+		- Show mentors
+		# We wanted to remove Show mentors tile because of the same content as in edit mentor
+	2. Mentor: (Made by Lukas)
+		- Edit student - when you click SUBMIT button, database is not updated (Probably DAOUser bad statement preparing)
+	3. Student: (Made by Roman)
+		- Inventory
+		- Store - group items
+
+Every page that is not working redirects to uri: /in-build.
+---------------------------------------------------------------------------------------------
+
+There is big problem with logging into some accounts. Probably id conflicts causes this problem: some DAO reffers to individual ID (admin-id, mentor-id, student-id) instead of reffering to all users Ids (codecooler-id).
+
+#Message from Roman:
+	Instead of average clean code, I repeated so many methods in both Controllers: Admin, Student. If you are going to make some 		refactor, at start you may need to split common methods to foreign class. It may also help with refactoring MentorController. 		There is no redirecting method e.g. localhost/student/example will send 404NotFound.
+
+#Message from Lucas:
+	MentorController has dirty code. Some jtwig files have been not updated fullname (Ola Kowalska displays).
