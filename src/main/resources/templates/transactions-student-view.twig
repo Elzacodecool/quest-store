@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Quest Store</title>
+
+    <link rel="icon" href="/static/img/logo.png">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/transaction.css">
+    <link rel="stylesheet" href="/static/css/styleList.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+
+<body>
+
+<div id="main-header">
+    <div id="main-header-user-name">
+        <section>{{ fullname }}</section>
+    </div>
+
+    <div id="main-header-logo">
+        <header><a id="back-to-menu" href="/student">QuestSt<img id="logo" src="/static/img/logo.png">re</a></header>
+    </div>
+</div>
+
+<div id="content-container">
+
+    <div class="title">
+        <h1>transactions:</h1>
+    </div>
+
+    <div class="lists">
+        <div class="group">
+            <div class="group-items">
+                {% for transaction in transactions %}
+                    <div class="item-container">
+                        <div class="item">
+                            <div class="item-name text frame">
+                                <h4 id="name">
+                                    Name: {{ transaction.item.name }} Description: {{ transaction.item.description }}
+                                </h4>
+                            </div>
+                            <div class="price text frame">
+                                <h4 id="name">
+                                    Price: {{ transaction.amount }}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                 {% endfor %}
+            </div>
+            <div class="wallet">
+                <div class="white-board">
+                    <div class="text frame">
+                        <h4 id="name">
+                            Balance: {{ totalamount }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+    <footer>Copyright &copy 2018 Truskawki</footer>
+</div>
+
+</body>
+</html>

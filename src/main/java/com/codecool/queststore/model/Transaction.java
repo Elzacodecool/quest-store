@@ -1,23 +1,22 @@
 package com.codecool.queststore.model;
 
 import com.codecool.queststore.model.inventory.Item;
-import com.codecool.queststore.model.user.Student;
 
 public class Transaction {
     private int id;
-    private Student student;
+    private int studentId;
     private Item item;
     private int amount;
 
-    public Transaction(int id, Student student, Item item, int amount) {
+    public Transaction(int id, int student, Item item, int amount) {
         this.id = id;
-        this.student = student;
+        this.studentId = student;
         this.item = item;
         this.amount = amount;
     }
 
-    public Transaction(Student student, Item item, int amount) {
-        this.student = student;
+    public Transaction(int student, Item item, int amount) {
+        this.studentId = student;
         this.item = item;
         this.amount = amount;
     }
@@ -26,8 +25,8 @@ public class Transaction {
         return id;
     }
 
-    public Student getStudent() {
-        return student;
+    public int getStudentId() {
+        return studentId;
     }
 
     public Item getItem() {

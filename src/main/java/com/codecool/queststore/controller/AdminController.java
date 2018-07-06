@@ -1,185 +1,238 @@
 package com.codecool.queststore.controller;
 
 import com.codecool.queststore.DAO.*;
+import com.codecool.queststore.model.RequestFormater;
+import com.codecool.queststore.model.SingletonAcountContainer;
 import com.codecool.queststore.model.classRoom.ClassRoom;
+import com.codecool.queststore.model.user.Admin;
 import com.codecool.queststore.model.user.Mentor;
-import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
-import com.codecool.queststore.view.UI;
-import org.postgresql.util.PSQLException;
+import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpCookie;
+
+import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class AdminController {
-    private DAOFactory daoFactory = new DAOFactoryImpl();
-    private MentorDAO mentorDAO = daoFactory.getMentorDAO();
-    private ClassDAO classDAO = daoFactory.getClassDAO();
-    private StudentDAO studentDAO = daoFactory.getStudentDAO();
+public class AdminController implements HttpHandler {
 
-    private UI ui;
+    private Admin admin;
 
-    public AdminController() {
-        daoFactory = new DAOFactoryImpl();
-        mentorDAO = new MentorDAOImpl(daoFactory);
-        studentDAO = new StudentDAOImpl(daoFactory);
-        classDAO = new ClassDAOImpl(daoFactory);
-        ui = new UI();
+    @Override
+    public void handle(HttpExchange httpExchange) throws IOException {
+
+        redirectToLoginPageIfSessionExpired(httpExchange);
+
+        this.admin = getAdminByCookie(httpExchange);
+
+        String method = httpExchange.getRequestMethod();
+        String response = "";
+ 
+        if (isGetMethod(method)) {
+            response = constructResponse(httpExchange, response);
+        } else {
+            manageDataAndRedirect(httpExchange);
+        }
+
+        sendResponse(httpExchange, response);
     }
 
-    public void runController() {
-        boolean isRunning = true;
+    private void redirectToLoginPageIfSessionExpired(HttpExchange httpExchange) throws IOException {
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        String sessionId = getSessionIdbyCookie(cookieStr);
 
-        while (isRunning) {
-            ui.clearScreen();
-            ui.displayArray(getMenu());
+        if (sessionExpired(sessionId)) { redirect(httpExchange, "index"); }
+    }
 
-            int option = ui.getInputInt("Type your choice: ");
-            switch (option) {
-                case 1:
-                    createMentor();
-                    break;
+    private String getSessionIdbyCookie(String cookieStr) {
+        HttpCookie httpCookie = HttpCookie.parse(cookieStr).get(0);
+        return httpCookie.toString().split("=")[1];
+    }
 
-                case 2:
-                    addClass();
-                    break;
+    private boolean sessionExpired(String sessionId) {
+        return sessionId == null;
+    }
 
-                case 3:
-                    addMentorToClass();
-                    break;
+    private void redirect(HttpExchange httpExchange, String location) throws IOException {
+        Headers headers = httpExchange.getResponseHeaders();
+        headers.add("Location", location);
+        httpExchange.sendResponseHeaders(302, -1);
+        httpExchange.close();
+    }
 
-                case 4:
-                    editMentorPassword();
-                    break;
+    private Admin getAdminByCookie(HttpExchange httpExchange) {
+        String sessionId = getSessionId(httpExchange);
+        int codecoolerId = getCodecoolerId(sessionId);
+        AdminDAOImpl adminDAO = getAdminDao();
+        return adminDAO.getAdmin(codecoolerId);
+    }
 
-                case 5:
-                    removeMentorFromClass();
-                    break;
+    private String getSessionId(HttpExchange httpExchange) {
+        HttpCookie httpCookie;
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        httpCookie = HttpCookie.parse(cookieStr).get(0);
+        return httpCookie.toString().split("=")[1];
+    }
 
-                case 6:
-                    seeMentorData();
-                    break;
+    private int getCodecoolerId(String sessionId) {
+        SingletonAcountContainer sessionsIDs = SingletonAcountContainer.getInstance();
+        return sessionsIDs.getCodecoolerId(sessionId);
+    }
 
-                case 7:
+    private AdminDAOImpl getAdminDao() {
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        return new AdminDAOImpl(daoFactory);
+    }
 
-                    break;
+    private String constructResponse(HttpExchange httpExchange, String response) throws IOException {
+        String dataUri = getDataUri(httpExchange);
 
-                case 0:
+        switch (dataUri) {
+            case "admin":
+                response = getResponse("templates/menu-admin.twig");
+                break;
+            case "add-mentor":
+                response = getResponse("templates/add-mentor.twig");
+                break;
+            case "add-class":
+                response = getResponse("templates/add-class.twig");
+                break;
+            case "list-classes":
+                response = getResponse("templates/classes-list-admin-view.twig");
+                break;
+            case "edit-class":
+                response = getResponse("templates/edit-class.twig", Integer.parseInt(getLastAction(httpExchange)));
+                break;
+            case "logout":
+                clearSession();
+                redirect(httpExchange, "/index");
+                break;
+        }
 
-                    isRunning = false;
-                    break;
-            }
+        return response;
+    }
+
+    private String getDataUri(HttpExchange httpExchange) {
+        return parseURI(httpExchange).get("data");
+    }
+
+    private String getLastAction(HttpExchange httpExchange) { return parseURI(httpExchange).get("action");}
+
+    private Map<String, String> parseURI(HttpExchange httpExchange) {
+
+        String uri = httpExchange.getRequestURI().toString();
+        String[] actionsDatas = uri.split("/");
+
+        Map <String, String> keyValue = new HashMap<>();
+        for (int i = 0; i < actionsDatas.length - 1; i++) { keyValue.put("action", actionsDatas[i]); }
+        keyValue.put("data", actionsDatas[actionsDatas.length - 1]);
+
+        return keyValue;
+    }
+
+    private boolean isGetMethod(String method) { return method.equals("GET"); }
+
+    private void manageDataAndRedirect(HttpExchange httpExchange) throws IOException {
+        String dataUri = getDataUri(httpExchange);
+
+        switch (dataUri) {
+            case "add-mentor":
+                createMentor(httpExchange);
+                redirect(httpExchange, "/admin");
+                break;
+            case "add-class":
+                createClassRoom(httpExchange);
+                redirect(httpExchange, "/admin");
+                break;
+            case "edit-class":
+                updateClassRoom(httpExchange);
+                redirect(httpExchange, "/admin");
         }
     }
 
-    private String[] getMenu() {
-        String[] mentorMenu = {"[1] Create mentor",
-                "[2] Create class",
-                "[3] Add Mentor to class",
-                "[4] Edit mentor password",
-                "[5] Remove mentor from class",
-                "[6] Show mentor data"
-
-        };
-
-        return mentorMenu;
-    }
-
-    public void createMentor() {
-        Mentor mentor = new Mentor(getDetailsFromInput());
+    private void createMentor(HttpExchange httpExchange) throws IOException {
+        Map<String, String> formMap = new RequestFormater().getMapFromRequest(httpExchange);
+        UserDetails userDetails = new UserDetails(formMap.get("firstname"), formMap.get("lastname"), formMap.get("email"), formMap.get("login"), formMap.get("password"), "mentor");
+        Mentor mentor = new Mentor(0, userDetails);
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        MentorDAO mentorDAO = daoFactory.getMentorDAO();
         mentorDAO.add(mentor);
     }
 
-    private UserDetails getDetailsFromInput() {
-        String firstName = ui.getInputString("Type first name: ");
-        String lastName = ui.getInputString("Type last name: ");
-        String email = ui.getInputString("Type email: ");
-        String login = ui.getInputString("Type login name: ");
-        String password = ui.getInputString("Type password: ");
-        return new UserDetails(firstName, lastName, email, login, password);
-    }
-
-    public void addClass() {
-        String name = ui.getInputString("Type first name: ");
-        ClassRoom classRoom = new ClassRoom(name);
+    private void createClassRoom(HttpExchange httpExchange) throws IOException {
+        Map<String, String> formMap = new RequestFormater().getMapFromRequest(httpExchange);
+        String classRoomName = formMap.get("classname");
+        ClassRoom classRoom = new ClassRoom(0, classRoomName);
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        ClassDAO classDAO = daoFactory.getClassDAO();
         classDAO.add(classRoom);
     }
 
-    public void addMentorToClass() {
-        Mentor mentor = getMentorFromInput();
-        ClassRoom classRoom = getClassFromInput();
-        classDAO.addMentor(mentor, classRoom);
+    private void updateClassRoom(HttpExchange httpExchange) throws IOException {
+        Map<String, String> formMap = new RequestFormater().getMapFromRequest(httpExchange);
+        String classRoomName = formMap.get("classname");
+
+        int classId = Integer.parseInt(getLastAction(httpExchange));
+
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        ClassDAO classDAO = daoFactory.getClassDAO();
+        ClassRoom classRoom = classDAO.getClass(classId);
+
+        classRoom.setClassName(classRoomName);
+        classDAO.update(classRoom);// TODO - WHY DAO UPDATES ALL CLASSROOMS ???
     }
 
-    private Mentor getMentorFromInput() {
-        List<Mentor> mentorList = mentorDAO.getAllMentors();
-        List<String> textList = new ArrayList<>();
-        for (int i = 0; i < mentorList.size(); i++) {
-            UserDetails userDetails = mentorList.get(i).getUserDetails();
-            textList.add(i + ". " + userDetails.getFirstName() + " " + userDetails.getLastName());
-        }
-        ui.displayList(textList);
-        int indexMentor = ui.getInputInt("Type your choice: ");
-        return mentorList.get(indexMentor);
+    private void clearSession() {
+        SingletonAcountContainer acountContainer = SingletonAcountContainer.getInstance();
+        acountContainer.removeSession(admin.getUserDetails().getId());
     }
 
-    private ClassRoom getClassFromInput() {
-        List<ClassRoom> classList = classDAO.getAll();
-        List<String> textList = new ArrayList<>();
-        for (int i = 0; i < classList.size(); i++) {
-            ClassRoom classRoom = classList.get(i);
-            textList.add(i + ". " + classRoom.getClassName());
-        }
-        ui.displayList(textList);
-        int indexClass = ui.getInputInt("Type your choice: ");
-        return classList.get(indexClass);
+    private String getResponse(String templatePath) {
+
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        setHeaderDetails(jtwigModel);
+        if (templatePath.contains("add-mentor") || templatePath.contains("classes-list-admin-view")) { setClassRooms(jtwigModel); }
+
+        return jtwigTemplate.render(jtwigModel);
     }
 
-    private Mentor getMentorOfClassRoom(ClassRoom classRoom) {
-        List<Mentor> mentorList = mentorDAO.getMentorsFromClass(classRoom);
-        List<String> textList = new ArrayList<>();
-        for (int i = 0; i < mentorList.size(); i++) {
-            UserDetails userDetails = mentorList.get(i).getUserDetails();
-            textList.add(i + ". " + userDetails.getFirstName() + " " + userDetails.getLastName());
-        }
-        ui.displayList(textList);
-        int indexMentor = ui.getInputInt("Type your choice: ");
-        return mentorList.get(indexMentor);
+    private String getResponse(String templatePath, int classId) {
+
+        JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
+        JtwigModel jtwigModel = JtwigModel.newModel();
+        setHeaderDetails(jtwigModel);
+        DAOFactoryImpl daoFactory = new DAOFactoryImpl();
+        ClassDAO classDAO = daoFactory.getClassDAO();
+        ClassRoom classRoom = classDAO.getClass(classId);
+        jtwigModel.with("classname", classRoom.getClassName());
+
+        return jtwigTemplate.render(jtwigModel);
     }
 
-    public void editMentorPassword() {
-        Mentor mentor = getMentorFromInput();
-        String password = ui.getInputString("Type new password: ");
-        mentor.getUserDetails().setPassword(password);
-        mentorDAO.update(mentor);
+    private void setHeaderDetails(JtwigModel jtwigModel) {
+        UserDetails userDetails = admin.getUserDetails();
+        jtwigModel.with("fullname", userDetails.getFirstName() + " " + userDetails.getLastName());
     }
 
-    public void removeMentorFromClass() {
-        ClassRoom classRoom = getClassFromInput();
-        Mentor mentor = getMentorOfClassRoom(classRoom);
-        classDAO.removeMentor(mentor, classRoom);
+    private void setClassRooms(JtwigModel jtwigModel) {
+        List<ClassRoom> classRooms = new DAOFactoryImpl().getClassDAO().getAll();
+        jtwigModel.with("classroom", classRooms);
     }
 
-    public void seeMentorData() {
-        Mentor mentor = getMentorFromInput();
-        for (ClassRoom classRoom : classDAO.getClassesByMentor(mentor)) {
-            System.out.println(classRoom.getClassName());
-            for (Student student : studentDAO.getStudentsByRoom(classRoom)) { // do napisania
-                System.out.println(student.getUserDetails().getFirstName() + " " + student.getUserDetails().getLastName());
-            }
-        }
-        System.out.println("mentor data: " + mentor.getUserDetails().getFirstName() + " " + mentor.getUserDetails().getLastName());
+    private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
     }
 
-    public void addLevelOfExperience() {
-        // TODO
-        // student can achieve them TODO
-    }
-
-
-    public static void main(String[] args) {
-        AdminController adminController = new AdminController();
-        adminController.runController();
-
-    }
 }

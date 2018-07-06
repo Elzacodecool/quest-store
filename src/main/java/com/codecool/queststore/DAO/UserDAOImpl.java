@@ -22,7 +22,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public int add(UserDetails userDetails) {
         Integer userDetailsId = null;
-        String query = "INSERT INTO codecooler (first_name, last_name, email, login, password) VALUES (?,?,?,?,?) RETURNING codecooler_id;";
+        String query = "INSERT INTO codecooler (first_name, last_name, email, login, password, account_type) VALUES (?,?,?,?,?,?) RETURNING codecooler_id;";
 
         try {
             ResultSet rs = factory.execQuery(query,
@@ -30,7 +30,8 @@ public class UserDAOImpl implements UserDAO {
                     userDetails.getLastName(),
                     userDetails.getEmail(),
                     userDetails.getLogin(),
-                    userDetails.getPassword()
+                    userDetails.getPassword(),
+                    userDetails.getAccountType()
             );
             rs.next();
             userDetailsId = rs.getInt(1);
@@ -77,7 +78,30 @@ public class UserDAOImpl implements UserDAO {
                     resultSet.getString("last_name"),
                     resultSet.getString("email"),
                     resultSet.getString("login"),
-                    resultSet.getString("password"));
+                    resultSet.getString("password"),
+                    resultSet.getString("account_type"));
+        } catch (SQLException e) {
+            e.getErrorCode();
+        }
+        return userDetails;
+    }
+
+    @Override
+    public UserDetails getUserByLogin(String login) {
+        UserDetails userDetails = null;
+        String query = "SELECT * FROM codecooler WHERE login = ?;";
+        ResultSet resultSet = factory.execQuery(query, login);
+        //TODO: Extract to a method (lines 68-75 & 97-104)
+        try {
+            resultSet.next();
+            userDetails = new UserDetails(
+                    resultSet.getInt("codecooler_id"),
+                    resultSet.getString("first_name"),
+                    resultSet.getString("last_name"),
+                    resultSet.getString("email"),
+                    resultSet.getString("login"),
+                    resultSet.getString("password"),
+                    resultSet.getString("account_type"));
         } catch (SQLException e) {
             e.getErrorCode();
         }
@@ -104,7 +128,8 @@ public class UserDAOImpl implements UserDAO {
                         resultSet.getString("last_name"),
                         resultSet.getString("email"),
                         resultSet.getString("login"),
-                        resultSet.getString("password")));
+                        resultSet.getString("password"),
+                        resultSet.getString("account_type")));
             }
         } catch (SQLException e) {
             e.getErrorCode();
