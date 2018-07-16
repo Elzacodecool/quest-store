@@ -67,7 +67,7 @@ class StudentDAOImplTest {
         userDetails = new UserDetails("Szymon", "Słowik", "email@email.com",
                                     "login123", "password123", "student");
         student = new Student(1, userDetails, classRoom, new Inventory(1), new ArrayList<Transaction>());
-        studentDAO = new StudentDAOImpl();
+        studentDAO = new StudentDAOImpl(new DAOFactoryImpl(c));
     }
 
     @Test
