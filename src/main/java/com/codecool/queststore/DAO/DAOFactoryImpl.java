@@ -13,6 +13,10 @@ public class DAOFactoryImpl extends DAOFactory {
         this.connection = createConnection();
     }
 
+    DAOFactoryImpl(Connection connection) {
+        this.connection = connection;
+    }
+
     public Connection getConnection() {
         return this.connection;
     }
