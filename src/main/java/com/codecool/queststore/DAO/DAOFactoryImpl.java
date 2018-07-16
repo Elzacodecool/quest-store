@@ -1,5 +1,6 @@
 package com.codecool.queststore.DAO;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class DAOFactoryImpl extends DAOFactory {
@@ -8,13 +9,19 @@ public class DAOFactoryImpl extends DAOFactory {
     private static final String DB_NAME = "queststore";
     private static final String userName = "codecooler";
     private static final String password = "123";
+    private DataSource dataSource;
 
     public DAOFactoryImpl() {
         this.connection = createConnection();
     }
 
-    DAOFactoryImpl(Connection connection) {
-        this.connection = connection;
+    DAOFactoryImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+        try {
+            connection = dataSource.getConnection("codecooler", "123");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Connection getConnection() {
