@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS codecooler, admin, mentor, student, mentor_class, class, transaction, inventory, item CASCADE;
+﻿DROP TABLE IF EXISTS codecooler, admin, mentor, student, mentor_class, class, transaction, inventory, item CASCADE;
 
 CREATE TABLE codecooler (
 	codecooler_id serial PRIMARY KEY,
@@ -76,7 +76,7 @@ CREATE TABLE item (
     category text
 );
 
-INSERT INTO item (name, decription, price, category) 
+INSERT INTO item (name, description, price, category) 
 VALUES ('name', 'description', 25, 'single');
 
 CREATE TABLE transaction (
