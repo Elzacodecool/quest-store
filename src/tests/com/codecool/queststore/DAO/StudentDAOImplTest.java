@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.Mock;
+import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -48,11 +49,14 @@ class StudentDAOImplTest {
 
     @Before
     public void setUpEnvironment() throws Exception {
+
         System.out.println(dS);
         assertNotNull(dS);
         when(c.prepareStatement(any(String.class))).thenReturn(stmt);
         when(dS.getConnection()).thenReturn(c);
 
+        when(stmt.executeQuery()).thenReturn(rS);
+        System.out.println(userDetails.getFirstName());
         /*
         when(rS.first()).thenReturn(true);
 
@@ -63,15 +67,30 @@ class StudentDAOImplTest {
         when(rS.getString(3)).thenReturn(p.getLastName());
 
         when(stmt.executeQuery()).thenReturn(rS);*/
-        classRoom = new ClassRoom(1, "webRoom");
-        userDetails = new UserDetails("Szymon", "Słowik", "email@email.com",
-                                    "login123", "password123", "student");
-        student = new Student(1, userDetails, classRoom, new Inventory(1), new ArrayList<Transaction>());
-        studentDAO = new StudentDAOImpl(new DAOFactoryImpl(c));
+
     }
 
     @Test
     public void testAddStudent() {
+        /*System.out.println(studentDAO.getStudent(1).getUserDetails().getFirstName());
+        studentDAO.add(student);
+        System.out.println(studentDAO.getStudent(1).getUserDetails().getFirstName());*/
+        classRoom = new ClassRoom(1, "webRoom");
+        userDetails = new UserDetails("Szymon", "Słowik", "email@email.com",
+                "login123", "password123", "student");
+        student = new Student(1, userDetails, classRoom, new Inventory(1), new ArrayList<Transaction>());
+        studentDAO = new StudentDAOImpl(new DAOFactoryImpl(new PGSimpleDataSource()));
+        //studentDAO.add(student);
+        assertEquals(studentDAO.getStudent(1).getUserDetails().getFirstName(), "Szymon");
+
+    }
+
+    private void setAddStudentEnvironment() throws Exception {
+        stmt.setString(1, userDetails.getFirstName());
+        stmt.setString(1, userDetails.getFirstName());
+        stmt.setString(1, userDetails.getFirstName());
+        stmt.setString(1, userDetails.getFirstName());
+        stmt.setString(1, userDetails.getFirstName());
 
     }
     /*private StudentDAO studentDAO = new StudentDAOImpl(new DAOFactoryImpl());
