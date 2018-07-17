@@ -15,6 +15,7 @@ import org.mockito.Mock;
 
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -102,5 +103,8 @@ class StudentDAOImplTest {
     }
 
     @Test
-    public void
+    public void shouldGetStudentReturnNullIfExceptionOccur() throws Exception {
+        when(rS.getInt("class_id")).thenThrow(SQLException.class);
+        assertNull(studentDAO.getStudent(1));
+    }
 }
