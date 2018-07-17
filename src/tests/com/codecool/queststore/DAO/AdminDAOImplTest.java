@@ -34,11 +34,9 @@ public class AdminDAOImplTest {
         when(rs.next()).thenReturn(true);
         when(userDAO.getUser(any(Integer.class))).thenReturn(ud);
         when(daoFactory.getUserDAO()).thenReturn(userDAO);
-        Admin admin = new Admin(1, ud);
-
     }
 
-    public void setUpForReturnAdmin() throws Exception {
+    private void setUpForReturnAdmin() throws Exception {
         when(rs.getInt(any(String.class))).thenReturn(1);
     }
 
@@ -56,7 +54,7 @@ public class AdminDAOImplTest {
         assertEquals(admin.getUserDetails().getEmail(), adminFromMethod.getUserDetails().getEmail());
     }
 
-    public void setUpForNull() throws Exception {
+    private void setUpForNull() throws Exception {
         when(rs.getInt(any(String.class))).thenThrow(new SQLException());
     }
 
