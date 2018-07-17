@@ -107,4 +107,9 @@ class StudentDAOImplTest {
         when(rS.getInt("class_id")).thenThrow(SQLException.class);
         assertNull(studentDAO.getStudent(1));
     }
+
+    @Test
+    public void shouldUpdateThrowExceptionIfNullPass() {
+        assertThrows(NullPointerException.class, () -> { studentDAO.update(null);});
+    }
 }
