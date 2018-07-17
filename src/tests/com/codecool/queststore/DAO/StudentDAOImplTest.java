@@ -91,7 +91,7 @@ class StudentDAOImplTest {
     }
 
     @Test
-    public void shouldAddStudentThrowsNullPointerExceptionIfNullPassed() throws Exception {
+    public void shouldAddStudentThrowExceptionIfNullPass() throws Exception {
         assertThrows(NullPointerException.class, () -> { studentDAO.add(null); });
     }
 
