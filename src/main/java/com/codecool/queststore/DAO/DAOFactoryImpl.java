@@ -15,15 +15,6 @@ public class DAOFactoryImpl extends DAOFactory {
         this.connection = createConnection();
     }
 
-    DAOFactoryImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-        try {
-            connection = dataSource.getConnection("codecooler", "123");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Connection getConnection() {
         return this.connection;
     }
