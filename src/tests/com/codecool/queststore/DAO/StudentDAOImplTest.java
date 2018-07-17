@@ -97,15 +97,10 @@ class StudentDAOImplTest {
 
     @Test
     public void shouldGetStudent() throws Exception {
-        setStudentInventoryForTest();
+        when(rS.next()).thenReturn(false);
         assertNotNull(studentDAO.getStudent(1));
     }
 
-    private void setStudentInventoryForTest() throws Exception {
-        when(rS.getInt("item_id")).thenReturn(100);
-        when(rS.getInt("price")).thenReturn(100);
-        when(rS.getString("name")).thenReturn("testItemName");
-        when(rS.getString("decription")).thenReturn("testItemDescription");
-        when(rS.getString("category")).thenReturn("testItemCategory");
-    }
+    @Test
+    public void
 }
