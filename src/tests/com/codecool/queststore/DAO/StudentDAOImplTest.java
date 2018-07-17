@@ -6,12 +6,14 @@ import com.codecool.queststore.model.inventory.Inventory;
 import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.Mock;
 
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -33,16 +35,23 @@ class StudentDAOImplTest {
     @Mock
     private UserDAO userDAO;
 
+    @Mock
+    private ClassDAO classDAO;
+
+    @Mock
+    private TransactionDAO transactionDAO;
+
     private Student student;
     private UserDetails userDetails;
     private ClassRoom classRoom;
-    private StudentDAO studentDAO;
+    private StudentDAOImpl studentDAO;
 
+    @BeforeEach
     public void setUpEnvironment() throws Exception {
         MockitoAnnotations.initMocks(this);
         initializePrivateFields();
         when(rS.next()).thenReturn(true);
-        when(rS.getInt(1)).thenReturn(1);
+        when(rS.getInt("student_id")).thenReturn(1);
         when(daoFactory.execQuery(any(String.class), any(Integer.class))).thenReturn(rS);
 
         when(daoFactory.execQuery(any(String.class),
@@ -55,10 +64,17 @@ class StudentDAOImplTest {
 
         when(daoFactory.getUserDAO()).thenReturn(userDAO);
         when(userDAO.getUser(any(Integer.class))).thenReturn(userDetails);
+        when(daoFactory.getClassDAO()).thenReturn(classDAO);
+        when(classDAO.getClass(any(Integer.class))).thenReturn(classRoom);
+
+        when(daoFactory.getTransactionDAO()).thenReturn(transactionDAO);
+        when(transactionDAO.getTransactionByUser(any(Integer.class))).thenReturn(new ArrayList<Transaction>());
+
         when(userDAO.add(any(UserDetails.class))).thenReturn(1);
 
 
     }
+
 
 
     private void initializePrivateFields() {
@@ -71,22 +87,16 @@ class StudentDAOImplTest {
 
     @Test
     public void shouldAddStudent() throws Exception {
-        setUpEnvironment();
-        when(userDAO.add(any(UserDetails.class))).thenReturn(1);
         assertEquals(Integer.valueOf(1), studentDAO.add(student));
     }
 
     @Test
-    public void shouldAddStudentThrowsNullPointerException() throws Exception {
-        Integer nullNumber = null;
-        setUpEnvironment();
-        when(rS.next()).thenReturn(false);
-        when(rS.getInt(1)).thenReturn(nullNumber);
-        //studentDAO.add(student);
-        assertThrows(NullPointerException.class, () -> { studentDAO.add(student); });
+    public void shouldAddStudentThrowsNullPointerExceptionIfNullPassed() throws Exception {
+        assertThrows(NullPointerException.class, () -> { studentDAO.add(null); });
     }
 
-    private Integer teszt() {
-        return null;
+    @Test
+    public void shouldGetStudent() {
+        assertNotNull(studentDAO.getStudent(1));
     }
 }
