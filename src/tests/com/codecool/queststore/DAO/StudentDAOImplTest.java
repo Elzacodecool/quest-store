@@ -91,12 +91,21 @@ class StudentDAOImplTest {
     }
 
     @Test
-    public void shouldAddStudentThrowExceptionIfNullPass() throws Exception {
+    public void shouldAddStudentThrowExceptionIfNullPass() {
         assertThrows(NullPointerException.class, () -> { studentDAO.add(null); });
     }
 
     @Test
-    public void shouldGetStudent() {
+    public void shouldGetStudent() throws Exception {
+        setStudentInventoryForTest();
         assertNotNull(studentDAO.getStudent(1));
+    }
+
+    private void setStudentInventoryForTest() throws Exception {
+        when(rS.getInt("item_id")).thenReturn(100);
+        when(rS.getInt("price")).thenReturn(100);
+        when(rS.getString("name")).thenReturn("testItemName");
+        when(rS.getString("decription")).thenReturn("testItemDescription");
+        when(rS.getString("category")).thenReturn("testItemCategory");
     }
 }
