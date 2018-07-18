@@ -126,14 +126,16 @@ class StudentDAOImplTest {
                                         userDetails.getPassword(),
                                         userDetails.getAccountType()};
 
-        String[] actualUserDetails = getActualUserDetails();
+        String[] actualUserDetails = getActualUserDetails(false);
 
         assertEquals(Arrays.asList(expectedUserDetails), Arrays.asList(actualUserDetails));
     }
 
 
-    private String[] getActualUserDetails() {
-        UserDetails actualUserDetails = studentDAO.getStudent(1).getUserDetails();
+    private String[] getActualUserDetails(boolean isByLogin) {
+        UserDetails actualUserDetails;
+        if (isByLogin) actualUserDetails = studentDAO.getStudentByLogin("login123").getUserDetails();
+        else actualUserDetails = studentDAO.getStudent(1).getUserDetails();
 
         return new String[]{Integer.toString(actualUserDetails.getId()),
                             actualUserDetails.getFirstName(),
@@ -180,5 +182,23 @@ class StudentDAOImplTest {
     public void shouldGetStudentByLogin() throws Exception {
         when(rS.next()).thenReturn(false);
         assertNotNull(studentDAO.getStudentByLogin("login123"));
+    }
+
+
+    @Test
+    public void shouldGetStudentByLoginHasProperUserDetails() throws Exception {
+        when(rS.next()).thenReturn(false);
+
+        String[] expectedUserDetails = {Integer.toString(userDetails.getId()),
+                userDetails.getFirstName(),
+                userDetails.getLastName(),
+                userDetails.getEmail(),
+                userDetails.getLogin(),
+                userDetails.getPassword(),
+                userDetails.getAccountType()};
+
+        String[] actualUserDetails = getActualUserDetails(true);
+
+        assertEquals(Arrays.asList(expectedUserDetails), Arrays.asList(actualUserDetails));
     }
 }
