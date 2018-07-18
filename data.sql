@@ -76,7 +76,7 @@ CREATE TABLE item (
     category text
 );
 
-INSERT INTO item (name, description, price, category) 
+INSERT INTO item (name, decription, price, category) 
 VALUES ('name', 'description', 25, 'single');
 
 CREATE TABLE transaction (
