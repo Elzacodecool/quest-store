@@ -103,7 +103,7 @@ class StudentDAOImplTest {
 
     @Test
     public void shouldAddStudentThrowExceptionIfNullPass() {
-        assertThrows(NullPointerException.class, () -> { studentDAO.add(null); });
+        assertThrows(IllegalArgumentException.class, () -> { studentDAO.add(null); });
     }
 
 
@@ -174,7 +174,7 @@ class StudentDAOImplTest {
 
     @Test
     public void shouldUpdateThrowExceptionIfNullPass() {
-        assertThrows(NullPointerException.class, () -> { studentDAO.update(null);});
+        assertThrows(IllegalArgumentException.class, () -> { studentDAO.update(null);});
     }
 
 
@@ -215,5 +215,12 @@ class StudentDAOImplTest {
     public void shouldGetStudentByLoginReturnNullIfExceptionOccur() throws Exception {
         when(rS.getInt("class_id")).thenThrow(SQLException.class);
         assertNull(studentDAO.getStudentByLogin("login123"));
+    }
+
+
+    @Test
+    public void shouldGetStudentByLoginThrowsExceptionWhenNullPass() throws Exception {
+        when(rS.next()).thenReturn(false);
+        assertThrows(IllegalArgumentException.class, () -> { studentDAO.getStudentByLogin(null);});
     }
 }
