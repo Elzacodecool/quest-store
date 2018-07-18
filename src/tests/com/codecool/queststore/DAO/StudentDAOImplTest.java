@@ -201,4 +201,12 @@ class StudentDAOImplTest {
 
         assertEquals(Arrays.asList(expectedUserDetails), Arrays.asList(actualUserDetails));
     }
+
+
+    @Test
+    public void shouldGetStudentByLoginHasProperlyAddItemToInventory() throws Exception {
+        setupStudentInventory();
+        Inventory actualStudentInventory = studentDAO.getStudentByLogin("login123").getInventory();
+        assertEquals(inventory.getItems().size(), actualStudentInventory.getItems().size());
+    }
 }
