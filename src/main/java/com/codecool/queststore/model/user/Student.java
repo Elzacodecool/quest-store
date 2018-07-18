@@ -18,11 +18,11 @@ public class Student {
     private Inventory inventory;
     private List<Transaction> transactionList;
 
-    public Student(UserDetails userDetails, ClassRoom classRoom) {
+    public Student(UserDetails userDetails, ClassRoom classRoom, DAOFactory daoFactory) {
         this.userDetails = userDetails;
         this.classRoom = classRoom;
         inventory = new Inventory(id);
-        transactionList = setTransactions();
+        transactionList = setTransactions(daoFactory);
     }
 
     public Student(int id, UserDetails userDetails, ClassRoom classRoom, Inventory inventory, List<Transaction> transactionList) {
@@ -33,8 +33,7 @@ public class Student {
         this.transactionList = transactionList;
     }
 
-    private List<Transaction> setTransactions() {
-        DAOFactory daoFactory = new DAOFactoryImpl();
+    private List<Transaction> setTransactions(DAOFactory daoFactory) {
         return daoFactory.getTransactionDAO().getTransactionByUser(userDetails.getId());
     }
 
