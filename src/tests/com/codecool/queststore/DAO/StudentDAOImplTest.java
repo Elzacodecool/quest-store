@@ -250,7 +250,7 @@ class StudentDAOImplTest {
     @Test
     public void shouldGetStudentsByRoomReturnEmptyListWhenExceptionOccur() throws SQLException {
         when(rS.next()).thenThrow(SQLException.class);
-        assertEquals(1, studentDAO.getStudentsByRoom(classRoom).size());
+        assertEquals(0, studentDAO.getStudentsByRoom(classRoom).size());
     }
 
 
@@ -280,5 +280,13 @@ class StudentDAOImplTest {
                 thenReturn(false);
 
         assertEquals(3, studentDAO.getAllStudents().size());
+    }
+
+
+    @Test
+    public void shouldGetAllStudentsReturnEmptyListWhenExceptionOccur() throws SQLException {
+        when(daoFactory.execQuery(anyString())).thenReturn(rS);
+        when(rS.next()).thenThrow(SQLException.class);
+        assertEquals(0, studentDAO.getAllStudents());
     }
 }
