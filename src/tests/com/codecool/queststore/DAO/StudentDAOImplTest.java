@@ -2,7 +2,9 @@ package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.model.Transaction;
 import com.codecool.queststore.model.classRoom.ClassRoom;
+import com.codecool.queststore.model.inventory.Category;
 import com.codecool.queststore.model.inventory.Inventory;
+import com.codecool.queststore.model.inventory.Item;
 import com.codecool.queststore.model.user.Student;
 import com.codecool.queststore.model.user.UserDetails;
 
@@ -17,6 +19,7 @@ import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,6 +48,7 @@ class StudentDAOImplTest {
     private Student student;
     private UserDetails userDetails;
     private ClassRoom classRoom;
+    private Inventory inventory;
     private StudentDAOImpl studentDAO;
 
     @BeforeEach
@@ -82,7 +86,10 @@ class StudentDAOImplTest {
         classRoom = new ClassRoom(1, "webRoom");
         userDetails = new UserDetails("Szymon", "Słowik", "email@email.com",
                 "login123", "password123", "student");
-        student = new Student(1, userDetails, classRoom, new Inventory(1), new ArrayList<Transaction>());
+        Category category = new Category("testItemCategory");
+        Item item = new Item(1, "testItem", "testItemDescription", 100, category);
+        inventory = new Inventory(1, Arrays.asList(new Item[]{item}));
+        student = new Student(1, userDetails, classRoom, inventory, new ArrayList<>());
         studentDAO = new StudentDAOImpl(daoFactory);
     }
 
@@ -99,8 +106,6 @@ class StudentDAOImplTest {
     @Test
     public void shouldGetStudent() throws Exception {
         setupStudentInventory();
-        /*Student actualStudent = studentDAO.getStudent(1);
-        System.out.println(actualStudent.getInventory().getItems().size());*/
         assertNotNull(studentDAO.getStudent(1));
     }
 
@@ -108,9 +113,39 @@ class StudentDAOImplTest {
         when(rS.next()).thenReturn(true).thenReturn(true).thenReturn(false);
         when(rS.getInt("item_id")).thenReturn(1);
         when(rS.getString("name")).thenReturn("testItem");
-        when(rS.getString("decription")).thenReturn("itemTestDescription");
+        when(rS.getString("decription")).thenReturn("testItemDescription");
         when(rS.getInt("price")).thenReturn(100);
         when(rS.getString("category")).thenReturn("testItemCategory");
+    }
+
+    @Test
+    public void shouldGetStudentHasProperUserDetails() throws Exception {
+        when(rS.next()).thenReturn(false);
+
+        String[] expectedUserDetails = {Integer.toString(userDetails.getId()),
+                                        userDetails.getFirstName(),
+                                        userDetails.getLastName(),
+                                        userDetails.getEmail(),
+                                        userDetails.getLogin(),
+                                        userDetails.getPassword(),
+                                        userDetails.getAccountType()};
+
+        String[] actualUserDetails = getActualUserDetails();
+
+        assertEquals(expectedUserDetails, actualUserDetails);
+    }
+
+    private String[] getActualUserDetails() {
+        UserDetails actualUserDetails = studentDAO.getStudent(1).getUserDetails();
+
+        return new String[]{Integer.toString(actualUserDetails.getId()),
+                            actualUserDetails.getFirstName(),
+                            actualUserDetails.getLastName(),
+                            actualUserDetails.getEmail(),
+                            actualUserDetails.getLogin(),
+                            actualUserDetails.getPassword(),
+                            actualUserDetails.getAccountType()
+        };
     }
 
     @Test
