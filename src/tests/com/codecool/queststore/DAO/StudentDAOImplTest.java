@@ -81,7 +81,6 @@ class StudentDAOImplTest {
     }
 
 
-
     private void initializePrivateFields() {
         classRoom = new ClassRoom(1, "webRoom");
         userDetails = new UserDetails("Szymon", "Słowik", "email@email.com",
@@ -93,30 +92,25 @@ class StudentDAOImplTest {
         studentDAO = new StudentDAOImpl(daoFactory);
     }
 
+
     @Test
     public void shouldAddStudent() throws Exception {
         assertEquals(Integer.valueOf(1), studentDAO.add(student));
     }
+
 
     @Test
     public void shouldAddStudentThrowExceptionIfNullPass() {
         assertThrows(NullPointerException.class, () -> { studentDAO.add(null); });
     }
 
+
     @Test
     public void shouldGetStudent() throws Exception {
-        setupStudentInventory();
+        when(rS.next()).thenReturn(false);
         assertNotNull(studentDAO.getStudent(1));
     }
 
-    private void setupStudentInventory() throws Exception {
-        when(rS.next()).thenReturn(true).thenReturn(true).thenReturn(false);
-        when(rS.getInt("item_id")).thenReturn(1);
-        when(rS.getString("name")).thenReturn("testItem");
-        when(rS.getString("decription")).thenReturn("testItemDescription");
-        when(rS.getInt("price")).thenReturn(100);
-        when(rS.getString("category")).thenReturn("testItemCategory");
-    }
 
     @Test
     public void shouldGetStudentHasProperUserDetails() throws Exception {
@@ -132,8 +126,9 @@ class StudentDAOImplTest {
 
         String[] actualUserDetails = getActualUserDetails();
 
-        assertEquals(expectedUserDetails, actualUserDetails);
+        assertEquals(Arrays.asList(expectedUserDetails), Arrays.asList(actualUserDetails));
     }
+
 
     private String[] getActualUserDetails() {
         UserDetails actualUserDetails = studentDAO.getStudent(1).getUserDetails();
@@ -149,10 +144,29 @@ class StudentDAOImplTest {
     }
 
     @Test
+    public void shouldGetStudentHasProperlyAddItemToInventory() throws Exception {
+        setupStudentInventory();
+        Inventory actualStudentInventory = studentDAO.getStudent(1).getInventory();
+        assertEquals(inventory.getItems().size(), actualStudentInventory.getItems().size());
+    }
+
+
+    private void setupStudentInventory() throws Exception {
+        when(rS.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(rS.getInt("item_id")).thenReturn(1);
+        when(rS.getString("name")).thenReturn("testItem");
+        when(rS.getString("decription")).thenReturn("testItemDescription");
+        when(rS.getInt("price")).thenReturn(100);
+        when(rS.getString("category")).thenReturn("testItemCategory");
+    }
+
+
+    @Test
     public void shouldGetStudentReturnNullIfExceptionOccur() throws Exception {
         when(rS.getInt("class_id")).thenThrow(SQLException.class);
         assertNull(studentDAO.getStudent(1));
     }
+
 
     @Test
     public void shouldUpdateThrowExceptionIfNullPass() {
