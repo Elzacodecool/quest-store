@@ -246,9 +246,18 @@ class StudentDAOImplTest {
         assertEquals(2, studentDAO.getStudentsByRoom(classRoom).size());
     }
 
+
     @Test
-    public void shouldGetStudentByRoomReturnEmptyListWhenExceptionOccur() throws SQLException {
+    public void shouldGetStudentsByRoomReturnEmptyListWhenExceptionOccur() throws SQLException {
         when(rS.next()).thenThrow(SQLException.class);
         assertEquals(1, studentDAO.getStudentsByRoom(classRoom).size());
+    }
+
+
+    @Test
+    public void shouldGetStudentsByRoomThrowsExceptionWhenNullPass() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentDAO.getStudentsByRoom(null);
+        });
     }
 }
