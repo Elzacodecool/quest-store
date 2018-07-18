@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.Mock;
 
 import java.lang.reflect.Method;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 
@@ -34,7 +39,7 @@ class StudentDAOImplTest {
     private ResultSet rS;
 
     @Mock
-    private DAOFactoryImpl daoFactory;
+    private DAOFactory daoFactory;
 
     @Mock
     private UserDAO userDAO;
@@ -44,6 +49,12 @@ class StudentDAOImplTest {
 
     @Mock
     private TransactionDAO transactionDAO;
+
+    @Mock
+    PreparedStatement preparedStatement;
+
+    @Mock
+    private Student s;
 
     private Student student;
     private UserDetails userDetails;
@@ -57,6 +68,7 @@ class StudentDAOImplTest {
         initializePrivateFields();
         when(rS.next()).thenReturn(true);
         when(rS.getInt("student_id")).thenReturn(1);
+        when(rS.getInt("codecooler_id")).thenReturn(1);
         when(daoFactory.execQuery(any(String.class), any(Integer.class))).thenReturn(rS);
         when(daoFactory.execQuery(any(String.class), any(String.class))).thenReturn(rS);
 
@@ -68,6 +80,7 @@ class StudentDAOImplTest {
                 any(String.class),
                 any(String.class))).thenReturn(rS);
 
+        when(preparedStatement.executeQuery()).thenReturn(rS);
         when(daoFactory.getUserDAO()).thenReturn(userDAO);
         when(userDAO.getUser(any(Integer.class))).thenReturn(userDetails);
         when(userDAO.getUserByLogin(any(String.class))).thenReturn(userDetails);
@@ -78,6 +91,7 @@ class StudentDAOImplTest {
         when(transactionDAO.getTransactionByUser(any(Integer.class))).thenReturn(new ArrayList<Transaction>());
 
         when(userDAO.add(any(UserDetails.class))).thenReturn(1);
+        when(daoFactory.getTransactionDAO().getTransactionByUser(any(Integer.class))).thenReturn(new ArrayList<>());
 
 
     }
@@ -85,7 +99,7 @@ class StudentDAOImplTest {
 
     private void initializePrivateFields() {
         classRoom = new ClassRoom(1, "webRoom");
-        userDetails = new UserDetails("Szymon", "Słowik", "email@email.com",
+        userDetails = new UserDetails(1, "Szymon", "Słowik", "email@email.com",
                 "login123", "password123", "student");
         Category category = new Category("testItemCategory");
         Item item = new Item(1, "testItem", "testItemDescription", 100, category);
@@ -227,7 +241,14 @@ class StudentDAOImplTest {
 
 
     @Test
-    public void shouldGetStudentsByRoom() {
+    public void shouldGetStudentsByRoom() throws Exception {
+        when(rS.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+        assertEquals(2, studentDAO.getStudentsByRoom(classRoom).size());
+    }
 
+    @Test
+    public void shouldGetStudentByRoomReturnEmptyListWhenExceptionOccur() throws SQLException {
+        when(rS.next()).thenThrow(SQLException.class);
+        assertEquals(1, studentDAO.getStudentsByRoom(classRoom).size());
     }
 }
