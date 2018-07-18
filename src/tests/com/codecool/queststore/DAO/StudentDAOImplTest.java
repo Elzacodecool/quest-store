@@ -15,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.Mock;
 
-import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,10 +24,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 
@@ -63,7 +59,7 @@ class StudentDAOImplTest {
     private StudentDAOImpl studentDAO;
 
     @BeforeEach
-    public void setUpEnvironment() throws Exception {
+    void setUpEnvironment() throws Exception {
         MockitoAnnotations.initMocks(this);
         initializePrivateFields();
         when(rS.next()).thenReturn(true);
@@ -110,26 +106,26 @@ class StudentDAOImplTest {
 
 
     @Test
-    public void shouldAddStudent() {
+    void shouldAddStudent() {
         assertEquals(Integer.valueOf(1), studentDAO.add(student));
     }
 
 
     @Test
-    public void shouldAddStudentThrowExceptionWhenNullPass() {
+    void shouldAddStudentThrowExceptionWhenNullPass() {
         assertThrows(IllegalArgumentException.class, () -> { studentDAO.add(null); });
     }
 
 
     @Test
-    public void shouldGetStudent() throws Exception {
+    void shouldGetStudent() throws Exception {
         when(rS.next()).thenReturn(false);
         assertNotNull(studentDAO.getStudent(1));
     }
 
 
     @Test
-    public void shouldGetStudentHasProperUserDetails() throws Exception {
+    void shouldGetStudentHasProperUserDetails() throws Exception {
         when(rS.next()).thenReturn(false);
 
         String[] expectedUserDetails = {Integer.toString(userDetails.getId()),
@@ -163,7 +159,7 @@ class StudentDAOImplTest {
 
 
     @Test
-    public void shouldGetStudentHasProperlyAddItemToInventory() throws Exception {
+    void shouldGetStudentHasProperlyAddItemToInventory() throws Exception {
         setupStudentInventory();
         Inventory actualStudentInventory = studentDAO.getStudent(1).getInventory();
         assertEquals(inventory.getItems().size(), actualStudentInventory.getItems().size());
@@ -181,27 +177,27 @@ class StudentDAOImplTest {
 
 
     @Test
-    public void shouldGetStudentReturnNullWhenExceptionOccur() throws Exception {
+    void shouldGetStudentReturnNullWhenExceptionOccur() throws Exception {
         when(rS.getInt("class_id")).thenThrow(SQLException.class);
         assertNull(studentDAO.getStudent(1));
     }
 
 
     @Test
-    public void shouldUpdateThrowExceptionWhenNullPass() {
+    void shouldUpdateThrowExceptionWhenNullPass() {
         assertThrows(IllegalArgumentException.class, () -> { studentDAO.update(null);});
     }
 
 
     @Test
-    public void shouldGetStudentByLogin() throws Exception {
+    void shouldGetStudentByLogin() throws Exception {
         when(rS.next()).thenReturn(false);
         assertNotNull(studentDAO.getStudentByLogin("login123"));
     }
 
 
     @Test
-    public void shouldGetStudentByLoginHasProperUserDetails() throws Exception {
+    void shouldGetStudentByLoginHasProperUserDetails() throws Exception {
         when(rS.next()).thenReturn(false);
 
         String[] expectedUserDetails = {Integer.toString(userDetails.getId()),
@@ -219,7 +215,7 @@ class StudentDAOImplTest {
 
 
     @Test
-    public void shouldGetStudentByLoginHasProperlyAddItemToInventory() throws Exception {
+    void shouldGetStudentByLoginHasProperlyAddItemToInventory() throws Exception {
         setupStudentInventory();
         Inventory actualStudentInventory = studentDAO.getStudentByLogin("login123").getInventory();
         assertEquals(inventory.getItems().size(), actualStudentInventory.getItems().size());
@@ -227,35 +223,35 @@ class StudentDAOImplTest {
 
 
     @Test
-    public void shouldGetStudentByLoginReturnNullWhenExceptionOccur() throws Exception {
+    void shouldGetStudentByLoginReturnNullWhenExceptionOccur() throws Exception {
         when(rS.getInt("class_id")).thenThrow(SQLException.class);
         assertNull(studentDAO.getStudentByLogin("login123"));
     }
 
 
     @Test
-    public void shouldGetStudentByLoginThrowsExceptionWhenNullPass() throws Exception {
+    void shouldGetStudentByLoginThrowsExceptionWhenNullPass() throws Exception {
         when(rS.next()).thenReturn(false);
         assertThrows(IllegalArgumentException.class, () -> { studentDAO.getStudentByLogin(null);});
     }
 
 
     @Test
-    public void shouldGetStudentsByRoom() throws Exception {
+    void shouldGetStudentsByRoom() throws Exception {
         when(rS.next()).thenReturn(true).thenReturn(true).thenReturn(false);
         assertEquals(2, studentDAO.getStudentsByRoom(classRoom).size());
     }
 
 
     @Test
-    public void shouldGetStudentsByRoomReturnEmptyListWhenExceptionOccur() throws SQLException {
+    void shouldGetStudentsByRoomReturnEmptyListWhenExceptionOccur() throws SQLException {
         when(rS.next()).thenThrow(SQLException.class);
         assertEquals(0, studentDAO.getStudentsByRoom(classRoom).size());
     }
 
 
     @Test
-    public void shouldGetStudentsByRoomThrowsExceptionWhenNullPass() {
+    void shouldGetStudentsByRoomThrowsExceptionWhenNullPass() {
         assertThrows(IllegalArgumentException.class, () -> {
             studentDAO.getStudentsByRoom(null);
         });
@@ -263,7 +259,7 @@ class StudentDAOImplTest {
 
 
     @Test
-    public void shouldGetAllStudents() throws SQLException {
+    void shouldGetAllStudents() throws SQLException {
         when(daoFactory.execQuery(anyString())).thenReturn(rS);
 
         when(rS.next()).thenReturn(true).
@@ -284,7 +280,7 @@ class StudentDAOImplTest {
 
 
     @Test
-    public void shouldGetAllStudentsReturnEmptyListWhenExceptionOccur() throws SQLException {
+    void shouldGetAllStudentsReturnEmptyListWhenExceptionOccur() throws SQLException {
         when(daoFactory.execQuery(anyString())).thenReturn(rS);
         when(rS.next()).thenThrow(SQLException.class);
         assertEquals(0, studentDAO.getAllStudents());
