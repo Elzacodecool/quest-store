@@ -47,9 +47,6 @@ class StudentDAOImplTest {
     private TransactionDAO transactionDAO;
 
     @Mock
-    PreparedStatement preparedStatement;
-
-    @Mock
     private Student s;
 
     private Student student;
@@ -76,7 +73,6 @@ class StudentDAOImplTest {
                 any(String.class),
                 any(String.class))).thenReturn(rS);
 
-        when(preparedStatement.executeQuery()).thenReturn(rS);
         when(daoFactory.getUserDAO()).thenReturn(userDAO);
         when(userDAO.getUser(any(Integer.class))).thenReturn(userDetails);
         when(userDAO.getUserByLogin(any(String.class))).thenReturn(userDetails);
@@ -283,6 +279,19 @@ class StudentDAOImplTest {
     void shouldGetAllStudentsReturnEmptyListWhenExceptionOccur() throws SQLException {
         when(daoFactory.execQuery(anyString())).thenReturn(rS);
         when(rS.next()).thenThrow(SQLException.class);
-        assertEquals(0, studentDAO.getAllStudents());
+        assertEquals(0, studentDAO.getAllStudents().size());
+    }
+
+
+    @Test
+    void shouldRemoveThrowsExceptionWhenNullPass() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentDAO.remove(passNullIntegerToMethod());
+        });
+    }
+
+
+    private Integer passNullIntegerToMethod() {
+        return null;
     }
 }
