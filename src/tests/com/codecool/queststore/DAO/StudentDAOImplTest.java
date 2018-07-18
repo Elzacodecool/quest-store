@@ -260,4 +260,25 @@ class StudentDAOImplTest {
             studentDAO.getStudentsByRoom(null);
         });
     }
+
+
+    @Test
+    public void shouldGetAllStudents() throws SQLException {
+        when(daoFactory.execQuery(anyString())).thenReturn(rS);
+
+        when(rS.next()).thenReturn(true).
+                thenReturn(true).
+                thenReturn(true).
+                thenReturn(false).
+                thenReturn(true).
+                thenReturn(true).
+                thenReturn(true).
+                thenReturn(false).
+                thenReturn(true).
+                thenReturn(true).
+                thenReturn(true).
+                thenReturn(false);
+
+        assertEquals(3, studentDAO.getAllStudents().size());
+    }
 }
