@@ -147,7 +147,7 @@ public class MentorController implements HttpHandler {
         int classId = Integer.parseInt(formMap.get("room"));
         ClassRoom classRoom = classDAO.getClass(classId);
         UserDetails userDetails = new UserDetails(formMap.get("firstname"), formMap.get("lastname"), formMap.get("email"), formMap.get("login"), formMap.get("password"), "student");
-        Student student = new Student(userDetails, classRoom);
+        Student student = new Student(userDetails, classRoom, daoFactory);
         studentDAO.add(student);
     }
 
@@ -155,7 +155,7 @@ public class MentorController implements HttpHandler {
         int classId = Integer.parseInt(formMap.get("room"));
         ClassRoom classRoom = classDAO.getClass(classId);
         UserDetails userDetails = new UserDetails(formMap.get("firstname"), formMap.get("lastname"), formMap.get("email"), formMap.get("login"), formMap.get("password"), "student");
-        Student student = new Student(userDetails, classRoom);
+        Student student = new Student(userDetails, classRoom, daoFactory);
         studentDAO.update(student);
     }
 
