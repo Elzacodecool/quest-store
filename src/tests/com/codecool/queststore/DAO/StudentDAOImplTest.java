@@ -209,4 +209,11 @@ class StudentDAOImplTest {
         Inventory actualStudentInventory = studentDAO.getStudentByLogin("login123").getInventory();
         assertEquals(inventory.getItems().size(), actualStudentInventory.getItems().size());
     }
+
+
+    @Test
+    public void shouldGetStudentByLoginReturnNullIfExceptionOccur() throws Exception {
+        when(rS.getInt("class_id")).thenThrow(SQLException.class);
+        assertNull(studentDAO.getStudentByLogin("login123"));
+    }
 }
