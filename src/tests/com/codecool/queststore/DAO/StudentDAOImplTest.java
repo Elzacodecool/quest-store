@@ -58,6 +58,7 @@ class StudentDAOImplTest {
         when(rS.next()).thenReturn(true);
         when(rS.getInt("student_id")).thenReturn(1);
         when(daoFactory.execQuery(any(String.class), any(Integer.class))).thenReturn(rS);
+        when(daoFactory.execQuery(any(String.class), any(String.class))).thenReturn(rS);
 
         when(daoFactory.execQuery(any(String.class),
                 any(String.class),
@@ -69,6 +70,7 @@ class StudentDAOImplTest {
 
         when(daoFactory.getUserDAO()).thenReturn(userDAO);
         when(userDAO.getUser(any(Integer.class))).thenReturn(userDetails);
+        when(userDAO.getUserByLogin(any(String.class))).thenReturn(userDetails);
         when(daoFactory.getClassDAO()).thenReturn(classDAO);
         when(classDAO.getClass(any(Integer.class))).thenReturn(classRoom);
 
@@ -171,5 +173,12 @@ class StudentDAOImplTest {
     @Test
     public void shouldUpdateThrowExceptionIfNullPass() {
         assertThrows(NullPointerException.class, () -> { studentDAO.update(null);});
+    }
+
+
+    @Test
+    public void shouldGetStudentByLogin() throws Exception {
+        when(rS.next()).thenReturn(false);
+        assertNotNull(studentDAO.getStudentByLogin("login123"));
     }
 }
