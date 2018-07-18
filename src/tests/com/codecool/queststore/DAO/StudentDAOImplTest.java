@@ -147,6 +147,7 @@ class StudentDAOImplTest {
         };
     }
 
+
     @Test
     public void shouldGetStudentHasProperlyAddItemToInventory() throws Exception {
         setupStudentInventory();
@@ -222,5 +223,11 @@ class StudentDAOImplTest {
     public void shouldGetStudentByLoginThrowsExceptionWhenNullPass() throws Exception {
         when(rS.next()).thenReturn(false);
         assertThrows(IllegalArgumentException.class, () -> { studentDAO.getStudentByLogin(null);});
+    }
+
+
+    @Test
+    public void shouldGetStudentsByRoom() {
+
     }
 }
