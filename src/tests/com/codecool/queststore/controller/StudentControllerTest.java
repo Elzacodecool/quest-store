@@ -65,6 +65,8 @@ class StudentControllerTest {
     }
 
 
+
+
     private void setEnvironment(String uri) throws IOException, URISyntaxException {
         when(httpExchange.getRequestURI()).thenReturn(new URI(uri));
         studentController.handle(httpExchange);
@@ -117,5 +119,9 @@ class StudentControllerTest {
     }
 
 
-
+    private void setTestArtifact(JtwigModel jtwigModel) {
+        jtwigModel.with("name", "name");
+        jtwigModel.with("description", "description");
+        jtwigModel.with("price", 25);
+    }
 }
