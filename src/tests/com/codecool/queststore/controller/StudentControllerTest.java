@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -84,6 +85,16 @@ class StudentControllerTest {
         assertEquals(expectedResult, actualResult);
     }
 
+    @Test
+    void shouldGetStore() throws IOException, URISyntaxException {
+        setEnvironment("store-artifacts-to-buy");
+
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/store-student-buy-items.twig");
+
+        assertEquals(expectedResult, actualResult);
+    }
+
 
     private void setEnvironment(String uri) throws IOException, URISyntaxException {
         when(httpExchange.getRequestURI()).thenReturn(new URI(uri));
@@ -99,7 +110,7 @@ class StudentControllerTest {
             setTestStudentView(jtwigModel);
         if (templatePath.contains("transactions-student"))
             setTestTransaction(jtwigModel);
-        if (templatePath.contains("student-store"))
+        if (templatePath.contains("store-student"))
             setTestStore(jtwigModel);
         if (templatePath.contains("buy-artifact"))
             setTestArtifact(jtwigModel);
@@ -130,8 +141,8 @@ class StudentControllerTest {
 
 
     private void setTestStore(JtwigModel jtwigModel) {
-        ArrayList<Item> artifacts = new ArrayList<>();
-        artifacts.add(new Item(1, "name", "description", 25, new Category("single")));
+        List<Item> artifacts = new ArrayList<>();
+        artifacts.add(new Item(1, "name", "description", 25, new Category("Artifact")));
 
         jtwigModel.with("artifacts", artifacts);
     }
