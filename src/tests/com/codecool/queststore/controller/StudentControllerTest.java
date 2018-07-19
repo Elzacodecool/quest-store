@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -77,7 +78,7 @@ class StudentControllerTest {
 
     @Test
     void shouldGetTransactionHistory() throws IOException, URISyntaxException {
-        setEnvironment("transactions-history");
+        setEnvironment("/transactions-history");
 
         String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
         String expectedResult = getExpectedResult("templates/transactions-student-view.twig");
@@ -87,10 +88,21 @@ class StudentControllerTest {
 
     @Test
     void shouldGetStore() throws IOException, URISyntaxException {
-        setEnvironment("store-artifacts-to-buy");
+        setEnvironment("/store-artifacts-to-buy");
 
         String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
         String expectedResult = getExpectedResult("templates/store-student-buy-items.twig");
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void shouldBuyArtifact() throws IOException, URISyntaxException {
+        when(httpExchange.getRequestURI()).thenReturn(new URI("/buy")).thenReturn(new URI("/1"));
+        studentController.handle(httpExchange);
+
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/buy-artifact-student.twig");
 
         assertEquals(expectedResult, actualResult);
     }
