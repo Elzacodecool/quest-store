@@ -58,13 +58,21 @@ class StudentControllerTest {
     void shouldGetStudentMenu() throws IOException, URISyntaxException {
         setEnvironment("/student");
 
-        String actualResult = new String(byteArrayOutputStream.toByteArray(),StandardCharsets.UTF_8 );
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
         String expectedResult = getExpectedResult("templates/menu-student.twig");
 
         assertEquals(expectedResult, actualResult);
     }
 
+    @Test
+    void shouldGetProfileView() throws IOException, URISyntaxException {
+        setEnvironment("/student-view");
 
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/student-view-profile.twig");
+
+        assertEquals(expectedResult, actualResult);
+    }
 
 
     private void setEnvironment(String uri) throws IOException, URISyntaxException {
@@ -101,7 +109,7 @@ class StudentControllerTest {
         jtwigModel.with("lastname", "Golec");
         jtwigModel.with("email", "email@gmail.com");
         jtwigModel.with("login", "eliza");
-        jtwigModel.with("classname", "WEB");
+        jtwigModel.with("classname", "webRoom");
     }
 
 
