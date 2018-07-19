@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -96,5 +97,11 @@ class StudentControllerTest {
         jtwigModel.with("email", "email@gmail.com");
         jtwigModel.with("login", "eliza");
         jtwigModel.with("classname", "WEB");
+    }
+
+
+    private void setTestTransaction(JtwigModel jtwigModel) {
+        jtwigModel.with("transactions", new ArrayList<>());
+        jtwigModel.with("totalamount", 0);
     }
 }
