@@ -74,6 +74,16 @@ class StudentControllerTest {
         assertEquals(expectedResult, actualResult);
     }
 
+    @Test
+    void shouldGetTransactionHistory() throws IOException, URISyntaxException {
+        setEnvironment("transactions-history");
+
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/transactions-student-view.twig");
+
+        assertEquals(expectedResult, actualResult);
+    }
+
 
     private void setEnvironment(String uri) throws IOException, URISyntaxException {
         when(httpExchange.getRequestURI()).thenReturn(new URI(uri));
