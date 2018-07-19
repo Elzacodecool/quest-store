@@ -31,9 +31,6 @@ class StudentControllerTest {
     @Mock
     private Headers headers;
 
-    @Mock
-    private JtwigTemplate jtwigTemplate;
-
     private ByteArrayOutputStream byteArrayOutputStream;
     private StudentController studentController;
 
@@ -75,7 +72,14 @@ class StudentControllerTest {
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel jtwigModel = JtwigModel.newModel();
         setTestHeader(jtwigModel);
-        return jtwigTemplate.render(jtwigModel).toString();
+        if (templatePath.contains("student-view"))
+            setTestStudentView(jtwigModel);
+        if (templatePath.contains("transactions-student"))
+            setTestTransaction(jtwigModel);
+        if (templatePath.contains("student-store"))
+            setTestStore(jtwigModel);
+
+        return jtwigTemplate.render(jtwigModel);
     }
 
     private void setTestHeader(JtwigModel jtwigModel) {
@@ -83,5 +87,14 @@ class StudentControllerTest {
         int coolcoins = 0;
         jtwigModel.with("fullname", fullName);
         jtwigModel.with("money", String.valueOf(coolcoins));
+    }
+
+
+    private void setTestStudentView(JtwigModel jtwigModel) {
+        jtwigModel.with("firstname", "Eliza");
+        jtwigModel.with("lastname", "Golec");
+        jtwigModel.with("email", "email@gmail.com");
+        jtwigModel.with("login", "eliza");
+        jtwigModel.with("classname", "WEB");
     }
 }
