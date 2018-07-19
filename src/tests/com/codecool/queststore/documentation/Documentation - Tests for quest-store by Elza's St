@@ -39,6 +39,10 @@ Documentation - Tests for quest-store by Elza's Strawberry Team
 
 #Tests for StudentController
     shouldGetStudentMenu
+    shouldGetProfileView
+    shouldGetTransactionHistory
+    shouldGetStore
+    shouldBuyArtifact
 
 Overall Coverage Summary:
 Class% - 47%

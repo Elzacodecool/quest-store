@@ -1,34 +1,28 @@
 package com.codecool.queststore.controller;
 
 import com.codecool.queststore.model.SingletonAcountContainer;
-import com.codecool.queststore.model.user.UserDetails;
+import com.codecool.queststore.model.inventory.Category;
+import com.codecool.queststore.model.inventory.Item;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.Mock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 
@@ -41,17 +35,13 @@ class StudentControllerTest {
     @Mock
     private Headers headers;
 
-    @Mock
-    private JtwigTemplate jtwigTemplate;
-
     private ByteArrayOutputStream byteArrayOutputStream;
     private StudentController studentController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        byteArrayOutputStream = new ByteArrayOutputStream();
-        studentController = new StudentController();
+        initializeFields();
         SingletonAcountContainer.getInstance().addAccount("15de3c1d-21fd-4e31-9605-74a028cf1826", 1);
         when(httpExchange.getRequestMethod()).thenReturn("GET");
         when(httpExchange.getRequestHeaders()).thenReturn(headers);
@@ -59,11 +49,59 @@ class StudentControllerTest {
         when(httpExchange.getResponseBody()).thenReturn(byteArrayOutputStream);
     }
 
+
+    private void initializeFields() {
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        studentController = new StudentController();
+    }
+
     @Test
     void shouldGetStudentMenu() throws IOException, URISyntaxException {
         setEnvironment("/student");
-        String actualResult = new String(byteArrayOutputStream.toByteArray(),StandardCharsets.UTF_8 );
-        String expectedResult = getExpectedResult("templates/menu-student.twig");//new String(getExpectedResult("templates/menu-student.twig"), StandardCharsets.UTF_8);
+
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/menu-student.twig");
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void shouldGetProfileView() throws IOException, URISyntaxException {
+        setEnvironment("/student-view");
+
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/student-view-profile.twig");
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void shouldGetTransactionHistory() throws IOException, URISyntaxException {
+        setEnvironment("/transactions-history");
+
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/transactions-student-view.twig");
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void shouldGetStore() throws IOException, URISyntaxException {
+        setEnvironment("/store-artifacts-to-buy");
+
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/store-student-buy-items.twig");
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void shouldBuyArtifact() throws IOException, URISyntaxException {
+        when(httpExchange.getRequestURI()).thenReturn(new URI("/buy")).thenReturn(new URI("/1"));
+        studentController.handle(httpExchange);
+
+        String actualResult = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/buy-artifact-student.twig");
 
         assertEquals(expectedResult, actualResult);
     }
@@ -79,7 +117,15 @@ class StudentControllerTest {
         JtwigTemplate jtwigTemplate = JtwigTemplate.classpathTemplate(templatePath);
         JtwigModel jtwigModel = JtwigModel.newModel();
         setTestHeader(jtwigModel);
-        return jtwigTemplate.render(jtwigModel).toString();
+        if (templatePath.contains("student-view"))
+            setTestStudentView(jtwigModel);
+        if (templatePath.contains("transactions-student"))
+            setTestTransaction(jtwigModel);
+        if (templatePath.contains("store-student"))
+            setTestStore(jtwigModel);
+        if (templatePath.contains("buy-artifact"))
+            setTestArtifact(jtwigModel);
+        return jtwigTemplate.render(jtwigModel);
     }
 
     private void setTestHeader(JtwigModel jtwigModel) {
@@ -87,5 +133,35 @@ class StudentControllerTest {
         int coolcoins = 0;
         jtwigModel.with("fullname", fullName);
         jtwigModel.with("money", String.valueOf(coolcoins));
+    }
+
+
+    private void setTestStudentView(JtwigModel jtwigModel) {
+        jtwigModel.with("firstname", "Eliza");
+        jtwigModel.with("lastname", "Golec");
+        jtwigModel.with("email", "email@gmail.com");
+        jtwigModel.with("login", "eliza");
+        jtwigModel.with("classname", "webRoom");
+    }
+
+
+    private void setTestTransaction(JtwigModel jtwigModel) {
+        jtwigModel.with("transactions", new ArrayList<>());
+        jtwigModel.with("totalamount", 0);
+    }
+
+
+    private void setTestStore(JtwigModel jtwigModel) {
+        List<Item> artifacts = new ArrayList<>();
+        artifacts.add(new Item(1, "name", "description", 25, new Category("Artifact")));
+
+        jtwigModel.with("artifacts", artifacts);
+    }
+
+
+    private void setTestArtifact(JtwigModel jtwigModel) {
+        jtwigModel.with("name", "name");
+        jtwigModel.with("description", "description");
+        jtwigModel.with("price", 25);
     }
 }
