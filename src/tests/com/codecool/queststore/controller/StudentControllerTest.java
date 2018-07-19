@@ -50,8 +50,7 @@ class StudentControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        byteArrayOutputStream = new ByteArrayOutputStream();
-        studentController = new StudentController();
+        initializeFields();
         SingletonAcountContainer.getInstance().addAccount("15de3c1d-21fd-4e31-9605-74a028cf1826", 1);
         when(httpExchange.getRequestMethod()).thenReturn("GET");
         when(httpExchange.getRequestHeaders()).thenReturn(headers);
@@ -59,11 +58,18 @@ class StudentControllerTest {
         when(httpExchange.getResponseBody()).thenReturn(byteArrayOutputStream);
     }
 
+
+    private void initializeFields() {
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        studentController = new StudentController();
+    }
+
     @Test
     void shouldGetStudentMenu() throws IOException, URISyntaxException {
         setEnvironment("/student");
+
         String actualResult = new String(byteArrayOutputStream.toByteArray(),StandardCharsets.UTF_8 );
-        String expectedResult = getExpectedResult("templates/menu-student.twig");//new String(getExpectedResult("templates/menu-student.twig"), StandardCharsets.UTF_8);
+        String expectedResult = getExpectedResult("templates/menu-student.twig");
 
         assertEquals(expectedResult, actualResult);
     }
