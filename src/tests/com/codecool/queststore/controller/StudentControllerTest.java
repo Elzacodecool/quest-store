@@ -61,12 +61,17 @@ class StudentControllerTest {
 
     @Test
     void shouldGetStudentMenu() throws IOException, URISyntaxException {
-        when(httpExchange.getRequestURI()).thenReturn(new URI("/student"));
-        studentController.handle(httpExchange);
+        setEnvironment("/student");
         String actualResult = new String(byteArrayOutputStream.toByteArray(),StandardCharsets.UTF_8 );
         String expectedResult = getExpectedResult("templates/menu-student.twig");//new String(getExpectedResult("templates/menu-student.twig"), StandardCharsets.UTF_8);
 
         assertEquals(expectedResult, actualResult);
+    }
+
+
+    private void setEnvironment(String uri) throws IOException, URISyntaxException {
+        when(httpExchange.getRequestURI()).thenReturn(new URI(uri));
+        studentController.handle(httpExchange);
     }
 
 
