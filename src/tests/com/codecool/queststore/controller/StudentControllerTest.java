@@ -1,6 +1,8 @@
 package com.codecool.queststore.controller;
 
 import com.codecool.queststore.model.SingletonAcountContainer;
+import com.codecool.queststore.model.inventory.Category;
+import com.codecool.queststore.model.inventory.Item;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
@@ -79,7 +81,8 @@ class StudentControllerTest {
             setTestTransaction(jtwigModel);
         if (templatePath.contains("student-store"))
             setTestStore(jtwigModel);
-
+        if (templatePath.contains("buy-artifact"))
+            setTestArtifact(jtwigModel);
         return jtwigTemplate.render(jtwigModel);
     }
 
@@ -104,4 +107,15 @@ class StudentControllerTest {
         jtwigModel.with("transactions", new ArrayList<>());
         jtwigModel.with("totalamount", 0);
     }
+
+
+    private void setTestStore(JtwigModel jtwigModel) {
+        ArrayList<Item> artifacts = new ArrayList<>();
+        artifacts.add(new Item(1, "name", "description", 25, new Category("single")));
+
+        jtwigModel.with("artifacts", artifacts);
+    }
+
+
+
 }
