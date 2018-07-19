@@ -1,0 +1,60 @@
+Documentation - Tests for quest-store by Elza's Strawberry Team
+
+#Tests for AdminDAOimpl
+	shouldReturnAdmin
+	shouldReturnAdminList_4Items
+	shouldReturnNull
+	shouldReturnTheSameAdmins
+
+#Tests for MentorDAOimpl
+	shouldReturnMentor
+	shouldReturnEmptyListWhenException
+	shouldReturnMentorList_4Items
+	shouldReturnMentorsFromClassRoom_4items
+	shouldReturnNull
+	shouldReturnTheSameMentors
+
+#Tests for StudentsDAOimpl
+	shouldGetStudentByLoginThrowsExceptionWhenNullPass()
+	shouldGetStudentByLoginHasProperUserDetails()
+	shouldGetStudentByLogin()
+	shouldGetStudentByLoginHasProperlyAddItemToInventory()
+	shouldAddStudent()
+	shouldGetStudentsByRoomThrowsExceptionWhenNullPass()
+	shouldGetStudentsByRoomReturnEmptyListWhenExceptionOccur()
+	shouldGetStudentByLoginReturnNullWhenExceptionOccur()
+	shouldUpdateThrowExceptionWhenNullPass()
+	shouldGetAllStudents()
+	shouldGetStudentReturnNullWhenExceptionOccur()
+	shouldRemoveThrowsExceptionWhenNullPass()
+	shouldGetStudentHasProperlyAddItemToInventory()
+	shouldAddStudentThrowExceptionWhenNullPass()
+	shouldGetStudentsByRoom()
+	shouldGetStudentHasProperUserDetails()
+	shouldGetAllStudentsReturnEmptyListWhenExceptionOccur()
+	shouldGetStudent()
+
+#Tests for AccountController
+	shouldSendIndexTwig
+
+#Tests for StudentController
+    shouldGetStudentMenu
+
+Overall Coverage Summary:
+Class% - 47%
+Method% - 21%
+Line% - 14%
+
+For further details open in Browser: /Users/elzbietakrzych/Documents/codecool/DBSQL/2018_07_16_TW/quest-store/src/tests/com/codecool/queststore/documentation/codeCoverage.html
+
+Things to improve:
+	- unused variables/methods
+	- methods marked as TODO
+	- unused methods in interfaces
+	- abstract classes only with methods and not state - consider interfaces
+	- base classes with static methods returning object from child classes
+	- surplus uses of resultSet.next() - it messes with list length and cause errors in users data
+
+
+
+

@@ -7,9 +7,8 @@ public class DAOFactoryImpl extends DAOFactory {
     private Connection connection;
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/";
     private static final String DB_NAME = "queststore";
-    private static final String userName = "codecooler";
-    private static final String password = "123";
-    private DataSource dataSource;
+    private static final String userName = "elzbietakrzych";
+    private static final String password = "";
 
     public DAOFactoryImpl() {
         this.connection = createConnection();
