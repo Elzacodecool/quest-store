@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS codecooler, admin, mentor, student, mentor_class, class, transaction, inventory, item CASCADE;
+﻿DROP TABLE IF EXISTS codecooler, admin, mentor, student, mentor_class, class, transaction, inventory, item CASCADE;
 
 CREATE TABLE codecooler (
 	codecooler_id serial PRIMARY KEY,

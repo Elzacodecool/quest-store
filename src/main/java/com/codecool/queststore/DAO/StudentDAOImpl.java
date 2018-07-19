@@ -109,7 +109,7 @@ public class StudentDAOImpl implements StudentDAO {
         try {
             while (rs.next()) {
                 studentList.add(
-                        new Student(factory.getUserDAO().getUser(rs.getInt("codecooler_id")), classRoom));
+                        new Student(factory.getUserDAO().getUser(rs.getInt("codecooler_id")), classRoom, factory));
             }
         } catch (SQLException e) {
             System.out.println("Student Error: " + e.getSQLState());
