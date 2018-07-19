@@ -30,7 +30,7 @@ public class AdminDAOImplTest {
     private ResultSet rs;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         UserDetails ud = new UserDetails("FirstName", "LastName", "Email", "Login", "Pasword", "AccountType");
         when(daoFactory.execQuery(any(String.class), any(Integer.class))).thenReturn(rs);
         when(daoFactory.execQuery(any(String.class))).thenReturn(rs);
