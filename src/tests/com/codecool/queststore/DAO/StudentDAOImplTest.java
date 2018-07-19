@@ -20,10 +20,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyChar;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -46,8 +48,7 @@ class StudentDAOImplTest {
     @Mock
     private TransactionDAO transactionDAO;
 
-    @Mock
-    private Student s;
+    private List<String> expectedUserDetails;
 
     private Student student;
     private UserDetails userDetails;
@@ -90,33 +91,58 @@ class StudentDAOImplTest {
 
 
     private void initializePrivateFields() {
-        classRoom = new ClassRoom(1, "webRoom");
-        userDetails = new UserDetails(1, "Szymon", "Słowik", "email@email.com",
-                "login123", "password123", "student");
+        setInventory();
+        setStudent();
+        studentDAO = new StudentDAOImpl(daoFactory);
+        expectedUserDetails  = Arrays.asList(Integer.toString(userDetails.getId()),
+                userDetails.getFirstName(),
+                userDetails.getLastName(),
+                userDetails.getEmail(),
+                userDetails.getLogin(),
+                userDetails.getPassword(),
+                userDetails.getAccountType());
+    }
+
+
+    private void setInventory() {
         Category category = new Category("testItemCategory");
         Item item = new Item(1, "testItem", "testItemDescription", 100, category);
         inventory = new Inventory(1, Arrays.asList(new Item[]{item}));
+    }
+
+
+    private void setStudent() {
+        classRoom = new ClassRoom(1, "webRoom");
+        userDetails = new UserDetails(1, "Szymon", "Słowik", "email@email.com",
+                "login123", "password123", "student");
         student = new Student(1, userDetails, classRoom, inventory, new ArrayList<>());
-        studentDAO = new StudentDAOImpl(daoFactory);
     }
 
 
     @Test
     void shouldAddStudent() {
-        assertEquals(Integer.valueOf(1), studentDAO.add(student));
+        Integer expectedID = 1;
+        Integer actualID = studentDAO.add(student);
+
+        assertEquals(expectedID, actualID);
     }
 
 
     @Test
     void shouldAddStudentThrowExceptionWhenNullPass() {
-        assertThrows(IllegalArgumentException.class, () -> { studentDAO.add(null); });
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentDAO.add(null);
+        });
     }
 
 
     @Test
     void shouldGetStudent() throws Exception {
         when(rS.next()).thenReturn(false);
-        assertNotNull(studentDAO.getStudent(1));
+
+        Student actualStudent = studentDAO.getStudent(1);
+
+        assertNotNull(actualStudent);
     }
 
 
@@ -124,15 +150,7 @@ class StudentDAOImplTest {
     void shouldGetStudentHasProperUserDetails() throws Exception {
         when(rS.next()).thenReturn(false);
 
-        String[] expectedUserDetails = {Integer.toString(userDetails.getId()),
-                                        userDetails.getFirstName(),
-                                        userDetails.getLastName(),
-                                        userDetails.getEmail(),
-                                        userDetails.getLogin(),
-                                        userDetails.getPassword(),
-                                        userDetails.getAccountType()};
-
-        String[] actualUserDetails = getActualUserDetails(false);
+        List<String> actualUserDetails = Arrays.asList(getActualUserDetails(false));
 
         assertEquals(Arrays.asList(expectedUserDetails), Arrays.asList(actualUserDetails));
     }
@@ -140,8 +158,10 @@ class StudentDAOImplTest {
 
     private String[] getActualUserDetails(boolean isByLogin) {
         UserDetails actualUserDetails;
-        if (isByLogin) actualUserDetails = studentDAO.getStudentByLogin("login123").getUserDetails();
-        else actualUserDetails = studentDAO.getStudent(1).getUserDetails();
+        if (isByLogin)
+            actualUserDetails = studentDAO.getStudentByLogin("login123").getUserDetails();
+        else
+            actualUserDetails = studentDAO.getStudent(1).getUserDetails();
 
         return new String[]{Integer.toString(actualUserDetails.getId()),
                             actualUserDetails.getFirstName(),
@@ -157,8 +177,15 @@ class StudentDAOImplTest {
     @Test
     void shouldGetStudentHasProperlyAddItemToInventory() throws Exception {
         setupStudentInventory();
-        Inventory actualStudentInventory = studentDAO.getStudent(1).getInventory();
-        assertEquals(inventory.getItems().size(), actualStudentInventory.getItems().size());
+
+        int actualStudentInventorySize = studentDAO.getStudent(1).
+                                                    getInventory().
+                                                    getItems().
+                                                    size();
+
+        int expectedStudentInventorySize = inventory.getItems().size();
+
+        assertEquals(expectedStudentInventorySize, actualStudentInventorySize);
     }
 
 
@@ -175,20 +202,28 @@ class StudentDAOImplTest {
     @Test
     void shouldGetStudentReturnNullWhenExceptionOccur() throws Exception {
         when(rS.getInt("class_id")).thenThrow(SQLException.class);
-        assertNull(studentDAO.getStudent(1));
+
+        Student actualStudent = studentDAO.getStudent(1);
+
+        assertNull(actualStudent);
     }
 
 
     @Test
     void shouldUpdateThrowExceptionWhenNullPass() {
-        assertThrows(IllegalArgumentException.class, () -> { studentDAO.update(null);});
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentDAO.update(null);
+        });
     }
 
 
     @Test
     void shouldGetStudentByLogin() throws Exception {
         when(rS.next()).thenReturn(false);
-        assertNotNull(studentDAO.getStudentByLogin("login123"));
+
+        Student actualStudent = studentDAO.getStudentByLogin("login123");
+
+        assertNotNull(actualStudent);
     }
 
 
@@ -196,31 +231,30 @@ class StudentDAOImplTest {
     void shouldGetStudentByLoginHasProperUserDetails() throws Exception {
         when(rS.next()).thenReturn(false);
 
-        String[] expectedUserDetails = {Integer.toString(userDetails.getId()),
-                userDetails.getFirstName(),
-                userDetails.getLastName(),
-                userDetails.getEmail(),
-                userDetails.getLogin(),
-                userDetails.getPassword(),
-                userDetails.getAccountType()};
+        List<String> actualUserDetails = Arrays.asList(getActualUserDetails(true));
 
-        String[] actualUserDetails = getActualUserDetails(true);
-
-        assertEquals(Arrays.asList(expectedUserDetails), Arrays.asList(actualUserDetails));
+        assertEquals(expectedUserDetails, actualUserDetails);
     }
 
 
     @Test
     void shouldGetStudentByLoginHasProperlyAddItemToInventory() throws Exception {
         setupStudentInventory();
-        Inventory actualStudentInventory = studentDAO.getStudentByLogin("login123").getInventory();
-        assertEquals(inventory.getItems().size(), actualStudentInventory.getItems().size());
+
+        int actualStudentInventorySize = studentDAO.getStudentByLogin("login123").
+                                                    getInventory().
+                                                    getItems().
+                                                    size();
+
+        int expectedStudentInventorySize = 1;
+        assertEquals(expectedStudentInventorySize, actualStudentInventorySize);
     }
 
 
     @Test
     void shouldGetStudentByLoginReturnNullWhenExceptionOccur() throws Exception {
         when(rS.getInt("class_id")).thenThrow(SQLException.class);
+
         assertNull(studentDAO.getStudentByLogin("login123"));
     }
 
@@ -228,21 +262,32 @@ class StudentDAOImplTest {
     @Test
     void shouldGetStudentByLoginThrowsExceptionWhenNullPass() throws Exception {
         when(rS.next()).thenReturn(false);
-        assertThrows(IllegalArgumentException.class, () -> { studentDAO.getStudentByLogin(null);});
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentDAO.getStudentByLogin(null);
+        });
     }
 
 
     @Test
     void shouldGetStudentsByRoom() throws Exception {
         when(rS.next()).thenReturn(true).thenReturn(true).thenReturn(false);
-        assertEquals(2, studentDAO.getStudentsByRoom(classRoom).size());
+
+        int expectedStudents = 2;
+        int actualStudents = studentDAO.getStudentsByRoom(classRoom).size();
+
+        assertEquals(expectedStudents, actualStudents);
     }
 
 
     @Test
     void shouldGetStudentsByRoomReturnEmptyListWhenExceptionOccur() throws SQLException {
         when(rS.next()).thenThrow(SQLException.class);
-        assertEquals(0, studentDAO.getStudentsByRoom(classRoom).size());
+
+        int expectedStudents = 0;
+        int actualStudents = studentDAO.getStudentsByRoom(classRoom).size();
+
+        assertEquals(expectedStudents, actualStudents);
     }
 
 
@@ -257,7 +302,6 @@ class StudentDAOImplTest {
     @Test
     void shouldGetAllStudents() throws SQLException {
         when(daoFactory.execQuery(anyString())).thenReturn(rS);
-
         when(rS.next()).thenReturn(true).
                 thenReturn(true).
                 thenReturn(true).
@@ -271,7 +315,10 @@ class StudentDAOImplTest {
                 thenReturn(true).
                 thenReturn(false);
 
-        assertEquals(3, studentDAO.getAllStudents().size());
+        int expectedStudents = 3;
+        int actualStudents = studentDAO.getAllStudents().size();
+
+        assertEquals(expectedStudents, actualStudents);
     }
 
 
@@ -279,7 +326,11 @@ class StudentDAOImplTest {
     void shouldGetAllStudentsReturnEmptyListWhenExceptionOccur() throws SQLException {
         when(daoFactory.execQuery(anyString())).thenReturn(rS);
         when(rS.next()).thenThrow(SQLException.class);
-        assertEquals(0, studentDAO.getAllStudents().size());
+
+        int expectedStudents = 0;
+        int actualStudents = studentDAO.getAllStudents().size();
+
+        assertEquals(expectedStudents, actualStudents);
     }
 
 
