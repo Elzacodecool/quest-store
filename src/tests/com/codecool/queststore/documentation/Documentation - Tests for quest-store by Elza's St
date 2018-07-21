@@ -1,4 +1,4 @@
-Documentation - Tests for quest-store by Elza's Strawberry Team
+Documentation - Tests for quest-store by Elza's Strawberries Team
 
 #Tests for AdminDAOimpl
 	shouldReturnAdmin
@@ -58,6 +58,7 @@ Things to improve:
 	- abstract classes only with methods and not state - consider interfaces
 	- base classes with static methods returning object from child classes
 	- surplus uses of resultSet.next() - it messes with list length and cause errors in users data
+	- pusty string wysylany zamiast wlasciwego id
 
 
 
